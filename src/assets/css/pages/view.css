@@ -1,0 +1,31 @@
+.vista-container {
+  min-height: calc(100vh - 160px);
+  padding: 2rem;
+}
+
+.vista-card {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid var(--gray3);
+  border-radius: 8px;
+  background-color: var(--white);
+}
+
+.vista-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray3);
+}
+
+.vista-content {
+  margin-bottom: 2rem;
+}
+
+.vista-status {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: var(--blue);
+  color: var(--white);
+}
