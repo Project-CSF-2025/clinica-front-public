@@ -1,0 +1,56 @@
+.inicio {
+  margin-top: 18vh;
+}
+
+.inicio-subtititle {
+  color: #7f8c8d;
+}
+
+/* Contenedor de botones */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+/* Icono de botón */
+.button-icon-inicio {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px; 
+  color: var(--white);
+}
+
+.buttonInicio {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 120px;
+}
+
+
+.button-link {
+  text-align: center;
+  color: var(--white);
+  background-color: var(--blue);
+  padding: 18px;
+  margin-top: 60px;
+  border-radius: 32px;
+  width: 100%; /* Ambos botones ocuparán el mismo ancho */
+  max-width: 280px; 
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0px 4px 0 var(--textGray);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+
+.button-link:hover {
+  background-color: var(--darkBlue);
+  transform: translateY(2px);
+  cursor: pointer;
+}
+

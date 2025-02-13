@@ -1,0 +1,17 @@
+:root {
+  --blue: #14488C;
+  --lightBlue: #3587F2;
+  --darkBlue: #0F2E5E;
+  --labelBlue: #5C95FF;
+  --labelYellow: #FFDE5C;
+  --white: #fff;
+  --gray: #eee;
+  --gray1: #474747;
+  --gray2: #808080;
+  --gray3: #A1A197;
+  --gray4: #F9F9F9; /* chat area */
+  --yellow: #F4C867;
+  --orange: orange;
+  --red: red;
+  --black: #333;
+}
