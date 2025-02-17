@@ -14,7 +14,7 @@ const InputDateTime = ({ date, handleChange, format = 'YYYY/MM/DD HH:mm', label,
           <DateTimePicker
             value={date}
             format="DD/MM/YYYY HH:mm"
-            onChange={handleChange}
+            onChange={(newValue) => handleChange(newValue)}
             slotProps={{ 
               textField: {
                 id: name,

@@ -62,7 +62,7 @@ function Form() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
 
     if(name === "isConsecuent" && value === "no") {
       setFormData((prevData) => ({...prevData, tipoConsecuencia: "" }));
@@ -73,11 +73,6 @@ function Form() {
     e.preventDefault();
     const form = e.target;
 
-    // if(form.checkValidity()) {
-    //   navigate("/preview", { state: formData });
-    // } else {
-    //   setValidated(true);
-    // }
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
@@ -120,7 +115,7 @@ function Form() {
                   label="Día y fecha"
                   name="dateTime"
                   value={formData.dateTime}
-                  onChange={handleChange}
+                  handleChange={(newValue) => handleChange({ target: { name: "dateTime", value: newValue ? newValue.format('DD/MM/YYYY HH:mm') : "" } })}
                   required
                 />
 
