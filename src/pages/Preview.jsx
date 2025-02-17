@@ -5,12 +5,12 @@ import FlowState from "../components/FlowState";
 function Preview() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [formData, setFormData] = useState(location.state || { archivo: [] });
+  const [formData, setFormData] = useState(location.state || { files: [] });
 
   const handleRemoveFile = (index) => {
-    const updatedFiles = [...formData.archivo];
+    const updatedFiles = [...formData.files];
     updatedFiles.splice(index, 1);
-    setFormData({ ...formData, archivo: updatedFiles });
+    setFormData({ ...formData, files: updatedFiles });
   };
 
   const handleEdit = () => {
