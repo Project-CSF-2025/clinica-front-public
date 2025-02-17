@@ -1,8 +1,6 @@
 import React from "react";
 
-function SelectField ({label, name, value, onChange, required}) {
-
-  const OPTIONS = ["Quirófano", "Urgencias", "Cardiología", "Oncología", "Neonatología", "Fisioterapia"];
+function SelectField ({label, name, value, onChange, required, options, disabled}) {
 
   return (
     <>
@@ -18,11 +16,18 @@ function SelectField ({label, name, value, onChange, required}) {
             id={name}
             className="form-select flex-grow-1 ms-3"
             required={required}
-            >
-            <option value="">Choose...</option>
-            {OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+            disabled={disabled}
+          >
+          <option value="">Choose...</option>
+            {options.map((option) => (
+              <option key={option} value={option}>{
+                option}
+              </option>
+            ))}
           </select>
-          <div className="invalid-feedback">Por favor, seleccione un departamento válido. {label.toLowerCase()}</div>
+
+          {/* ERROR message */}
+          <div className="invalid-feedback">Por favor, seleccione un departamento válido.</div>
         </div>
       </div>
     </>

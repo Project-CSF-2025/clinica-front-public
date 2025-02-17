@@ -10,6 +10,5 @@ Currently, two official plugins are available:
 
 ### MEMO ###
 /form 
-- /form のPrevisualizarボタンのuseNavigate()
-- formタグ内の要素（textarea, input, selectなど）を別のコンポーネントに分ける
+- Calender --> https://mui.com/x/react-date-pickers/getting-started/
 

@@ -1,41 +1,54 @@
 import React, { useEffect, useState } from "react";
 
 function UploadFile ({setFormData, archivo}) {
-  const [fileName, setFileName] = useState(archivo ? archivo.name : "");
+  const [fileList, setFileList] = useState(archivo || []);
 
   useEffect(() => {
     if (archivo) {
-      setFileName(archivo.name);
+      setFileList(archivo);
     }
   }, [archivo]);
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      const newFiles = files.map((file) => {
+        const reader = new FileReader();
+        return new Promise((resolve) => {
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            resolve({
+              name: file.name,
+              type: file.type,
+              data: reader.result, // Base64 encode
+            });
+          };
+        });
+      });
+
+      Promise.all(newFiles).then((fileData) => {
         setFormData((prevData) => ({
           ...prevData,
-          archivo: {
-            name: file.name,
-            type: file.type,
-            data: reader.result, // Base64 encode
-          },
+          archivo: [...prevData.archivo, ...fileData],
         }));
-        setFileName(file.name);
-      };
+        setFileList((prevList) => [...prevList, ...fileData]);
+      });
     }
   };
 
-  const handleRemoveFile = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      archivo: null,
-    }));
-    setFileName("");
-    document.getElementById('inputGroupFile02').value = ''; // clear text input
-  }
+  const handleRemoveFile = (index) => {
+    setFormData((prevData) => {
+      const newFiles = [...prevData.archivo];
+      newFiles.splice(index, 1);
+      return { ...prevData, archivo: newFiles };
+    });
+
+    setFileList((prevList) => {
+      const newList = [...prevList];
+      newList.splice(index, 1);
+      return newList;
+    });
+  };
 
   return (
     <>
@@ -49,22 +62,26 @@ function UploadFile ({setFormData, archivo}) {
           className="form-control"
           id="inputGroupFile02"
           onChange={handleFileChange}
+          multiple
         />
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={handleRemoveFile}
-          disabled={!fileName}
-        >
-          Remove
-        </button>
       </div> 
 
-        {/* !!! Attention */}
-        {fileName && (
-        <p style={{ color: "var(--darkBlue)" }}>
-          Archivo seleccionado: {fileName}
-        </p>
+      {fileList.length > 0 && (
+        <div style={{ marginTop: "0px" }}>
+          {fileList.map((file, index) => (
+            <p key={index} style={{ color: "var(--darkBlue)", marginTop: "12px" }}>
+              Archivo seleccionado: {file.name}
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm"
+                style={{ marginLeft: "12px" }}
+                onClick={() => handleRemoveFile(index)}
+              >
+                Remove
+              </button>
+            </p>
+          ))}
+        </div>
       )}
     </>
   )

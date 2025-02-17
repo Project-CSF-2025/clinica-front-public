@@ -2,9 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import FlowState from "../components/FlowState";
+import InputDateTime from "../components/InputDateTime"; 
 import InputField from "../components/InputField"; 
 import SelectField from "../components/SelectField"; 
 import TextareaField from "../components/TextareaField"; 
+import RadioField from "../components/RadioField"; 
 import UploadFile from "../components/UploadFile"; 
 
 function Form() {
@@ -12,28 +14,75 @@ function Form() {
   const location = useLocation();
   const initialData = location.state || {
     departamento: "",
+    professión: "",
+    dateTime: "",
     lugar: "",
     asunto: "",
     descripción: "",
-    sugerencias: "",
-    archivo: null
+    isConsecuent: "",
+    evitable: "",
+    tipoConsecuencia: "",
+    sugerent: "",
+    archivo: []
   };
 
   const [formData, setFormData] = useState(initialData);
   const [validated, setValidated] = useState(false); 
 
+  // Option: departamento
+  const departamentoOptions = [
+    "Hospitalización",
+    "Área de cuidados intensivos",
+    "Urgencias",
+    "Quirófano",
+    "Reanimación",
+    "CMA/UCA",
+    "Consultas externas",
+    "Otros"
+  ];
+
+  // Option: professión 
+  const professionOptions = [
+    "Facultativo",
+    "Enfermeria",
+    "Auxiliar",
+    "Celador",
+    "Paciente",
+    "Otro",
+  ];
+
+  // Option: Consecuencia 
+  const consequenceOptions = [
+    "Precisa tratamiento",
+    "Precisa ingreso",
+    "Prolongación de estancia",
+    "Lesión permanente",
+    "Muerte del paciente"
+  ];
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    if(name === "isConsecuent" && value === "no") {
+      setFormData((prevData) => ({...prevData, tipoConsecuencia: "" }));
+    }
   };
   
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
 
-    if(form.checkValidity()) {
-      navigate("/preview", { state: formData });
-    } else {
+    // if(form.checkValidity()) {
+    //   navigate("/preview", { state: formData });
+    // } else {
+    //   setValidated(true);
+    // }
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
       setValidated(true);
+    } else {
+      navigate("/preview", { state: formData });
     }
   };
 
@@ -52,9 +101,29 @@ function Form() {
                   name="departamento"
                   value={formData.departamento}
                   onChange={handleChange}
+                  options={departamentoOptions}
                   required
                 />
-                
+
+                {/* ===== Professión ===== */}
+                <SelectField 
+                  label="Professión"
+                  name="professión"
+                  value={formData.professión}
+                  onChange={handleChange}
+                  options={professionOptions}
+                  required
+                />
+
+                {/* ===== Fecha =====  */}
+                <InputDateTime 
+                  label="Día y fecha"
+                  name="dateTime"
+                  value={formData.dateTime}
+                  onChange={handleChange}
+                  required
+                />
+
                 {/* ===== Lugar ===== */}
                 <InputField
                   label="Lugar"
@@ -81,12 +150,41 @@ function Form() {
                   onChange={handleChange}
                   required
                 />
+
+                {/* ===== Consecuencia si / no ===== */}
+                <RadioField 
+                  label="¿Tiene consecuencias?"
+                  name="isConsecuent"
+                  value={formData.isConsecuent}
+                  onChange={handleChange}
+                  required
+                />
+
+                {/* ===== Que consecuencia ===== */}
+                <SelectField 
+                  label="¿Que consecuencia?"
+                  name="tipoConsecuencia"
+                  value={formData.tipoConsecuencia}
+                  onChange={handleChange}
+                  options={consequenceOptions}
+                  disabled={formData.isConsecuent !== "si"} // No
+                  required={formData.isConsecuent === "si"} // Sí 
+                />
+
+                {/* ===== Evitar si / no ===== */}
+                <RadioField 
+                  label="¿Evitable?"
+                  name="evitable"
+                  value={formData.evitable}
+                  onChange={handleChange}
+                  required
+                />
                 
                 {/* ===== Suggestions ===== */}
                 <TextareaField
                   label="Sugerencias"
-                  name="sugerencias"
-                  value={formData.sugerencias}
+                  name="sugerent"
+                  value={formData.sugerent}
                   onChange={handleChange}
                 />            
                 

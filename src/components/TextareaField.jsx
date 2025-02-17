@@ -18,6 +18,8 @@ function TextareaField ({label, name, value, onChange, required=false}) {
             required={required}
           >
           </textarea>
+
+          {/* ERROR message */}
           <div className="invalid-feedback">Por favor, ingrese una descripción. {label.toLowerCase()}</div>
         </div>
       </div>

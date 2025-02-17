@@ -17,6 +17,8 @@ function InputField ({label, name, value, onChange, required}) {
             onChange={onChange}
             required={required}
           />
+          
+          {/* ERROR messaage */}
           <div className="invalid-feedback">Por favor, ingrese {label.toLowerCase()}.</div>
         </div>
       </div>
