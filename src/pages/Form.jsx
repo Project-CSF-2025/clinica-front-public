@@ -17,17 +17,28 @@ function Form() {
   const navigate = useNavigate();
   const location = useLocation();
   const initialData = location.state || {
-    departamento: "",
-    professión: "",
+    // departamento: "",
+    // professión: "",
+    // dateTime: "",
+    // lugar: "",
+    // asunto: "",
+    // descripción: "",
+    // isConsecuent: "",
+    // evitable: "",
+    // tipoConsecuencia: "",
+    // sugerent: "",
+    // archivo: []
+    department: "",
+    profession: "",
     dateTime: "",
-    lugar: "",
-    asunto: "",
-    descripción: "",
-    isConsecuent: "",
-    evitable: "",
-    tipoConsecuencia: "",
-    sugerent: "",
-    archivo: []
+    place: "",
+    subject: "",
+    description: "",
+    isConsequent: "",
+    avoidable: "",
+    consequenceType: "",
+    suggestion: "",
+    files: []
   };
 
   const [formData, setFormData] = useState(initialData);
@@ -35,7 +46,7 @@ function Form() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Option: departamento
-  const departamentoOptions = [
+  const departmentOptions = [
     "Hospitalización",
     "Área de cuidados intensivos",
     "Urgencias",
@@ -65,14 +76,24 @@ function Form() {
     "Muerte del paciente"
   ];
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+  //   if(name === "isConsecuent" && value === "no") {
+  //     setFormData((prevData) => ({...prevData, tipoConsecuencia: "" }));
+  //   }
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-    if(name === "isConsecuent" && value === "no") {
-      setFormData((prevData) => ({...prevData, tipoConsecuencia: "" }));
+  
+    if(name === "isConsequent" && value === "no") {
+      setFormData((prevData) => ({...prevData, consequenceType: "" }));
     }
   };
+  
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -99,18 +120,18 @@ function Form() {
                 {/* ===== Departamento =====  */}
                 <SelectField 
                   label="Departamento"
-                  name="departamento"
-                  value={formData.departamento}
+                  name="department"
+                  value={formData.department}
                   onChange={handleChange}
-                  options={departamentoOptions}
+                  options={departmentOptions}
                   required
                 />
 
                 {/* ===== Professión ===== */}
                 <SelectField 
                   label="Professión"
-                  name="professión"
-                  value={formData.professión}
+                  name="profession"
+                  value={formData.profession}
                   onChange={handleChange}
                   options={professionOptions}
                   required
@@ -133,8 +154,8 @@ function Form() {
                 {/* ===== Lugar ===== */}
                 <InputField
                   label="Lugar"
-                  name="lugar"
-                  value={formData.lugar}
+                  name="place"
+                  value={formData.place}
                   onChange={handleChange}
                   required
                 />
@@ -142,8 +163,8 @@ function Form() {
                 {/* ===== Asunto ===== */}
                 <InputField
                   label="Asunto"
-                  name="asunto"
-                  value={formData.asunto}
+                  name="subject"
+                  value={formData.subject}
                   onChange={handleChange}
                   required
                 />
@@ -151,8 +172,8 @@ function Form() {
                 {/* ===== Description ===== */}
                 <TextareaField
                   label="Descripción"
-                  name="descripción"
-                  value={formData.descripción}
+                  name="description"
+                  value={formData.description}
                   onChange={handleChange}
                   required
                 />
@@ -169,8 +190,8 @@ function Form() {
                 {/* ===== Que consecuencia ===== */}
                 <SelectField 
                   label="¿Que consecuencia?"
-                  name="tipoConsecuencia"
-                  value={formData.tipoConsecuencia}
+                  name="consequenceType"
+                  value={formData.consequenceType}
                   onChange={handleChange}
                   options={consequenceOptions}
                   disabled={formData.isConsecuent !== "si"} // No
@@ -180,8 +201,8 @@ function Form() {
                 {/* ===== Evitar si / no ===== */}
                 <RadioField 
                   label="¿Evitable?"
-                  name="evitable"
-                  value={formData.evitable}
+                  name="avoidable"
+                  value={formData.avoidable}
                   onChange={handleChange}
                   required
                 />
@@ -189,8 +210,8 @@ function Form() {
                 {/* ===== Suggestions ===== */}
                 <TextareaField
                   label="Sugerencias"
-                  name="sugerent"
-                  value={formData.sugerent}
+                  name="suggestion"
+                  value={formData.suggestion}
                   onChange={handleChange}
                 />            
                 
@@ -198,7 +219,7 @@ function Form() {
                 <hr className="my-4" />
                 <UploadFile 
                   setFormData={setFormData}
-                  archivo={formData.archivo}
+                  files={formData.files}
                 />
                 <hr className="my-4" />
                   

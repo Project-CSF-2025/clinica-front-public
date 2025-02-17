@@ -40,7 +40,7 @@ function Preview() {
                     <p className="card-text d-flex" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Departamento:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.departamento}
+                        {formData.department}
                       </span>
                     </p>
 
@@ -48,7 +48,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Professión:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.professión}
+                        {formData.profession}
                       </span>
                     </p>
 
@@ -64,7 +64,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Lugar:</strong> 
                       <span id="ticket-lugar" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.lugar}
+                        {formData.place}
                       </span>
                     </p>
 
@@ -72,7 +72,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Asunto: </strong>
                       <span id="ticket-asunto" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.asunto}
+                        {formData.subject}
                       </span>
                     </p>    
 
@@ -80,7 +80,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>Descripción:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.descripción}
+                        {formData.description}
                       </span>
                     </p>
 
@@ -96,7 +96,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Que consecuencia?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.tipoConsecuencia}
+                        {formData.consequenceType}
                       </span>
                     </p>
 
@@ -104,7 +104,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Evitable?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.evitable}
+                        {formData.avoidable}
                       </span>
                     </p>
 
@@ -112,7 +112,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Sugerencias:</strong> 
                       <span id="ticket-sugerencias" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.sugerencias}
+                        {formData.suggestion}
                       </span>
                     </p>
 
@@ -120,9 +120,9 @@ function Preview() {
                     <div className="card-text d-flex -mt16" style={{ textAlign: "justify" }}>
                       <strong style={{ color: "var(--blue)", width: "200px" }}>Archivos:</strong>
                       <div id="ticket-archivo" className="styleForOverFlow" style={{ color: "var(--darkBlue)", flex: "1" }}>
-                        {formData.archivo && formData.archivo.length > 0 ? (
+                        {formData.files && formData.files.length > 0 ? (
                           <ul style={{ paddingLeft: "0px", listStyle: "none" }}>
-                            {formData.archivo.map((file, index) => (
+                            {formData.files.map((file, index) => (
                               <li key={index} style={{ marginBottom: "5px", display: "flex", alignItems: "center" }}>
                                 {file.name}
                                 <button
