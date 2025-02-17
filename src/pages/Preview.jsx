@@ -17,7 +17,7 @@ function Preview() {
     navigate("/form", { state: formData });
   }
 
-  const handleEnvio = () => {
+  const handleSend = () => {
     navigate("/confirm", {state: formData});
   }
 
@@ -171,7 +171,7 @@ function Preview() {
 
                     <div className="d-flex gap-4 justify-content-center py-4">
                       <button className="buttonForm -thin" type="button" onClick={handleEdit}>Editar</button>
-                      <button className="buttonForm -thin" type="button" onClick={handleEnvio}>Enviar</button>
+                      <button className="buttonForm -thin" type="button" onClick={handleSend}>Enviar</button>
                     </div>
                   </div>
                 </div>

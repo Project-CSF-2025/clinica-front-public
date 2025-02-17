@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import FlowState from "../components/FlowState";
 import InputDateTime from "../components/InputDateTime"; 
 import InputField from "../components/InputField"; 
@@ -8,8 +10,6 @@ import SelectField from "../components/SelectField";
 import TextareaField from "../components/TextareaField"; 
 import RadioField from "../components/RadioField"; 
 import UploadFile from "../components/UploadFile"; 
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
 
@@ -17,17 +17,6 @@ function Form() {
   const navigate = useNavigate();
   const location = useLocation();
   const initialData = location.state || {
-    // departamento: "",
-    // professión: "",
-    // dateTime: "",
-    // lugar: "",
-    // asunto: "",
-    // descripción: "",
-    // isConsecuent: "",
-    // evitable: "",
-    // tipoConsecuencia: "",
-    // sugerent: "",
-    // archivo: []
     department: "",
     profession: "",
     dateTime: "",
@@ -76,15 +65,6 @@ function Form() {
     "Muerte del paciente"
   ];
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-  //   if(name === "isConsecuent" && value === "no") {
-  //     setFormData((prevData) => ({...prevData, tipoConsecuencia: "" }));
-  //   }
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -93,7 +73,6 @@ function Form() {
       setFormData((prevData) => ({...prevData, consequenceType: "" }));
     }
   };
-  
   
   const handleSubmit = (e) => {
     e.preventDefault();
