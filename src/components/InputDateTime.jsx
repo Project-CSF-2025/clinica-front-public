@@ -15,27 +15,15 @@ const InputDateTime = ({ date, handleChange, format = 'DD/MM/YYYY HH:mm', label,
             value={date || null}
             format="DD/MM/YYYY HH:mm"
             onChange={(newValue) => handleChange(newValue)}
-            // slotProps={{ 
-            //   textField: {
-            //     id: name,
-            //     required: required,
-            //   },
-            //   calendarHeader: { format: 'MM/YYYY' }
-            // }}
             slotProps={{ 
               textField: {
                 id: name,
                 required: required,
                 error: isSubmitted && !isValid,
-                // helperText: isSubmitted && !isValid && "Este campo es requerido",
                 className: `form-control flex-grow-1 ms-3 ${isSubmitted && !isValid ? 'is-invalid' : ''}`,
               },
               calendarHeader: { format: 'MM/YYYY' }
             }}
-            // ampm={false}
-            // className="form-control flex-grow-1 ms-3"
-            // sx={{ width: "100%" }}
-            // name={name}
             ampm={false}
             sx={{ width: "100%" }}
             name={name}

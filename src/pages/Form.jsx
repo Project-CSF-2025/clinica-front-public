@@ -32,7 +32,7 @@ function Form() {
 
   const [formData, setFormData] = useState(initialData);
   const [validated, setValidated] = useState(false); 
-  const [isSubmitted, setIsSubmitted] = useState(false); // フォームが送信されたかどうかを追跡
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Option: departamento
   const departamentoOptions = [
@@ -77,7 +77,7 @@ function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    setIsSubmitted(true); // フォームが送信されたことを記録
+    setIsSubmitted(true);
 
     if (form.checkValidity() === false) {
       e.stopPropagation();
@@ -125,8 +125,8 @@ function Form() {
                     target: { name: "dateTime", value: newValue ? newValue.format('DD/MM/YYYY HH:mm') : "" }
                   })}
                   required
-                  isValid={!!formData.dateTime} // 日付が選択されているかどうかをチェック
-                  isSubmitted={isSubmitted} // フォームが送信されたかどうかを渡す
+                  isValid={!!formData.dateTime}
+                  isSubmitted={isSubmitted}
                 />
 
 
