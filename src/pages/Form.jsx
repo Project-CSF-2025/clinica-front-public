@@ -8,6 +8,10 @@ import SelectField from "../components/SelectField";
 import TextareaField from "../components/TextareaField"; 
 import RadioField from "../components/RadioField"; 
 import UploadFile from "../components/UploadFile"; 
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 function Form() {
   const navigate = useNavigate();
@@ -114,10 +118,13 @@ function Form() {
                 <InputDateTime 
                   label="Día y fecha"
                   name="dateTime"
-                  value={formData.dateTime}
-                  handleChange={(newValue) => handleChange({ target: { name: "dateTime", value: newValue ? newValue.format('DD/MM/YYYY HH:mm') : "" } })}
+                  date={formData.dateTime ? dayjs(formData.dateTime, 'DD/MM/YYYY HH:mm') : null}
+                  handleChange={(newValue) => handleChange({ 
+                    target: { name: "dateTime", value: newValue ? newValue.format('DD/MM/YYYY HH:mm') : "" }
+                  })}
                   required
                 />
+
 
                 {/* ===== Lugar ===== */}
                 <InputField
