@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-function UploadFile ({setFormData, archivo}) {
-  const [fileList, setFileList] = useState(archivo || []);
+function UploadFile ({setFormData, files}) {
+  const [fileList, setFileList] = useState(files || []);
 
   useEffect(() => {
-    if (archivo) {
-      setFileList(archivo);
+    if (files) {
+      setFileList(files);
     }
-  }, [archivo]);
+  }, [files]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -29,7 +29,7 @@ function UploadFile ({setFormData, archivo}) {
       Promise.all(newFiles).then((fileData) => {
         setFormData((prevData) => ({
           ...prevData,
-          archivo: [...prevData.archivo, ...fileData],
+          files: [...prevData.files, ...fileData],
         }));
         setFileList((prevList) => [...prevList, ...fileData]);
       });
@@ -38,9 +38,9 @@ function UploadFile ({setFormData, archivo}) {
 
   const handleRemoveFile = (index) => {
     setFormData((prevData) => {
-      const newFiles = [...prevData.archivo];
+      const newFiles = [...prevData.files];
       newFiles.splice(index, 1);
-      return { ...prevData, archivo: newFiles };
+      return { ...prevData, files: newFiles };
     });
 
     setFileList((prevList) => {
