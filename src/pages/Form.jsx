@@ -72,12 +72,7 @@ function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-
-    // if(form.checkValidity()) {
-    //   navigate("/preview", { state: formData });
-    // } else {
-    //   setValidated(true);
-    // }
+    
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
