@@ -1,6 +1,7 @@
 import React from "react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 
 const InputDateTime = ({ date, handleChange, format = 'DD/MM/YYYY HH:mm', label, name, required, isValid, isSubmitted }) => {
@@ -21,12 +22,18 @@ const InputDateTime = ({ date, handleChange, format = 'DD/MM/YYYY HH:mm', label,
                 required: required,
                 error: isSubmitted && !isValid,
                 className: `form-control flex-grow-1 ms-3 ${isSubmitted && !isValid ? 'is-invalid' : ''}`,
+                sx: {
+                  '& .MuiInputBase-input': {
+                    padding: "10px 14px",
+                  }
+                }
               },
               calendarHeader: { format: 'MM/YYYY' }
             }}
             ampm={false}
             sx={{ width: "100%" }}
             name={name}
+            maxDateTime={dayjs()}
           />
         </LocalizationProvider>
         {isSubmitted && !isValid && <div className="invalid-feedback">Este campo es requerido</div>}

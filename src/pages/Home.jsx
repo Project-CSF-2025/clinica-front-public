@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import iconNew from "../assets/img/icon-new.png";
-import iconSearch from "../assets/img/icon-search.png";
+import iconNew from "../assets/img/icon_new.png";
+import iconSearch from "../assets/img/icon_search.png";
 
 
 function Home() {

@@ -1,0 +1,57 @@
+.consulta-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .consulta {
+    margin-top: 150px;
+  }
+
+  .subtitle {
+    color: #7f8c8d;
+    font-weight: thin;
+    font-size:25px ;
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  /* Etiqueta de consulta */
+  .consulta-label {
+    color: var(--gray);
+    font-size: 1.1em;
+  }
+  
+  /* Campo de entrada */
+  .consulta-input {
+    width: 250px;
+    padding: 10px;
+    font-size: 1em;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-top: 40px;
+
+  }
+  
+  /* Botón de consulta  */
+  .consulta-button {
+    background-color: var(--blue);
+    color: var(--white);
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 20px;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .consulta-button:hover {
+    background-color: var(--darkBlue);
+    transform: translateY(2px);
+    cursor: pointer;
+  }

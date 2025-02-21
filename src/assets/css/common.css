@@ -1,27 +1,20 @@
-/* @import url("bootstrap.min.css");
-@import url("vars.css");
-@import url("common.css");
-@import url("button.css");
-@import url("icon.css"); */
-/* page */
-/* @import url("form.css");
-@import url("adminTop.css");
-@import url("adminDetail.css");
-@import url("inicio.css");
-@import url("consulta.css");
-@import url("vista.css");
-@import url("login.css"); */
-
 /* lib */
 @import url("./lib/bootstrap.min.css");
 
 /* components */
+@import url("./components/header.css");
+@import url("./components/footer.css");
 @import url("./components/button.css");
-
+@import url("./components/icons.css");
 
 /* page */
 @import url("./pages/home.css");
 @import url("./pages/form.css");
+@import url("./pages/consult.css");
+@import url("./pages/view.css");
+@import url("./pages/login.css");
+@import url("./pages/admin-top.css");
+@import url("./pages/admin-detail.css");
 
 /* others */
 @import url("vars.css");
