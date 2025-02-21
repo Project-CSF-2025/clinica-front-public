@@ -118,7 +118,7 @@ function Form() {
 
                 {/* ===== Fecha =====  */}
                 <InputDateTime 
-                  label="Día y fecha"
+                  label="Fecha y hora"
                   name="dateTime"
                   date={formData.dateTime ? dayjs(formData.dateTime, 'DD/MM/YYYY HH:mm') : null}
                   handleChange={(newValue) => handleChange({ 

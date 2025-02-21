@@ -22,6 +22,11 @@ const InputDateTime = ({ date, handleChange, format = 'DD/MM/YYYY HH:mm', label,
                 required: required,
                 error: isSubmitted && !isValid,
                 className: `form-control flex-grow-1 ms-3 ${isSubmitted && !isValid ? 'is-invalid' : ''}`,
+                sx: {
+                  '& .MuiInputBase-input': {
+                    padding: "10px 14px",
+                  }
+                }
               },
               calendarHeader: { format: 'MM/YYYY' }
             }}
