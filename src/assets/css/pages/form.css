@@ -87,7 +87,7 @@
 }
 
  /* Target the first option and change its color */
- #department{
+#department{
   color: var(--gray1);
 } 
 

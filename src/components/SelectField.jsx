@@ -17,6 +17,7 @@ function SelectField ({label, name, value, onChange, required, options, disabled
             className="form-select flex-grow-1 ms-3"
             required={required}
             disabled={disabled}
+            style={{ color: value === "" ? "var(--gray3)" : "var(--gray1)" }}
           >
           <option value="">Selecciona...</option>
             {options.map((option) => (
