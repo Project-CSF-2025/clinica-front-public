@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -8,6 +9,16 @@ import Admin from './pages/Admin';
 import Footer from './components/Footer';
 
 function App() {
+  useEffect(() => {
+    console.log("📡 Attempting API call..."); // Debug log
+    fetch("http://localhost:5000/api/users")
+      .then(response => response.json())
+      .then(data => {
+        console.log("✅ API Response:", data); // Show data in console
+      })
+      .catch(error => console.error("❌ API Error:", error));
+  }, []);
+
   return (
     <Router>
       <Header />
@@ -20,7 +31,7 @@ function App() {
       </Routes>
       <Footer />
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

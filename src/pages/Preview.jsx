@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { createReport } from "../services/reportService";
 import FlowState from "../components/FlowState";
 
 function Preview() {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState(location.state || { files: [] });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
 
@@ -19,33 +22,37 @@ function Preview() {
     navigate("/form", { state: formData });
   }
 
-  const handleSend = () => {
-    navigate("/confirm", {state: formData});
-  }
+  const handleSend = async () => {
+    setLoading(true);
+    setError(null);
 
-  const handleEmailSubmit = (e) => {
-    e.preventDefault();
+    // ✅ Ensure `location` is always sent
+    const reportData = {
+        ...formData,
+        id_user: formData.id_user || 1,  // Ensure id_user exists
+        location: formData.place,        // Map `place` to `location`
+    };
 
-    if (email && email.includes("@")) {
-      setIsChecked(true);
-      const modal = bootstrap.Modal.getInstance(document.getElementById('emailModal'));
-      modal.hide();
-    } else {
-      alert("Por favor, ingrese un correo electrónico válido.");
+    console.log("🚀 Sending Report Data:", reportData); // Debugging log
+
+    try {
+        const response = await createReport(reportData);
+        console.log("✅ API Response:", response);
+
+        if (response && response.report_code) {
+            navigate("/confirm", { state: { reportCode: response.report_code } });
+        } else {
+            console.error("❌ No report_code received from the server.");
+            setError("Error: No report_code returned from the server.");
+        }
+    } catch (err) {
+        console.error("❌ API Error:", err.response?.data || err.message);
+        setError(err.message);
+    } finally {
+        setLoading(false);
     }
   };
 
-  const handleCheckboxClick = () => {
-    if (isChecked) {
-      setIsChecked(false);
-      setEmail("");
-    } else {
-      const modal = new bootstrap.Modal(document.getElementById('emailModal'));
-      modal.show();
-    }
-  };
-
-  console.log(email);
 
   return (
     <>
@@ -216,7 +223,9 @@ function Preview() {
 
                     <div className="d-flex gap-4 justify-content-center py-4">
                       <button className="buttonForm -thin" type="button" onClick={handleEdit}>Editar</button>
-                      <button className="buttonForm -thin" type="button" onClick={handleSend}>Enviar</button>
+                      <button className="buttonForm -thin" type="button" onClick={handleSend} disabled={loading}>
+                        {loading ? "Submitting..." : "Enviar"}
+                        </button>
                     </div>
                   </div>
                 </div>
