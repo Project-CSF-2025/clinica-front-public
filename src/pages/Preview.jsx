@@ -6,6 +6,8 @@ function Preview() {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState(location.state || { files: [] });
+  const [isChecked, setIsChecked] = useState(false);
+  const [email, setEmail] = useState("");
 
   const handleRemoveFile = (index) => {
     const updatedFiles = [...formData.files];
@@ -20,6 +22,30 @@ function Preview() {
   const handleSend = () => {
     navigate("/confirm", {state: formData});
   }
+
+  const handleEmailSubmit = (e) => {
+    e.preventDefault();
+
+    if (email && email.includes("@")) {
+      setIsChecked(true);
+      const modal = bootstrap.Modal.getInstance(document.getElementById('emailModal'));
+      modal.hide();
+    } else {
+      alert("Por favor, ingrese un correo electrónico válido.");
+    }
+  };
+
+  const handleCheckboxClick = () => {
+    if (isChecked) {
+      setIsChecked(false);
+      setEmail("");
+    } else {
+      const modal = new bootstrap.Modal(document.getElementById('emailModal'));
+      modal.show();
+    }
+  };
+
+  console.log(email);
 
   return (
     <>
@@ -119,7 +145,7 @@ function Preview() {
                     {/* ===== File upload ===== */}
                     <div className="card-text d-flex -mt16" style={{ textAlign: "justify" }}>
                       <strong style={{ color: "var(--blue)", width: "200px" }}>Archivos:</strong>
-                      <div id="ticket-archivo" className="styleForOverFlow" style={{ color: "var(--darkBlue)", flex: "1" }}>
+                      <div id="ticket-files" className="styleForOverFlow" style={{ color: "var(--darkBlue)", flex: "1" }}>
                         {formData.files && formData.files.length > 0 ? (
                           <ul style={{ paddingLeft: "0px", listStyle: "none" }}>
                             {formData.files.map((file, index) => (
@@ -143,26 +169,45 @@ function Preview() {
 
                     {/* ===== Modal Structure ===== */}
                     <div className="text-center my-3 d-flex align-items-center justify-content-center">
-                      <input type="checkbox" id="emailNotification" className="me-2" />
-                      <label id="emailLabel" htmlFor="emailNotification" className="text" style={{color: "var(--blue)", textDecoration: "none", cursor: "pointer"}}>
+                      <input
+                        type="checkbox"
+                        id="emailNotification"
+                        className="me-2"
+                        checked={isChecked}
+                        onChange={handleCheckboxClick}
+                      />
+                      <label
+                        id="emailLabel"
+                        htmlFor="emailNotification"
+                        className="text"
+                        style={{ color: "var(--blue)", textDecoration: "none", cursor: "pointer" }}
+                      >
                         Deseo recibir notificaciones por email
                       </label>
                     </div>
-                    
+
                     <div className="modal fade" id="emailModal" aria-labelledby="emailModalLabel" aria-hidden="true">
                       <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content rounded-4 shadow"> 
+                        <div className="modal-content rounded-4 shadow">
                           <div className="modal-header p-5 pb-4 border-bottom-0">
                             <h1 className="fw-bold mb-0 fs-5">Ingrese su correo electrónico</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div className="modal-body p-5 pt-0">
-                            <form >
+                            <form onSubmit={handleEmailSubmit}>
                               <div className="form-floating mb-3">
-                                <input type="email" className="form-control rounded-3" id="floatingInput" placeholder="name@example.com" required />
+                                <input
+                                  type="email"
+                                  className="form-control rounded-3"
+                                  id="floatingInput"
+                                  placeholder="name@example.com"
+                                  value={email}
+                                  onChange={(e) => setEmail(e.target.value)}
+                                  required
+                                />
                                 <label htmlFor="floatingInput">Email address</label>
                               </div>
-                              <button className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Guardar</button>                      
+                              <button className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Guardar</button>
                             </form>
                           </div>
                         </div>

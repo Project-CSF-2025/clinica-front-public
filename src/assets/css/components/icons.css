@@ -1,0 +1,118 @@
+/* .icon-trash {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  cursor: pointer;
+}
+.icon-trash svg {
+  width: 100%;
+  height: 100%;
+} */
+
+.iconFlag,
+.iconFlaged {
+  width: 25px;
+  height: 25px;
+}
+
+.iconFlag svg,
+.iconFlaged svg {
+  width: 100%;
+  height: 100%;
+}
+.iconFlag svg {
+  fill: var(--gray3);
+}
+.iconFlaged svg {
+  fill: var(--yellow);
+}
+
+.iconFlag__wrp {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  z-index: 10;
+}
+
+.pageAdminDetail .iconFlag,
+.pageAdminDetail .iconFlaged,
+.pageVista .iconFlag,
+.pageVista .iconFlaged { 
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+}
+
+.pageAdminDetail .iconFlag,
+.pageVista .iconFlag {
+  display: none;
+}
+
+.pageAdminDetail .iconFlaged,
+.pageVista .iconFlaged {
+  display: none;
+}
+
+.iconFlag.-show {
+  display: block;
+}
+
+.iconFlaged.-show {
+  display: block;
+}
+
+
+.icon-send {
+  position: relative;
+}
+
+.icon-send svg {
+  position: absolute;
+  transform: rotate(45deg);
+  width: 45%;
+  height: 45%;
+  fill: #fff;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: -.2em;
+  margin: auto;
+}
+
+
+
+.iconEdit svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+.iconCheck svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+}

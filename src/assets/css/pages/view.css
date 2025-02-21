@@ -1,0 +1,162 @@
+.custom-header .header__inner {
+    display: flex;
+    justify-content: space-between; /* Alinea el logo y el botón a los lados */
+    align-items: center; /* Alinea verticalmente el logo y el botón */
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+  }
+
+.container-button-consulta {
+    margin-left: auto; /* Empuja el botón hacia la derecha */
+    display: flex; /* Asegura que el contenido del contenedor siga siendo flexible */
+    align-items: end; /* Alinea verticalmente el contenido dentro del contenedor */
+
+}
+.codigo {
+    margin: 0px;
+}
+
+.button-vista-busqueda {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    background-color: #14488C;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 12px;
+    text-decoration: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.actualizacion {
+    /* text-align: center; add Kanako */
+    padding-bottom: 80px;
+}
+
+.button-vista-busqueda:hover {
+    background-color: #0F2E5E;
+    transform: scale(1.05);
+}
+
+.button-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.incidencia-title {
+    font-size: 25px;
+    color: #808080;
+    margin-bottom: 15px;
+    text-align: center;
+    padding: 0;
+    margin-top: 0px;
+}
+
+.reporte-container {
+    width: 100%;
+    max-width: 1000px;
+    background: linear-gradient(135deg, #ffffff, #f7f7f7);
+    border-radius: 16px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 40px auto 0;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* .reporte-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+} */
+
+.situacion {
+    margin: 10px;
+    font-size: 14px;
+    padding: 10px;
+    font-weight: bold;
+    color: #444;
+}
+
+.progreso {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background: #f7f7f7;
+    border-radius: 12px;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fase {
+    width: 22%;
+    padding: 15px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #888;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* .fase:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+} */
+
+.fase .estado {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.fase .fecha {
+    font-size: 12px;
+    color: #388e3c;
+    margin-top: 5px;
+}
+
+.fase .-active{
+    color: #2e7d32; 
+    /* color: green; */
+}
+
+.fase.completado {
+    background-color: #e9f7e9;
+    border-color: #66bb6a;
+    text-align: center;
+}
+
+.fase.completado .estado {
+    color: #388e3c;
+}
+
+.fase.completado .fecha {
+    color: #2e7d32;
+}
+
+.fase.activo {
+    background-color: #e3f2fd;
+    border-color: #42a5f5;
+}
+
+.fase.activo .estado {
+    color: #1565c0;
+}
+
+
+/* add kanako */
+.pageVista .chatBlock__wrap {
+    height: 100%;
+    margin-top: 0;
+}
+
+.pageVista .chatBlock {
+    height: 715px;
+}
