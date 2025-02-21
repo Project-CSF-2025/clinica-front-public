@@ -7,7 +7,6 @@ function Confirm() {
     const navigate = useNavigate();
     const location = useLocation();
     
-    // ✅ Get the report_code from navigation state (fallback to "XXXXXXX" if missing)
     const reportCode = location.state?.reportCode || "XXXXXXX"; 
 
     const handleReturnToTop = () => {
@@ -28,7 +27,6 @@ function Confirm() {
                         ¡TU REPORTE HA SIDO ENVIADO CON ÉXITO!
                     </h2>
                     
-                    {/* ✅ Display the actual report code */}
                     <div className="border border-primary rounded-3 p-4 my-4" style={{ maxWidth: "400px", margin: "auto" }}>
                         <h3 className="fs-5">Número de ticket</h3>
                         <h2 id="codigoTicket" className="headdingB fs-1 -blue mb-0">{reportCode}</h2>
