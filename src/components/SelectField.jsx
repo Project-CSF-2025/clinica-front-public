@@ -18,7 +18,7 @@ function SelectField ({label, name, value, onChange, required, options, disabled
             required={required}
             disabled={disabled}
           >
-          <option value="">Choose...</option>
+          <option value="">Seleccionar...</option>
             {options.map((option) => (
               <option key={option} value={option}>{
                 option}
