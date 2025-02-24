@@ -180,10 +180,12 @@
   width:100%;
   max-width: 1200px;
 }
-.js-kw{
+.know-s-wrap{
   position:relative;
   margin-left:-15px;
   width:calc(100% + 30px);
+  display: flex;
+  flex-wrap: wrap;
 }
 .know{
   background:#ebeef0;
