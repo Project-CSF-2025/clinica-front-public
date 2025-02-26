@@ -88,8 +88,6 @@ function Preview() {
     }
   };
 
-  console.log(email);
-
   return (
     <>
       <main className="wrapper container-xxl my-5">
