@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBox from "../components/SearchBox";
 // import axios from "axios";
 
 function Admin() {
@@ -56,39 +57,18 @@ function Admin() {
     }
   };
 
-  // 🔹 検索処理（カード内の全テキストを検索対象に）
-  const handleSearch = (e) => {
-    const searchText = e.target.value.toLowerCase();
-    setSearchTerm(searchText);
-
-    if (!searchText) {
-      setFilteredReports(reports); // 入力が空なら全レポートを表示
-    } else {
-      setFilteredReports(
-        reports.filter(report => {
-          const incidentText = `
-            ${report.report_code}
-            ${report.status}
-            ${report.dateTime}
-            ${report.subject}
-            ${report.description}
-          `.toLowerCase();
-
-          return incidentText.includes(searchText);
-        })
-      );
-    }
-  };
-
-  // 🔹 一致部分をハイライトする関数（カード内の全テキスト対応）
+  // 🔹 ハイライト処理を適用（修正）
   const highlightText = (text, keyword) => {
-    if (!keyword) return text;
+    if (!keyword || keyword.trim() === "") return text;
+    
+    console.log("Highlighting:", keyword, "in", text); // 🔹 デバッグ用
+
     const regex = new RegExp(`(${keyword})`, "gi");
     return text.split(regex).map((part, i) =>
       part.toLowerCase() === keyword.toLowerCase() ? <mark key={i} className="highlight">{part}</mark> : part
     );
   };
-  
+
   // 🔹 ログアウト処理
   const handleLogout = () => {
     sessionStorage.removeItem("is_authenticated"); // 認証情報削除
@@ -127,22 +107,13 @@ function Admin() {
                       </li>
                     ))}
                   </ul>
-                  {/* <div className="input-group" style={{maxWidth: "300px"}}>
-                    <input type="text" className="form-control" placeholder="Buscar incidentes" id="searchInput" />
-                    <button className="btn btn-primary" type="button">Buscar</button>
-                  </div> */}
-                  {/* 🔹 検索バー */}
-                  <div className="input-group" style={{maxWidth: "300px"}}>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Buscar incidentes"
-                      value={searchTerm}
-                      onChange={handleSearch}
-                    />
-                    <button className="btn btn-primary" type="button">Buscar</button>
-                  </div>
-
+                  
+                  <SearchBox 
+                    reports={reports}
+                    setFilteredReports={setFilteredReports}
+                    searchTerm={searchTerm} // 🔹 `searchTerm` を渡す
+                    setSearchTerm={setSearchTerm} // 🔹 `setSearchTerm` も渡す
+                  />
                 </div>
 
 
