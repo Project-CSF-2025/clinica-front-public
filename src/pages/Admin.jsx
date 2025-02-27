@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBox from "../components/SearchBox";
+// import StateFilter from "../components/StateFilter";
 // import axios from "axios";
 
 function Admin() {
   const navigate = useNavigate();
-  const [reports, setReports] = useState([]); // レポート一覧
-  const [filteredReports, setFilteredReports] = useState([]); // フィルタリング用
-  const [activeFilters, setActiveFilters] = useState([]); // 🔹 選択中のフィルターを管理
-  const [searchTerm, setSearchTerm] = useState(""); // 検索用
+  const [reports, setReports] = useState([]);
+  const [filteredReports, setFilteredReports] = useState([]); 
+  const [activeFilters, setActiveFilters] = useState([]); // Manage selected filter
+  const [searchTerm, setSearchTerm] = useState(""); 
   
   useEffect(() => {
     // !_START DUMMY ==========
@@ -28,20 +29,18 @@ function Admin() {
     // ====================== 
   }, []);
 
+  /* ===== Filter =====  */
   const toggleFilter = (targetClass) => {
     let updatedFilters = [...activeFilters];
   
     if (updatedFilters.includes(targetClass)) {
-      // 🔹 すでに選択されている場合 → フィルターを解除
       updatedFilters = updatedFilters.filter(filter => filter !== targetClass);
     } else {
-      // 🔹 新しくフィルターを追加
       updatedFilters.push(targetClass);
     }
   
     setActiveFilters(updatedFilters);
   
-    // 🔹 選択されたフィルターに一致するレポートのみを表示
     if (updatedFilters.length > 0) {
       setFilteredReports(reports.filter(report =>
         updatedFilters.includes(
@@ -52,16 +51,13 @@ function Admin() {
         )
       ));
     } else {
-      // 🔹 フィルターがすべて解除された場合、全レポートを表示
       setFilteredReports(reports);
     }
   };
 
-  // 🔹 ハイライト処理を適用（修正）
+  /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
     if (!keyword || keyword.trim() === "") return text;
-    
-    console.log("Highlighting:", keyword, "in", text); // 🔹 デバッグ用
 
     const regex = new RegExp(`(${keyword})`, "gi");
     return text.split(regex).map((part, i) =>
@@ -69,11 +65,11 @@ function Admin() {
     );
   };
 
-  // 🔹 ログアウト処理
+  /* ===== Logout button =====  */
   const handleLogout = () => {
     sessionStorage.removeItem("is_authenticated"); // 認証情報削除
     sessionStorage.removeItem("user"); // ユーザー情報削除
-    navigate("/admin-login"); // 🔹 ログイン画面へリダイレクト
+    navigate("/admin-login"); 
   };
   
   return (
@@ -108,33 +104,36 @@ function Admin() {
                     ))}
                   </ul>
                   
+                  {/* ===== Search Area =====  */}
                   <SearchBox 
                     reports={reports}
                     setFilteredReports={setFilteredReports}
-                    searchTerm={searchTerm} // 🔹 `searchTerm` を渡す
-                    setSearchTerm={setSearchTerm} // 🔹 `setSearchTerm` も渡す
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
                   />
                 </div>
 
 
-                {/* START ADD */}
+                {/* START CARD */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
                     filteredReports.map(report => (
                       <a
                         key={report.id}
-                        href={`/admin-detail/${report.id}`}
+                        href={`/admin-detail#${report.id}`}
                         className={`know know-s useful__wrap ${
                           report.status === "No leído" ? "cRedLight" :
                           report.status === "En proceso" ? "cBlueLight" :
-                          report.status === "Resuelto" ? "cBlueDark" : ""
+                          report.status === "Resuelto" ? "cBlueDark" :
+                          report.status === "Eliminado" ? "cGrayDark" : ""
                         }`}
                       >
                         <p className="know__num">#{highlightText(`#${report.report_code}`, searchTerm)}</p>
                         <span className={`know__label ${
                           report.status === "No leído" ? "cRedLight" :
                           report.status === "En proceso" ? "cBlueLight" :
-                          report.status === "Resuelto" ? "cBlueDark" : ""
+                          report.status === "Resuelto" ? "cBlueDark" :
+                          report.status === "Eliminado" ? "cGrayDark" : ""
                         }`}>
                           {highlightText(report.status, searchTerm)}
                         </span>
@@ -147,7 +146,7 @@ function Admin() {
                     <p>No hay reportes disponibles</p>
                   )}
                 </div>
-                {/* START ADD */}
+                {/* END CARD */}
               </div>
             </div>
 
@@ -244,3 +243,4 @@ export default Admin
 
 
 // loginの方法とclose session
+// eliminadoの色、トップ非表示、

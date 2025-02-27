@@ -360,8 +360,9 @@
 }
 
 .know.cGrayDark {
-  display: none;
+  /* display: none; */
 }
+
 
 .pageAdmin .salir-admin{
   height: 36px;
