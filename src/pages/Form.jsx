@@ -160,8 +160,8 @@ function Form() {
                 {/* ===== Consecuencia si / no ===== */}
                 <RadioField 
                   label="¿Tiene consecuencias?"
-                  name="isConsecuent"
-                  value={formData.isConsecuent}
+                  name="isConsequent"
+                  value={formData.isConsequent}
                   onChange={handleChange}
                   required
                 />
@@ -173,8 +173,8 @@ function Form() {
                   value={formData.consequenceType}
                   onChange={handleChange}
                   options={consequenceOptions}
-                  disabled={formData.isConsecuent !== "si"} // No
-                  required={formData.isConsecuent === "si"} // Sí 
+                  disabled={formData.isConsequent !== "si"} // No
+                  required={formData.isConsequent === "si"} // Sí 
                 />
 
                 {/* ===== Evitar si / no ===== */}

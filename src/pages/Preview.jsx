@@ -155,7 +155,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Tiene consecuencias?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.isConsecuent}
+                        {formData.isConsequent}
                       </span>
                     </p>
 
