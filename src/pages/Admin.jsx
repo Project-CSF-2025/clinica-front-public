@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import LogoutButton from "../components/LogoutButton"; 
+import StateFilter from "../components/StateFilter";
 import SearchBox from "../components/SearchBox";
 import ReportCard from "../components/ReportCard";
-import StateFilter from "../components/StateFilter";
 // import axios from "axios";
 
 function Admin() {
@@ -21,11 +21,13 @@ function Admin() {
       { id: 5, report_code: "ZX000005", status: "Eliminado", dateTime: "22/02/2024 09:00", department: "Administración", profession: "Administrador", place: "Oficina principal", subject: "Reporte eliminado", description: "Este reporte ha sido eliminado.", isConsequent: "No", consequenceType: "", avoidable: "No", suggestion: "", files: [] }
     ];
 
+    const filteredData = dummyData.filter(report => report.status !== "Eliminado");
     setReports(dummyData);
-    setFilteredReports(dummyData);
+    setFilteredReports(filteredData); // Eliminadoを除いたリストをセット
     // !_END DUMMY ==========
 
-    // BACK code ↓↓↓
+    // ====================== 
+    // ↓↓↓ BACKEND CODE ↓↓↓
     // ====================== 
   }, []);
 
@@ -48,7 +50,7 @@ function Admin() {
             <div className="knowWrap pB10">
               <div className="container-fluid">
                 <div className="filterList d-flex justify-content-between align-items-center mb-5">
-                  {/* ===== Filter =====  */}
+                  {/* ===== Filter list =====  */}
                   <StateFilter
                     activeFilters={activeFilters}
                     setActiveFilters={setActiveFilters}
@@ -56,7 +58,7 @@ function Admin() {
                     setFilteredReports={setFilteredReports}
                   />
                   
-                  {/* ===== Search =====  */}
+                  {/* ===== Search box =====  */}
                   <SearchBox 
                     reports={reports}
                     setFilteredReports={setFilteredReports}
@@ -83,7 +85,7 @@ function Admin() {
               </div>
             </div>
 
-            {/* ===== Cerrar Sesión ===== */}
+            {/* ===== Logout button ===== */}
             <LogoutButton/>
           </section>
 

@@ -13,19 +13,20 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
     setActiveFilters(updatedFilters);
   
     if (updatedFilters.length > 0) {
-      setFilteredReports(reports.filter(report =>
-        updatedFilters.includes(
+      setFilteredReports(reports.filter(report => {
+        const reportClass =
           report.status === "No leído" ? "cRedLight" :
           report.status === "En proceso" ? "cBlueLight" :
           report.status === "Resuelto" ? "cBlueDark" :
-          report.status === "Eliminado" ? "cGrayDark" : ""
-        )
-      ));
+          report.status === "Eliminado" ? "cGrayDark" : "";
+  
+        return updatedFilters.includes(reportClass);
+      }));
     } else {
-      setFilteredReports(reports);
+      setFilteredReports(reports.filter(report => report.status !== "Eliminado"));
     }
   };
-
+  
   return (
     <>
       <ul className="category__nav category__nav-class list-inline mb-0">
