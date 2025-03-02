@@ -14,11 +14,11 @@ function Admin() {
   useEffect(() => {
     // !_START DUMMY ==========
     const dummyData = [
-      { id: 1, report_code: "ZX000001", status: "No leído", dateTime: "25/02/2024 14:00", subject: "Fallo en equipo médico", description: "El monitor dejó de funcionar." },
-      { id: 2, report_code: "ZX000002", status: "En proceso", dateTime: "24/02/2024 16:34", subject: "Accidente de paciente", description: "Paciente cayó en el pasillo." },
-      { id: 3, report_code: "ZX000003", status: "Resuelto", dateTime: "23/02/2024 10:15", subject: "Problema con oxígeno", description: "Falla en el suministro de oxígeno." },
-      { id: 4, report_code: "ZX000004", status: "No leído", dateTime: "25/02/2024 14:00", subject: "Fallo en equipo médico", description: "El monitor dejó de funcionar." },
-      { id: 5, report_code: "ZX000005", status: "Eliminado", dateTime: "22/02/2024 09:00", subject: "Reporte eliminado", description: "Este reporte ha sido eliminado." },
+      { id: 1, report_code: "ZX000001", status: "No leído", dateTime: "25/02/2024 14:00", department: "Hospitalización", profession: "Facultativo", place: "Sala de emergencias", subject: "Fallo en equipo médico", description: "El monitor dejó de funcionar.", isConsequent: "Sí", consequenceType: "Precisa tratamiento", avoidable: "Sí", suggestion: "Revisión periódica de los equipos.", files: ["monitor_falla.jpg"] },
+      { id: 2, report_code: "ZX000002", status: "En proceso", dateTime: "24/02/2024 16:34", department: "Urgencias", profession: "Enfermeria", place: "Pasillo principal", subject: "Accidente de paciente", description: "Paciente cayó en el pasillo.", isConsequent: "Sí", consequenceType: "Precisa ingreso", avoidable: "Sí", suggestion: "Instalar pasamanos en los pasillos.", files: ["accidente_pasillo.jpg"] },
+      { id: 3, report_code: "ZX000003", status: "Resuelto", dateTime: "23/02/2024 10:15", department: "Área de cuidados intensivos", profession: "Técnico de mantenimiento", place: "Sala de cuidados intensivos", subject: "Problema con oxígeno", description: "Falla en el suministro de oxígeno.", isConsequent: "No", consequenceType: "N/A", avoidable: "No", suggestion: "Verificar las conexiones de suministro diariamente.", files: ["oxigeno_falla.jpg"] },
+      { id: 4, report_code: "ZX000004", status: "No leído", dateTime: "25/02/2024 14:00", department: "Quirófano", profession: "Auxiliar", place: "Quirófano principal", subject: "Instrumento quirúrgico faltante", description: "Falta de bisturí en el quirófano.", isConsequent: "Sí", consequenceType: "Prolongación de estancia", avoidable: "Sí", suggestion: "Revisar material antes de la cirugía.", files: ["instrumento_faltante.jpg", "instrumento_faltante.jpg"] },
+      { id: 5, report_code: "ZX000005", status: "Eliminado", dateTime: "22/02/2024 09:00", department: "Administración", profession: "Administrador", place: "Oficina principal", subject: "Reporte eliminado", description: "Este reporte ha sido eliminado.", isConsequent: "No", consequenceType: "N/A", avoidable: "N/A", suggestion: "N/A", files: [] }
     ];
 
     setReports(dummyData);
@@ -27,6 +27,7 @@ function Admin() {
 
     // BACK code ↓↓↓
     // ====================== 
+
   }, []);
 
   /* ===== Filter =====  */
@@ -81,6 +82,7 @@ function Admin() {
             <div className="knowWrap pB10">
               <div className="container-fluid">
                 <div className="filterList d-flex justify-content-between align-items-center mb-5">
+                  {/* ===== Filter =====  */}
                   <ul className="category__nav category__nav-class list-inline mb-0">
                     {[
                       { label: "No leído", target: "cRedLight" },
@@ -104,7 +106,7 @@ function Admin() {
                     ))}
                   </ul>
                   
-                  {/* ===== Search Area =====  */}
+                  {/* ===== Search =====  */}
                   <SearchBox 
                     reports={reports}
                     setFilteredReports={setFilteredReports}
@@ -114,13 +116,13 @@ function Admin() {
                 </div>
 
 
-                {/* START CARD */}
+                {/* ===== START CARD ===== */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
                     filteredReports.map(report => (
                       <a
-                        key={report.id}
-                        href={`/admin-detail#${report.id}`}
+                        key={report.report_code}
+                        onClick={() => navigate(`/admin/detail#${report.report_code}`, { state: report })}
                         className={`know know-s useful__wrap ${
                           report.status === "No leído" ? "cRedLight" :
                           report.status === "En proceso" ? "cBlueLight" :
@@ -146,7 +148,7 @@ function Admin() {
                     <p>No hay reportes disponibles</p>
                   )}
                 </div>
-                {/* END CARD */}
+                {/* ===== END CARD ===== */}
               </div>
             </div>
 

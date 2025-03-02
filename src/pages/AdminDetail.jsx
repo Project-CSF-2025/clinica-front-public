@@ -1,53 +1,88 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+// import React, { useState, useEffect } from "react";
 import iconCheck from "../assets/img/icon_check.png";
 
-
 function AdminDetail() {
+  const location = useLocation();
+  const report = location.state || {};
+
   return (
     <>
       <main className="wrapper container-xxl">
-        <h2 className="adminDetailHeadding headdingA fs-1 -blue -center -regular">Nº REPORTE :  <span className="getCode -bold"></span></h2>
+        <h2 className="adminDetailHeadding headdingA fs-1 -blue -center -regular">Nº REPORTE :  <span className="getCode -bold">{report.report_code || "N/A"}</span></h2>
 
         <div className="flexBox">
           <div className="flexBox__item">
             <div className="detailBox">
               <div className="detailBox__item">
                 <span className="detailBox__title">Departamento:</span>
-                <span className="detailBox__text getDepartamento"></span>
+                <span className="detailBox__text getDepartamento">{report.department || "N/A"}</span>
+              </div>
+              <div className="detailBox__item">
+                <span className="detailBox__title">Professión:</span>
+                <span className="detailBox__text">{report.profession || "N/A"}</span>
+              </div>
+              <div className="detailBox__item">
+                <span className="detailBox__title">Fecha y hora:</span>
+                <span className="detailBox__text">{report.dateTime || "N/A"}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Lugar:</span>
-                <span className="detailBox__text getLugar"></span>
-              </div>
-              <div className="detailBox__item">
-                <span className="detailBox__title">Fecha:</span>
-                <span id="getFecha" className="detailBox__text"></span>
-              </div>
-              <div className="detailBox__item">
-                <span className="detailBox__title">Archivo:</span>
-                <a id="downloadLink" href="#" className="btn btn-primary" download data-bs-toggle="modal" data-bs-target="#simpleModal">Visualizar</a>
-                <div className="modal fade detailBox__mdal" id="simpleModal" tabIndex="-1" aria-hidden="true">
-                  <div className="modal-dialog">
-                    <div className="modal-content">
-                      <div className="detailBox__mdal_image">
-                        {/* <img src="img/image_sample.jpg" alt=""> */}
-                        <img src={iconCheck} className="small-img" style={{ marginTop: "20px" }} />
-                        </div>
-                    </div>
-                  </div>
-                </div>
+                <span className="detailBox__text getLugar">{report.place || "N/A"}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Asunto:</span>
-                <span className="detailBox__text getAsunto"></span>
+                <span className="detailBox__text getAsunto">{report.subject || "N/A"}</span>
               </div>
               <div className="detailBox__item -column">
                 <span className="detailBox__title">Descripción:</span>
-                <div className="detailBox__textBox"><span className="getText"></span></div>
+                <div className="detailBox__textBox"><span className="getText">{report.description || "N/A"}</span></div>
+              </div>
+              <div className="detailBox__item">
+                <span className="detailBox__title">¿Tiene consecuencias?:</span>
+                <span className="detailBox__text">{report.isConsequent || "N/A"}</span>
+              </div>
+              <div className="detailBox__item">
+                <span className="detailBox__title">¿Que consecuencia?:</span>
+                <span className="detailBox__text">{report.consequenceType || "N/A"}</span>
+              </div>
+              <div className="detailBox__item">
+                <span className="detailBox__title">¿Evitable?:</span>
+                <span className="detailBox__text">{report.avoidable || "N/A"}</span>
               </div>
               <div className="detailBox__item -column">
                 <span className="detailBox__title">Sugerencias:</span>
-                <span className="detailBox__textBox getSugerencias">Sugerencias dummy</span>
+                <span className="detailBox__textBox getSugerencias">{report.suggestion || "N/A"}</span>
+              </div>
+              {/* ===== Files  ===== */}
+              <div className="detailBox__item">
+                <span className="detailBox__title">Archivo:</span>
+                {report.files && report.files.length > 0 ? (
+                  report.files.map((file, index) => (
+                    <React.Fragment key={index}>
+                      <a
+                        href="#"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target={`#fileModal${index}`}
+                      >
+                        Visualizar {file}
+                      </a>
+                      <div className="modal fade detailBox__mdal" id={`fileModal${index}`} tabIndex="-1" aria-hidden="true">
+                        <div className="modal-dialog">
+                          <div className="modal-content">
+                            <div className="detailBox__mdal_image">
+                              <img src={`/uploads/${file}`} alt={file} className="small-img" style={{ marginTop: "20px", maxWidth: "100%" }} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  ))
+                ) : (
+                  <span className="detailBox__text">No se han subido archivos</span>
+                )}
               </div>
               <div className="buttonA -sizeS -thin"><a href="#" id="downloadPDFButton">Descargar</a></div>
             </div>
@@ -187,3 +222,8 @@ function AdminDetail() {
 }
 
 export default AdminDetail
+
+
+// === MEMO ===
+// || "N/A"  have to be change??
+// The files section is not complete. (File number limit? , How to display an image inside a modal?)
