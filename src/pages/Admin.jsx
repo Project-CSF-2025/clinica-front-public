@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton"; 
 import SearchBox from "../components/SearchBox";
+import ReportCard from "../components/ReportCard";
 // import StateFilter from "../components/StateFilter";
 // import axios from "axios";
 
 function Admin() {
-  const navigate = useNavigate();
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]); 
   const [activeFilters, setActiveFilters] = useState([]); // Manage selected filter
@@ -28,7 +27,6 @@ function Admin() {
 
     // BACK code ↓↓↓
     // ====================== 
-
   }, []);
 
   /* ===== Filter =====  */
@@ -109,40 +107,21 @@ function Admin() {
                   />
                 </div>
 
-
-                {/* ===== START CARD ===== */}
+                {/* ===== Report card ===== */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
                     filteredReports.map(report => (
-                      <a
+                      <ReportCard
                         key={report.report_code}
-                        onClick={() => navigate(`/admin/detail#${report.report_code}`, { state: report })}
-                        className={`know know-s useful__wrap ${
-                          report.status === "No leído" ? "cRedLight" :
-                          report.status === "En proceso" ? "cBlueLight" :
-                          report.status === "Resuelto" ? "cBlueDark" :
-                          report.status === "Eliminado" ? "cGrayDark" : ""
-                        }`}
-                      >
-                        <p className="know__num">#{highlightText(`#${report.report_code}`, searchTerm)}</p>
-                        <span className={`know__label ${
-                          report.status === "No leído" ? "cRedLight" :
-                          report.status === "En proceso" ? "cBlueLight" :
-                          report.status === "Resuelto" ? "cBlueDark" :
-                          report.status === "Eliminado" ? "cGrayDark" : ""
-                        }`}>
-                          {highlightText(report.status, searchTerm)}
-                        </span>
-                        <span className="know__date">{highlightText(report.dateTime, searchTerm)}</span>
-                        <h3 className="know__title">{highlightText(report.subject, searchTerm)}</h3>
-                        <div className="know__info">{highlightText(report.description, searchTerm)}</div>
-                      </a>
+                        report={report}
+                        searchTerm={searchTerm}
+                        highlightText={highlightText}
+                      />
                     ))
                   ) : (
                     <p>No hay reportes disponibles</p>
                   )}
                 </div>
-                {/* ===== END CARD ===== */}
               </div>
             </div>
 
