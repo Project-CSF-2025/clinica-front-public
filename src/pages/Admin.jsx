@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "../components/LogoutButton"; 
 import SearchBox from "../components/SearchBox";
 // import StateFilter from "../components/StateFilter";
 // import axios from "axios";
@@ -16,9 +17,9 @@ function Admin() {
     const dummyData = [
       { id: 1, report_code: "ZX000001", status: "No leído", dateTime: "25/02/2024 14:00", department: "Hospitalización", profession: "Facultativo", place: "Sala de emergencias", subject: "Fallo en equipo médico", description: "El monitor dejó de funcionar.", isConsequent: "Sí", consequenceType: "Precisa tratamiento", avoidable: "Sí", suggestion: "Revisión periódica de los equipos.", files: ["monitor_falla.jpg"] },
       { id: 2, report_code: "ZX000002", status: "En proceso", dateTime: "24/02/2024 16:34", department: "Urgencias", profession: "Enfermeria", place: "Pasillo principal", subject: "Accidente de paciente", description: "Paciente cayó en el pasillo.", isConsequent: "Sí", consequenceType: "Precisa ingreso", avoidable: "Sí", suggestion: "Instalar pasamanos en los pasillos.", files: ["accidente_pasillo.jpg"] },
-      { id: 3, report_code: "ZX000003", status: "Resuelto", dateTime: "23/02/2024 10:15", department: "Área de cuidados intensivos", profession: "Técnico de mantenimiento", place: "Sala de cuidados intensivos", subject: "Problema con oxígeno", description: "Falla en el suministro de oxígeno.", isConsequent: "No", consequenceType: "N/A", avoidable: "No", suggestion: "Verificar las conexiones de suministro diariamente.", files: ["oxigeno_falla.jpg"] },
+      { id: 3, report_code: "ZX000003", status: "Resuelto", dateTime: "23/02/2024 10:15", department: "Área de cuidados intensivos", profession: "Técnico de mantenimiento", place: "Sala de cuidados intensivos", subject: "Problema con oxígeno", description: "Falla en el suministro de oxígeno.", isConsequent: "No", consequenceType: "", avoidable: "No", suggestion: "Verificar las conexiones de suministro diariamente.", files: ["oxigeno_falla.jpg"] },
       { id: 4, report_code: "ZX000004", status: "No leído", dateTime: "25/02/2024 14:00", department: "Quirófano", profession: "Auxiliar", place: "Quirófano principal", subject: "Instrumento quirúrgico faltante", description: "Falta de bisturí en el quirófano.", isConsequent: "Sí", consequenceType: "Prolongación de estancia", avoidable: "Sí", suggestion: "Revisar material antes de la cirugía.", files: ["instrumento_faltante.jpg", "instrumento_faltante.jpg"] },
-      { id: 5, report_code: "ZX000005", status: "Eliminado", dateTime: "22/02/2024 09:00", department: "Administración", profession: "Administrador", place: "Oficina principal", subject: "Reporte eliminado", description: "Este reporte ha sido eliminado.", isConsequent: "No", consequenceType: "N/A", avoidable: "N/A", suggestion: "N/A", files: [] }
+      { id: 5, report_code: "ZX000005", status: "Eliminado", dateTime: "22/02/2024 09:00", department: "Administración", profession: "Administrador", place: "Oficina principal", subject: "Reporte eliminado", description: "Este reporte ha sido eliminado.", isConsequent: "No", consequenceType: "", avoidable: "No", suggestion: "", files: [] }
     ];
 
     setReports(dummyData);
@@ -66,13 +67,6 @@ function Admin() {
     );
   };
 
-  /* ===== Logout button =====  */
-  const handleLogout = () => {
-    sessionStorage.removeItem("is_authenticated"); // 認証情報削除
-    sessionStorage.removeItem("user"); // ユーザー情報削除
-    navigate("/admin-login"); 
-  };
-  
   return (
     <>
       <div className="pageAdmin">
@@ -152,13 +146,8 @@ function Admin() {
               </div>
             </div>
 
-            <a className="btn btn-primary salir-admin" onClick={handleLogout}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                <path fillRule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-                <path fillRule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-              </svg>
-              <span>Cerrar Sesión</span>
-            </a>
+            {/* ===== Cerrar Sesión ===== */}
+            <LogoutButton/>
           </section>
 
           <aside className="notificationArea">

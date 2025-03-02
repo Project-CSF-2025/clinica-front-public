@@ -45,7 +45,7 @@ function AdminDetail() {
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Que consecuencia?:</span>
-                <span className="detailBox__text">{report.consequenceType || "N/A"}</span>
+                <span className="detailBox__text">{report.consequenceType || ""}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Evitable?:</span>
@@ -53,7 +53,7 @@ function AdminDetail() {
               </div>
               <div className="detailBox__item -column">
                 <span className="detailBox__title">Sugerencias:</span>
-                <span className="detailBox__textBox getSugerencias">{report.suggestion || "N/A"}</span>
+                <span className="detailBox__textBox getSugerencias">{report.suggestion || ""}</span>
               </div>
               {/* ===== Files  ===== */}
               <div className="detailBox__item">
@@ -222,8 +222,3 @@ function AdminDetail() {
 }
 
 export default AdminDetail
-
-
-// === MEMO ===
-// || "N/A"  have to be change??
-// The files section is not complete. (File number limit? , How to display an image inside a modal?)
