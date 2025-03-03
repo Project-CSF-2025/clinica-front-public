@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 // import React, { useState, useEffect } from "react";
 import iconCheck from "../assets/img/icon_check.png";
@@ -215,7 +216,11 @@ function AdminDetail() {
           </div>
         </div>
 
-        <div className="buttonA -centerContents -mt120"><a href="admin.html" className="-iconBack">Volver</a></div>
+        <div className="buttonA -centerContents -mt120">
+          <Link to="/admin" className="-iconBack">
+            Consultar estado
+          </Link>
+        </div>
       </main>
     </>
   )
