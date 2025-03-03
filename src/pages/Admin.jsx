@@ -3,32 +3,38 @@ import LogoutButton from "../components/LogoutButton";
 import StateFilter from "../components/StateFilter";
 import SearchBox from "../components/SearchBox";
 import ReportCard from "../components/ReportCard";
-// import axios from "axios";
+import axios from "axios"; 
 
 function Admin() {
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]); 
   const [activeFilters, setActiveFilters] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   useEffect(() => {
-    // !_START DUMMY ==========
-    const dummyData = [
-      { id: 1, report_code: "ZX000001", status: "No leído", dateTime: "25/02/2024 14:00", department: "Hospitalización", profession: "Facultativo", place: "Sala de emergencias", subject: "Fallo en equipo médico", description: "El monitor dejó de funcionar.", isConsequent: "Sí", consequenceType: "Precisa tratamiento", avoidable: "Sí", suggestion: "Revisión periódica de los equipos.", files: ["monitor_falla.jpg"] },
-      { id: 2, report_code: "ZX000002", status: "En proceso", dateTime: "24/02/2024 16:34", department: "Urgencias", profession: "Enfermeria", place: "Pasillo principal", subject: "Accidente de paciente", description: "Paciente cayó en el pasillo.", isConsequent: "Sí", consequenceType: "Precisa ingreso", avoidable: "Sí", suggestion: "Instalar pasamanos en los pasillos.", files: ["accidente_pasillo.jpg"] },
-      { id: 3, report_code: "ZX000003", status: "Resuelto", dateTime: "23/02/2024 10:15", department: "Área de cuidados intensivos", profession: "Técnico de mantenimiento", place: "Sala de cuidados intensivos", subject: "Problema con oxígeno", description: "Falla en el suministro de oxígeno.", isConsequent: "No", consequenceType: "", avoidable: "No", suggestion: "Verificar las conexiones de suministro diariamente.", files: ["oxigeno_falla.jpg"] },
-      { id: 4, report_code: "ZX000004", status: "No leído", dateTime: "25/02/2024 14:00", department: "Quirófano", profession: "Auxiliar", place: "Quirófano principal", subject: "Instrumento quirúrgico faltante", description: "Falta de bisturí en el quirófano.", isConsequent: "Sí", consequenceType: "Prolongación de estancia", avoidable: "Sí", suggestion: "Revisar material antes de la cirugía.", files: ["instrumento_faltante.jpg", "instrumento_faltante.jpg"] },
-      { id: 5, report_code: "ZX000005", status: "Eliminado", dateTime: "22/02/2024 09:00", department: "Administración", profession: "Administrador", place: "Oficina principal", subject: "Reporte eliminado", description: "Este reporte ha sido eliminado.", isConsequent: "No", consequenceType: "", avoidable: "No", suggestion: "", files: [] }
-    ];
+    const fetchReports = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/reports");
+        const data = response.data;
 
-    const filteredData = dummyData.filter(report => report.status !== "Eliminado");
-    setReports(dummyData);
-    setFilteredReports(filteredData); // Eliminadoを除いたリストをセット
-    // !_END DUMMY ==========
+        if (data && Array.isArray(data)) {
+          const filteredData = data.filter(report => report.status !== "Eliminado");
+          setReports(data);
+          setFilteredReports(filteredData);
+        } else {
+          throw new Error("Unexpected response format");
+        }
+      } catch (err) {
+        console.error("Error fetching reports:", err);
+        setError("Failed to load reports");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // ====================== 
-    // ↓↓↓ BACKEND CODE ↓↓↓
-    // ====================== 
+    fetchReports();
   }, []);
 
   /* ===== Searched text highlight =====  */
