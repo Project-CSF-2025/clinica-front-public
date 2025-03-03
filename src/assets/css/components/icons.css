@@ -43,7 +43,7 @@
   z-index: 10;
 }
 
-.pageAdminDetail .iconFlag,
+/* .pageAdminDetail .iconFlag,
 .pageAdminDetail .iconFlaged,
 .pageVista .iconFlag,
 .pageVista .iconFlaged { 
@@ -54,8 +54,8 @@
   right: 0;
   margin: auto;
 
-}
-
+} */
+/* 
 .pageAdminDetail .iconFlag,
 .pageVista .iconFlag {
   display: none;
@@ -63,6 +63,10 @@
 
 .pageAdminDetail .iconFlaged,
 .pageVista .iconFlaged {
+  display: none;
+} */
+.iconFlag,
+.iconFlaged {
   display: none;
 }
 
