@@ -209,6 +209,7 @@
   -o-transition:none;
   transition:none;
   text-decoration: none;
+  cursor: pointer;
   position: relative;
 }
 .know:focus,

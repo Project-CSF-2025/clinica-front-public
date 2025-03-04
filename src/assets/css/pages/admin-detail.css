@@ -163,8 +163,9 @@
 
 /* memoBlock
 ============================== */
-.memoBlock__wrap {
-
+.memoBlock__wrap .headdingB {
+  position: relative;
+  z-index: 1;
 }
 .memoBlock {
   width: 100%;
