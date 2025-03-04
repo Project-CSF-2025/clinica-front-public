@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-// import React, { useState, useEffect } from "react";
-import iconCheck from "../assets/img/icon_check.png";
 
 function AdminDetail() {
   const location = useLocation();
   const report = location.state || {};
+
+  const [isFlagged, setIsFlagged] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [memoText, setMemoText] = useState("");
+
+  // クリックでトグル
+  const toggleFlag = () => {
+    setIsFlagged((prev) => !prev);
+  };
+
+  // クリックでトグル
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleTextChange = (e) => {
+    setMemoText(e.target.value);
+  };
+
 
   return (
     <>
@@ -88,31 +105,38 @@ function AdminDetail() {
               <div className="buttonA -sizeS -thin"><a href="#" id="downloadPDFButton">Descargar</a></div>
             </div>
           </div>
+
           
           <div className="flexBox__item">
             <div className="operationUnit">
+              {/* ===== Status  ===== */}
               <div className="selectWrap">
-                <select name="situation" className="select" id="select_situation">
+                <select 
+                  name="situation"
+                  className="select"
+                >
                   <option value="1">No leído</option>
                   <option value="2">En proceso</option>
                   <option value="3">Resuelto</option>
                 </select>
               </div>
+              {/* ===== Flag  ===== */}
               <ul className="iconList">
                 <li>
-                  <span className="iconFlag__wrp">
-                    <span className="iconFlag -show">
+                  <span className="iconFlag__wrp" onClick={toggleFlag}>
+                    <span className={`iconFlag ${isFlagged ? "" : "-show"}`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-flag" viewBox="0 0 16 16">
                         <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z"/>
                       </svg>
                     </span>
-                    <span className="iconFlaged">
+                    <span className={`iconFlaged ${isFlagged ? "-show" : ""}`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-flag-fill" viewBox="0 0 16 16">
                         <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001"/>
                       </svg>
                     </span>
                   </span>
                 </li>
+                {/* ===== Bin  ===== */}
                 <li>
                   <span className="icon-trash" data-bs-toggle="modal" data-bs-target="#modalChoice">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
@@ -122,7 +146,7 @@ function AdminDetail() {
                   </span>
                 </li>
               </ul>
-              {/* <!-- Delete Modal --> */}
+              {/* Delete Modal */}
               <div className="modal fade" id="modalChoice" tabIndex="-1" role="dialog" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                   <div className="modal-content rounded-3 shadow">
@@ -137,10 +161,42 @@ function AdminDetail() {
                 </div>
               </div>
             </div>
+
+            {/* ========== MEMO ========== */}
             <div className="memoBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Memo</h2>
-              <div className="memoBlock">
-                <div className="memoBlock__static">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio laboriosam qui dolore reiciendis maiores voluptates, illo sed nobis dolorum necessitatibus, veritatis omnis fugit possimus enim aliquid accusantium earum quae unde! Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio laboriosam qui dolore reiciendis maiores voluptates, illo sed nobis dolorum necessitatibus, veritatis omnis fugit possimus enim aliquid accusantium earum quae unde!</div>
+              <div className={`memoBlock ${isEditing ? "-active" : ""}`}>
+                {!isEditing ? (
+                  <div className="memoBlock__static">{memoText}</div>
+                ) : (
+                  <div className="memoBlock__edit">
+                    <textarea
+                      id="textEdit"
+                      cols="30"
+                      rows="10"
+                      value={memoText}
+                      onChange={handleTextChange}
+                    ></textarea>
+                  </div>
+                )}
+                <button className="memoBlock__btn" onClick={toggleEdit}>
+                  {isEditing ? (
+                    <span className="iconCheck">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clipboard-check" viewBox="0 0 16 16">
+                        <path fillRule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
+                      </svg>
+                    </span>
+                  ) : (
+                    <span className="iconEdit">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                      </svg>
+                    </span>
+                  )}
+                </button>
+                {/* <div className="memoBlock__static">text text</div>
                 <div className="memoBlock__edit">
                   <textarea name="" id="textEdit" cols="30" rows="10"></textarea>
                 </div>
@@ -157,16 +213,18 @@ function AdminDetail() {
                       <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
                     </svg>
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
+
+            {/* ========== MEMO ========== */}
             <div className="chatBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
               <div className="chatBlock">
                 <div className="chatBlock__inner">
                   <div className="chatBlock__body">
 
-                    {/* <!--- chat ---> */}
+                    {/* ========== CHAT ========== */}
                     <div className="chatBlock__item -revers ">
                       <div className="chatBlock__itemInner">
                         <span className="chatBlock__circle -iconMemo">

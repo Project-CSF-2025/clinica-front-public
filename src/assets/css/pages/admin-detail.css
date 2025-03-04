@@ -182,7 +182,7 @@
 .memoBlock::before {
   content: "";
   position: absolute;
-  background: url(../img/icon_pin.svg)no-repeat center center/contain;
+  background: url(../../img/icon_pin.svg)no-repeat center center/contain;
   fill: var(--labelBlue);
   width: 32px;
   height: 32px;
@@ -250,6 +250,7 @@
   height: 100%;
   /* box-sizing: content-box; */
   margin: 2px;
+  resize: none;
 }
 .memoBlock.-active .memoBlock__edit {
   display: block;
