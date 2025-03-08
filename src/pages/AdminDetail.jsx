@@ -20,33 +20,65 @@ function AdminDetail() {
   console.log("🔹 Location State:", location.state);
   
 
+
+  const fetchMemo = async (id_report) => {
+    if (!id_report) {
+        console.error("❌ Error: Report ID is undefined");
+        return;
+    }
+
+    try {
+        const response = await getAdminNoteByReportId(id_report);
+        console.log("✅ API Response for Memo:", response);
+
+        if (response && response.admin_message) {
+            setMemoText(response.admin_message); // ✅ Set memo text
+        } else {
+            console.warn("⚠️ No Memo Found. Setting Empty.");
+            setMemoText(""); // ✅ If no memo, set empty
+        }
+    } catch (error) {
+        console.error("❌ Error fetching memo:", error);
+        setMemoText(""); // ✅ Prevents issues when there's an error
+    }
+  };
+
   useEffect(() => {
     console.log("useParams Report Code:", reportCode);
     console.log("Location State Report Code:", location.state?.report_code);
-  
-    const fetchReport = async () => {
-      const paramCode = reportCode || location.state?.report_code;
-    
-      if (!paramCode) {
-        setError("No report code provided");
-        setLoading(false);
-        return;
-      }
-    
-      try {
-        const reportDetails = await getReportByCode(paramCode);
-        console.log("✅ Report fetched:", reportDetails);
-        setReport(reportDetails);
-      } catch (err) {
-        console.error("❌ Error fetching report:", err);
-        setError("Error loading report");
-      } finally {
-        setLoading(false);
-      }
-    };    
-  
-    fetchReport();
-  }, [reportCode, location.state]);
+
+    const fetchReportAndMemo = async () => {
+        const paramCode = reportCode || location.state?.report_code;
+
+        if (!paramCode) {
+            setError("No report code provided");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            // ✅ Fetch report
+            const reportDetails = await getReportByCode(paramCode);
+            console.log("✅ Report fetched:", reportDetails);
+            setReport(reportDetails);
+
+            // ✅ Fetch memo if report ID exists
+            if (reportDetails?.id_report) {
+                await fetchMemo(reportDetails.id_report);
+            } else {
+                console.error("❌ Error: No valid report ID found for memo fetch.");
+            }
+        } catch (err) {
+            console.error("❌ Error fetching report:", err);
+            setError("Error loading report");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchReportAndMemo();
+  }, [reportCode, location.state]); // ✅ Runs when reportCode or location.state changes
+
   
 
   if (loading) return <p>Loading...</p>;
@@ -63,28 +95,6 @@ function AdminDetail() {
   const handleTextChange = (e) => {
     setMemoText(e.target.value);
   };
-
-  const fetchMemo = async (id_report) => {
-    if (!id_report) {
-        console.error("❌ Error: Report ID is undefined");
-        return;
-    }
-
-    try {
-        const response = await getNotesByReportId(id_report);
-        console.log("✅ Memo fetched:", response);
-
-        if (response?.length > 0) {
-            setMemoText(response[0].admin_message); // ✅ Set memo text
-        } else {
-            setMemoText(""); // ✅ If no memo, set empty
-        }
-    } catch (error) {
-        console.error("❌ Error fetching memo:", error);
-        setMemoText(""); // ✅ Prevents issues when there's an error
-    }
-  };
-
 
 
   const handleSaveNote = async () => {
@@ -270,7 +280,9 @@ function AdminDetail() {
               <h2 className="headdingB fs-3 -blue -medium">Memo</h2>
               <div className={`memoBlock ${isEditing ? "-active" : ""}`}>
                 {!isEditing ? (
-                  <div className="memoBlock__static">{memoText || "No memo available"}</div>
+                  <div className="memoBlock__static">
+                    {memoText ? memoText : "No memo available"}
+                  </div>
                 ) : (
                   <div className="memoBlock__edit">
                     <textarea
@@ -278,17 +290,17 @@ function AdminDetail() {
                       cols="30"
                       rows="10"
                       value={memoText}
-                      onChange={handleTextChange}
-                    ></textarea>
+                      onChange={(e) => setMemoText(e.target.value)}
+                    />
                   </div>
                 )}
                 <button 
                   className="memoBlock__btn" 
-                  onClick={isEditing ? handleSaveNote : toggleEdit} // Calls `handleSaveNote` when editing
+                  onClick={isEditing ? handleSaveNote : toggleEdit} 
                 >
                   {isEditing ? (
                     <span className="iconCheck">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clipboard-check" viewBox="0 0 16 16">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clipboard-check">
                         <path fillRule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                         <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
                         <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
@@ -296,33 +308,15 @@ function AdminDetail() {
                     </span>
                   ) : (
                     <span className="iconEdit">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil" viewBox="0 0 16 16">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil">
                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                       </svg>
                     </span>
                   )}
                 </button>
-
-                {/* <div className="memoBlock__static">text text</div>
-                <div className="memoBlock__edit">
-                  <textarea name="" id="textEdit" cols="30" rows="10"></textarea>
-                </div>
-                <div className="memoBlock__btn">
-                  <span className="iconEdit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil" viewBox="0 0 16 16">
-                      <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                    </svg>
-                  </span>
-                  <span className="iconCheck">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clipboard-check" viewBox="0 0 16 16">
-                      <path fillRule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-                      <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
-                      <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
-                    </svg>
-                  </span>
-                </div> */}
               </div>
             </div>
+
 
             {/* ========== MEMO ========== */}
             <div className="chatBlock__wrap">
