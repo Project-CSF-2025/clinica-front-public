@@ -1,11 +1,42 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-// import React, { useState, useEffect } from "react";
-import iconCheck from "../assets/img/icon_check.png";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import { getReportByCode } from "../services/reportService";
 
 function AdminDetail() {
+  const { report_code } = useParams(); 
   const location = useLocation();
-  const report = location.state || {};
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    const fetchReport = async () => {
+      try {
+        const reportDetails = await getReportByCode(report_code || location.state?.report_code);
+        if (reportDetails) {
+          setReport(reportDetails);
+        } else {
+          setError("Report not found");
+        }
+      } catch (err) {
+        console.error("❌ Error fetching report:", err);
+        setError("Error loading report");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (report_code || location.state?.report_code) {
+      fetchReport();
+    } else {
+      setError("No report code provided");
+      setLoading(false);
+    }
+  }, [report_code, location.state]);
+
+  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading report details...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <>

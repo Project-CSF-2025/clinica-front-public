@@ -11,15 +11,6 @@ import AdminDetail from './pages/AdminDetail';
 import Footer from './components/Footer';
 
 function App() {
-  useEffect(() => {
-    console.log("📡 Attempting API call..."); // Debug log
-    fetch("http://localhost:5000/api/users")
-      .then(response => response.json())
-      .then(data => {
-        console.log("✅ API Response:", data); // Show data in console
-      })
-      .catch(error => console.error("❌ API Error:", error));
-  }, []);
 
   return (
     <Router>
@@ -31,7 +22,7 @@ function App() {
         <Route path="/confirm" element={<Confirm />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/detail" element={<AdminDetail />} />
+        <Route path="/admin/detail/:reportCode" element={<AdminDetail />} />
 
       </Routes>
       <Footer />

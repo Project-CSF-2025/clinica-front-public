@@ -14,10 +14,12 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
     <>
       <a
         key={report.report_code}
-        onClick={() => navigate(`/admin/detail#${report.report_code}`, { state: report })}
+        onClick={() => report.report_code 
+          ? navigate(`/admin/detail/${report.report_code}`, { state: report }) 
+          : console.error("Report code is undefined")}
         className={`know know-s useful__wrap ${statusClass}`}
       >
-        <p className="know__num">#{highlightText(`#${report.report_code}`, searchTerm)}</p>
+        <p className="know__num">#{highlightText(`${report.report_code}`, searchTerm)}</p>
         <span className={`know__label ${
           report.status === "No leído" ? "cRedLight" :
           report.status === "En proceso" ? "cBlueLight" :
