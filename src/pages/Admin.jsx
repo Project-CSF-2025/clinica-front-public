@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton"; 
 import StateFilter from "../components/StateFilter";
 import SearchBox from "../components/SearchBox";
 import ReportCard from "../components/ReportCard";
-import axios from "axios"; 
+import { apiRequest } from "../services/apiService"; 
+
 
 function Admin() {
   const [reports, setReports] = useState([]);
@@ -12,16 +14,17 @@ function Admin() {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); 
   
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/reports");
-        const data = response.data;
-
-        if (data && Array.isArray(data)) {
-          const filteredData = data.filter(report => report.status !== "Eliminado");
-          setReports(data);
+        const data = await apiRequest("GET", "/reports");
+        console.log("Fetched Reports:", data); 
+        
+        if (Array.isArray(data)) {
+          const filteredData = data.filter(report => report && report.status !== "Eliminado");
+          setReports(filteredData); 
           setFilteredReports(filteredData);
         } else {
           throw new Error("Unexpected response format");
@@ -32,10 +35,14 @@ function Admin() {
       } finally {
         setLoading(false);
       }
-    };
+    };    
 
     fetchReports();
   }, []);
+
+  const handleViewReport = (reportCode) => {
+    navigate(`/admin/detail/${reportCode}`);
+  };
 
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
@@ -76,14 +83,16 @@ function Admin() {
                 {/* ===== Report card ===== */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
-                    filteredReports.map(report => (
-                      <ReportCard
-                        key={report.report_code}
-                        report={report}
-                        searchTerm={searchTerm}
-                        highlightText={highlightText}
-                      />
-                    ))
+                    filteredReports.map((report, index) => 
+                      report ? ( 
+                        <ReportCard
+                          key={report._id || index} 
+                          report={report}
+                          searchTerm={searchTerm}
+                          highlightText={highlightText}
+                        />
+                      ) : null
+                    )
                   ) : (
                     <p>No hay reportes disponibles</p>
                   )}
