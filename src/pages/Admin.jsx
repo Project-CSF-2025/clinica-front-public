@@ -40,10 +40,6 @@ function Admin() {
     fetchReports();
   }, []);
 
-  const handleViewReport = (reportCode) => {
-    navigate(`/admin/detail/${reportCode}`);
-  };
-
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
     if (!keyword || keyword.trim() === "") return text;

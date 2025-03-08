@@ -32,3 +32,8 @@ export const deleteReport = (id_report) => apiRequest('DELETE', `/reports/${id_r
 // ====== MESSAGES API ======
 export const getMessagesByReportId = (id_report) => apiRequest('GET', `/messages/${id_report}`);
 export const createMessage = (messageData) => apiRequest('POST', '/messages', messageData);
+
+// ====== ADMIN NOTES API ======
+export const createAdminNote = (noteData) => apiRequest('POST', '/admin-notes', noteData);
+export const getAdminNotesByReportId = (id_report) => apiRequest('GET', `/admin-notes/${id_report}`);
+export const updateAdminNote = (id_note, noteData) => apiRequest('PUT', `/admin-notes/${id_note}`, noteData);
