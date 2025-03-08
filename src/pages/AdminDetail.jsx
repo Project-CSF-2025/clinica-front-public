@@ -3,6 +3,7 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import { getReportByCode } from "../services/reportService";
 import { createAdminNote } from "../services/adminNoteService";
 import { getAdminNoteByReportId } from "../services/adminNoteService";
+import { updateAdminNote } from "../services/adminNoteService";
 
 function AdminDetail() {
   const { reportCode } = useParams(); 
@@ -14,13 +15,12 @@ function AdminDetail() {
   const [isFlagged, setIsFlagged] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [memoText, setMemoText] = useState("");
+  const [existingMemo, setExistingMemo] = useState(null);
 
   console.log("🔹 useParams() output:", useParams());
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
   
-
-
   const fetchMemo = async (id_report) => {
     if (!id_report) {
         console.error("❌ Error: Report ID is undefined");
@@ -29,17 +29,19 @@ function AdminDetail() {
 
     try {
         const response = await getAdminNoteByReportId(id_report);
-        console.log("✅ API Response for Memo:", response);
+        console.log("✅ Memo fetched:", response);
 
-        if (response && response.admin_message) {
+        if (response) {
             setMemoText(response.admin_message); // ✅ Set memo text
+            setExistingMemo(response); // ✅ Store memo ID for updates
         } else {
-            console.warn("⚠️ No Memo Found. Setting Empty.");
             setMemoText(""); // ✅ If no memo, set empty
+            setExistingMemo(null); // ✅ Reset existing memo
         }
     } catch (error) {
         console.error("❌ Error fetching memo:", error);
         setMemoText(""); // ✅ Prevents issues when there's an error
+        setExistingMemo(null);
     }
   };
 
@@ -79,6 +81,12 @@ function AdminDetail() {
     fetchReportAndMemo();
   }, [reportCode, location.state]); // ✅ Runs when reportCode or location.state changes
 
+   // ✅ Fetch Memo Details (PLACE THIS AFTER THE REPORT FETCH)
+   useEffect(() => {
+    if (report?.id_report) {
+        fetchMemo(report.id_report);
+    }
+  }, [report]);
   
 
   if (loading) return <p>Loading...</p>;
@@ -99,44 +107,41 @@ function AdminDetail() {
 
   const handleSaveNote = async () => {
     if (!memoText.trim()) {
-      alert("Memo cannot be empty!");
-      return;
+        alert("Memo cannot be empty!");
+        return;
     }
-  
-    if (!report) {
-      alert("Error: Report not loaded yet.");
-      return;
+
+    if (!report || !report.id_report) {
+        alert("Error: No report ID found.");
+        return;
     }
-    
-    const reportId = report.id_report;  // ✅ Ensure correct ID
-    if (!reportId) {
-      alert("Error: No valid report ID found.");
-      return;
-    }
-    
+
     const notePayload = {
-      id_report: reportId,
-      admin_message: memoText,
+        id_report: report.id_report,
+        admin_message: memoText,
     };
-    
-    console.log("Saving note with payload:", notePayload);    
+
+    console.log("📝 Saving note with payload:", notePayload);
 
     try {
-      await createAdminNote(notePayload);
-      alert("✅ Memo saved successfully!");
+        if (existingMemo?.id_note) {
+            // ✅ If memo exists, update it
+            await updateAdminNote(existingMemo.id_note, notePayload);
+            alert("✅ Memo updated successfully!");
+        } else {
+            // ✅ If no memo exists, create a new one
+            await createAdminNote(notePayload);
+            alert("✅ Memo created successfully!");
+        }
 
-      // ✅ Update memoText state to immediately reflect the new memo
-      setMemoText(notePayload.admin_message);
-
-      // ✅ Refetch memo from the backend to ensure sync
-      fetchMemo(reportId);
-
-      setIsEditing(false); // Exit edit mode after saving
+        setIsEditing(false); // ✅ Exit edit mode after saving
+        fetchMemo(report.id_report); // ✅ Refresh memo after saving
     } catch (error) {
-      console.error("❌ Error saving memo:", error);
-      alert("Failed to save memo.");
+        console.error("❌ Error saving memo:", error);
+        alert("Failed to save memo.");
     }
   };
+
 
   return (
     <>
