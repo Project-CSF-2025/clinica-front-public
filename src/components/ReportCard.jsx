@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const ReportCard = ({ report, searchTerm, highlightText }) => {
   const navigate = useNavigate();
+  // Debugging log to check report values
+  console.log("Report Data in ReportCard:", report);
 
   const statusClass = report.status === "No leído" ? "cRedLight"
     : report.status === "En proceso" ? "cBlueLight"

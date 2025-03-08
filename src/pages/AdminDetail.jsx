@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { getReportByCode } from "../services/reportService";
 
 function AdminDetail() {
-  const { report_code } = useParams(); 
-  const location = useLocation();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+  const [isFlagged, setIsFlagged] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [memoText, setMemoText] = useState("");
+  const location = useLocation();
+  const { report_code } = useParams(); // ⛔ This might be undefined
+  console.log("Report Code:", report_code); 
+
   useEffect(() => {
     const fetchReport = async () => {
       try {
@@ -35,12 +39,7 @@ function AdminDetail() {
   }, [report_code, location.state]);
 
   if (loading) return <p>Loading...</p>;
-  if (loading) return <p>Loading report details...</p>;
   if (error) return <p className="error">{error}</p>;
-
-  const [isFlagged, setIsFlagged] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [memoText, setMemoText] = useState("");
 
   // クリックでトグル
   const toggleFlag = () => {
