@@ -1,52 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { getReportByCode } from "../services/reportService";
+import { createAdminNote } from "../services/adminNoteService";
+import { getAdminNoteByReportId } from "../services/adminNoteService";
 
 function AdminDetail() {
+  const { reportCode } = useParams(); 
+  const location = useLocation();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [isFlagged, setIsFlagged] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [memoText, setMemoText] = useState("");
-  const location = useLocation();
-  const { report_code } = useParams(); // ⛔ This might be undefined
-  console.log("Report Code:", report_code); 
+
+  console.log("🔹 useParams() output:", useParams());
+  console.log("🔹 Extracted reportCode:", reportCode);
+  console.log("🔹 Location State:", location.state);
+  
 
   useEffect(() => {
+    console.log("useParams Report Code:", reportCode);
+    console.log("Location State Report Code:", location.state?.report_code);
+  
     const fetchReport = async () => {
+      const paramCode = reportCode || location.state?.report_code;
+    
+      if (!paramCode) {
+        setError("No report code provided");
+        setLoading(false);
+        return;
+      }
+    
       try {
-        const reportDetails = await getReportByCode(report_code || location.state?.report_code);
-        if (reportDetails) {
-          setReport(reportDetails);
-        } else {
-          setError("Report not found");
-        }
+        const reportDetails = await getReportByCode(paramCode);
+        console.log("✅ Report fetched:", reportDetails);
+        setReport(reportDetails);
       } catch (err) {
         console.error("❌ Error fetching report:", err);
         setError("Error loading report");
       } finally {
         setLoading(false);
       }
-    };
-
-    if (report_code || location.state?.report_code) {
-      fetchReport();
-    } else {
-      setError("No report code provided");
-      setLoading(false);
-    }
-  }, [report_code, location.state]);
+    };    
+  
+    fetchReport();
+  }, [reportCode, location.state]);
+  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
 
-  // クリックでトグル
   const toggleFlag = () => {
     setIsFlagged((prev) => !prev);
   };
 
-  // クリックでトグル
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
@@ -55,6 +64,69 @@ function AdminDetail() {
     setMemoText(e.target.value);
   };
 
+  const fetchMemo = async (id_report) => {
+    if (!id_report) {
+        console.error("❌ Error: Report ID is undefined");
+        return;
+    }
+
+    try {
+        const response = await getNotesByReportId(id_report);
+        console.log("✅ Memo fetched:", response);
+
+        if (response?.length > 0) {
+            setMemoText(response[0].admin_message); // ✅ Set memo text
+        } else {
+            setMemoText(""); // ✅ If no memo, set empty
+        }
+    } catch (error) {
+        console.error("❌ Error fetching memo:", error);
+        setMemoText(""); // ✅ Prevents issues when there's an error
+    }
+  };
+
+
+
+  const handleSaveNote = async () => {
+    if (!memoText.trim()) {
+      alert("Memo cannot be empty!");
+      return;
+    }
+  
+    if (!report) {
+      alert("Error: Report not loaded yet.");
+      return;
+    }
+    
+    const reportId = report.id_report;  // ✅ Ensure correct ID
+    if (!reportId) {
+      alert("Error: No valid report ID found.");
+      return;
+    }
+    
+    const notePayload = {
+      id_report: reportId,
+      admin_message: memoText,
+    };
+    
+    console.log("Saving note with payload:", notePayload);    
+
+    try {
+      await createAdminNote(notePayload);
+      alert("✅ Memo saved successfully!");
+
+      // ✅ Update memoText state to immediately reflect the new memo
+      setMemoText(notePayload.admin_message);
+
+      // ✅ Refetch memo from the backend to ensure sync
+      fetchMemo(reportId);
+
+      setIsEditing(false); // Exit edit mode after saving
+    } catch (error) {
+      console.error("❌ Error saving memo:", error);
+      alert("Failed to save memo.");
+    }
+  };
 
   return (
     <>
@@ -198,7 +270,7 @@ function AdminDetail() {
               <h2 className="headdingB fs-3 -blue -medium">Memo</h2>
               <div className={`memoBlock ${isEditing ? "-active" : ""}`}>
                 {!isEditing ? (
-                  <div className="memoBlock__static">{memoText}</div>
+                  <div className="memoBlock__static">{memoText || "No memo available"}</div>
                 ) : (
                   <div className="memoBlock__edit">
                     <textarea
@@ -210,7 +282,10 @@ function AdminDetail() {
                     ></textarea>
                   </div>
                 )}
-                <button className="memoBlock__btn" onClick={toggleEdit}>
+                <button 
+                  className="memoBlock__btn" 
+                  onClick={isEditing ? handleSaveNote : toggleEdit} // Calls `handleSaveNote` when editing
+                >
                   {isEditing ? (
                     <span className="iconCheck">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clipboard-check" viewBox="0 0 16 16">
@@ -227,6 +302,7 @@ function AdminDetail() {
                     </span>
                   )}
                 </button>
+
                 {/* <div className="memoBlock__static">text text</div>
                 <div className="memoBlock__edit">
                   <textarea name="" id="textEdit" cols="30" rows="10"></textarea>
