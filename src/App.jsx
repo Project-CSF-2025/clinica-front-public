@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Form from './pages/Form';
 import Preview from './pages/Preview';
 import Confirm from './pages/Confirm';
+import Consult from './pages/Consult';
+import View from './pages/View';
 import AdminLogin from "./pages/AdminLogin";
 import Admin from './pages/Admin';
 import AdminDetail from './pages/AdminDetail';
@@ -20,10 +22,11 @@ function App() {
         <Route path="/form" element={<Form />} />
         <Route path="/preview" element={<Preview />} />
         <Route path="/confirm" element={<Confirm />} />
+        <Route path="/consult" element={<Consult />} />
+        <Route path="/view" element={<View />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/detail/:reportCode" element={<AdminDetail />} />
-
       </Routes>
       <Footer />
     </Router>

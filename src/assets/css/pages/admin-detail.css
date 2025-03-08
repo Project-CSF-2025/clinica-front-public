@@ -18,7 +18,7 @@
   width: calc((100% - 64px) / 2);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 54px;
 }
 
 /* pageVista */
@@ -97,7 +97,7 @@
 }
 
 .detailBox__textBox {
-  height: 100px;
+  height: 80px;
   margin-top: 12px;
   padding-right: 10px;
 
@@ -163,12 +163,13 @@
 
 /* memoBlock
 ============================== */
-.memoBlock__wrap {
-
+.memoBlock__wrap .headdingB {
+  position: relative;
+  z-index: 1;
 }
 .memoBlock {
   width: 100%;
-  height: 230px;
+  height: 260px;
   padding: 40px 84px 40px 24px;
   /* border-radius: 0 32px 32px 0;
   border-radius: 32px; */
@@ -181,7 +182,7 @@
 .memoBlock::before {
   content: "";
   position: absolute;
-  background: url(../img/icon_pin.svg)no-repeat center center/contain;
+  background: url(../../img/icon_pin.svg)no-repeat center center/contain;
   fill: var(--labelBlue);
   width: 32px;
   height: 32px;
@@ -249,6 +250,7 @@
   height: 100%;
   /* box-sizing: content-box; */
   margin: 2px;
+  resize: none;
 }
 .memoBlock.-active .memoBlock__edit {
   display: block;
@@ -289,7 +291,7 @@
 }
 
 .chatBlock {
-  height: 624px;
+  height: 695px;
   border-radius: 32px;
   overflow: hidden;
   box-shadow:  

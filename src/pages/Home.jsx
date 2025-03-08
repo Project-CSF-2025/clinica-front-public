@@ -21,7 +21,7 @@ function Home() {
                 <img src={iconNew} alt="" className="button-icon-inicio" />
                 Nuevo Reporte
               </Link>
-              <Link to="" className="button-link">
+              <Link to="/consult" className="button-link">
                 <img src={iconSearch} alt="" className="button-icon-inicio" />
                 Consultar estado
               </Link>

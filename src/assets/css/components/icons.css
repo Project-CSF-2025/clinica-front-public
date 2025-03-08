@@ -66,6 +66,11 @@
   display: none;
 }
 
+.iconFlag__wrp .iconFlag,
+.iconFlag__wrp .iconFlaged {
+  display: none;
+}
+
 .iconFlag.-show {
   display: block;
 }
