@@ -30,7 +30,7 @@
   fill: var(--yellow);
 }
 
-.iconFlag__wrp {
+/* .iconFlag__wrp {
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -41,6 +41,13 @@
   left: 0;
   margin: auto;
   z-index: 10;
+} */
+
+.iconFlag__wrp {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
 
 .pageAdminDetail .iconFlag,
@@ -79,7 +86,6 @@
   display: block;
 }
 
-
 .icon-send {
   position: relative;
 }
@@ -97,8 +103,6 @@
   margin: auto;
 }
 
-
-
 .iconEdit svg {
   width: 20px;
   height: 20px;
@@ -110,6 +114,7 @@
   left: 0;
   margin: auto;
 }
+
 .iconCheck svg {
   width: 20px;
   height: 20px;
@@ -120,4 +125,14 @@
   right: 0;
   left: 0;
   margin: auto;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.know:hover .iconFlag__wrp svg {
+  fill: white; 
 }

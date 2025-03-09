@@ -19,6 +19,14 @@ function Preview() {
     setFormData({ ...formData, files: updatedFiles });
   };
 
+  const formatField = (value) => {
+    if (value === null || value === undefined || value.toString().trim() === "") {
+        return "No disponible";  // Customize message here
+    }
+    return value;
+  };
+
+
   const handleEdit = () => {
     navigate("/form", { state: formData });
   }
@@ -107,7 +115,7 @@ function Preview() {
                     <p className="card-text d-flex" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Departamento:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.department}
+                        {formatField(formData.department)}
                       </span>
                     </p>
 
@@ -115,7 +123,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Professión:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.profession}
+                      {formatField(formData.profession)}
                       </span>
                     </p>
 
@@ -123,7 +131,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Fecha del incidencia:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.dateTime}
+                        {formatField(formData.dateTime)}
                       </span>
                     </p>
 
@@ -131,7 +139,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Lugar:</strong> 
                       <span id="ticket-lugar" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.place}
+                        {formatField(formData.place)}
                       </span>
                     </p>
 
@@ -139,7 +147,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Asunto: </strong>
                       <span id="ticket-asunto" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.subject}
+                        {formatField(formData.subject)}
                       </span>
                     </p>    
 
@@ -147,7 +155,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>Descripción:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.description}
+                        {formatField(formData.description)}
                       </span>
                     </p>
 
@@ -155,7 +163,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Tiene consecuencias?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.isConsequent}
+                        {formatField(formData.isConsequent ? "Sí" : "No")}
                       </span>
                     </p>
 
@@ -163,7 +171,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Que consecuencia?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.consequenceType}
+                        {formatField(formData.consequenceType)}
                       </span>
                     </p>
 
@@ -171,7 +179,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Evitable?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.avoidable}
+                        {formatField(formData.avoidable ? "Sí" : "No")}
                       </span>
                     </p>
 
@@ -179,7 +187,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Sugerencias:</strong> 
                       <span id="ticket-sugerencias" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formData.suggestion}
+                        {formatField(formData.suggestions)}
                       </span>
                     </p>
 
