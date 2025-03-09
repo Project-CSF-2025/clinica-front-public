@@ -4,6 +4,7 @@ import { getReportByCode } from "../services/reportService";
 import { createAdminNote } from "../services/adminNoteService";
 import { getAdminNoteByReportId } from "../services/adminNoteService";
 import { updateAdminNote } from "../services/adminNoteService";
+import { toggleReportFlag } from "../services/adminService";
 
 function AdminDetail() {
   const { reportCode } = useParams(); 
@@ -66,6 +67,7 @@ function AdminDetail() {
             const reportDetails = await getReportByCode(paramCode);
             console.log("✅ Report fetched:", reportDetails);
             setReport(reportDetails);
+            setIsFlagged(reportDetails.is_flagged);
 
             // ✅ Fetch memo if report ID exists
             if (reportDetails?.id_report) {
@@ -90,14 +92,31 @@ function AdminDetail() {
         fetchMemo(report.id_report);
     }
   }, [report]);
+
+  const toggleFlag = async () => {
+    if (!report || !report.id_report) {
+      console.error("❌ Error: No report ID found");
+      return;
+    }
   
+    try {
+      const newFlagStatus = !isFlagged;
+      await toggleReportFlag(report.id_report, newFlagStatus); // ✅ Call backend API
+  
+      setIsFlagged(newFlagStatus);
+      console.log("✅ Report flag updated successfully!");
+  
+      // ✅ Notify Admin Page to refresh reports from the database
+      window.dispatchEvent(new Event("flagUpdated"));
+  
+    } catch (error) {
+      console.error("❌ Error updating report flag:", error);
+      alert("Failed to update flag status.");
+    }
+  };       
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
-
-  const toggleFlag = () => {
-    setIsFlagged((prev) => !prev);
-  };
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);

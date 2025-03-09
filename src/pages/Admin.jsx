@@ -20,25 +20,41 @@ function Admin() {
     const fetchReports = async () => {
       try {
         const data = await apiRequest("GET", "/reports");
-        console.log("Fetched Reports:", data); 
-        
+        console.log("✅ Fetched Reports:", data);
+  
         if (Array.isArray(data)) {
+          // ✅ Keep only reports that are not deleted
           const filteredData = data.filter(report => report && report.status !== "Eliminado");
-          setReports(filteredData); 
+  
+          // ✅ Ensure we store `is_flagged` correctly
+          setReports(filteredData);
           setFilteredReports(filteredData);
         } else {
           throw new Error("Unexpected response format");
         }
       } catch (err) {
-        console.error("Error fetching reports:", err);
+        console.error("❌ Error fetching reports:", err);
         setError("Failed to load reports");
       } finally {
         setLoading(false);
       }
-    };    
-
+    };
+  
     fetchReports();
-  }, []);
+  
+    // ✅ Re-fetch reports when a flag is updated
+    const handleFlagChange = () => {
+      console.log("🔄 Flag status changed, refreshing reports...");
+      fetchReports(); // ✅ Fetch latest data from backend
+    };
+  
+    window.addEventListener("flagUpdated", handleFlagChange);
+  
+    return () => {
+      window.removeEventListener("flagUpdated", handleFlagChange);
+    };
+  }, []); 
+  
 
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
