@@ -5,6 +5,7 @@ import { createAdminNote } from "../services/adminNoteService";
 import { getAdminNoteByReportId } from "../services/adminNoteService";
 import { updateAdminNote } from "../services/adminNoteService";
 import { toggleReportFlag } from "../services/adminService";
+import { updateReportStatus } from "../services/reportService";
 
 function AdminDetail() {
   const { reportCode } = useParams(); 
@@ -17,14 +18,12 @@ function AdminDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [memoText, setMemoText] = useState("");
   const [existingMemo, setExistingMemo] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(report?.status || "No leído");
 
   console.log("🔹 useParams() output:", useParams());
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
 
-
-
-  
   const fetchMemo = async (id_report) => {
     if (!id_report) {
         console.error("❌ Error: Report ID is undefined");
@@ -92,6 +91,24 @@ function AdminDetail() {
         fetchMemo(report.id_report);
     }
   }, [report]);
+
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+  
+    if (!report?.report_code) {
+      console.error("❌ Error: No report code found");
+      return;
+    }
+  
+    try {
+      await updateReportStatus(report.report_code, newStatus); // ✅ Call API
+      setSelectedStatus(newStatus); // ✅ Update UI
+      alert("✅ Report status updated successfully!");
+    } catch (error) {
+      console.error("❌ Error updating status:", error);
+      alert("❌ Failed to update status");
+    }
+  };
 
   const toggleFlag = async () => {
     if (!report || !report.id_report) {
@@ -273,12 +290,15 @@ function AdminDetail() {
                 <select 
                   name="situation"
                   className="select"
+                  value={selectedStatus} // ✅ Set value from state
+                  onChange={handleStatusChange} // ✅ Trigger function on change
                 >
-                  <option value="1">No leído</option>
-                  <option value="2">En proceso</option>
-                  <option value="3">Resuelto</option>
+                  <option value="No leído">No leído</option>
+                  <option value="En proceso">En proceso</option>
+                  <option value="Resuelto">Resuelto</option>
                 </select>
               </div>
+
               {/* ===== Flag  ===== */}
               <ul className="iconList">
                 <li>
