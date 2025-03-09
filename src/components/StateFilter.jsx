@@ -1,32 +1,44 @@
 import React from 'react';
 
 const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredReports }) => {
+  
   const toggleFilter = (targetClass) => {
     let updatedFilters = [...activeFilters];
-  
+
     if (updatedFilters.includes(targetClass)) {
       updatedFilters = updatedFilters.filter(filter => filter !== targetClass);
     } else {
       updatedFilters.push(targetClass);
     }
-  
+
     setActiveFilters(updatedFilters);
-  
+
+    // ✅ Apply the filters based on updated active filters
+    applyFilters(updatedFilters);
+  };
+
+  const applyFilters = (updatedFilters) => {
+    let filtered = reports; // ✅ Use all reports
+
     if (updatedFilters.length > 0) {
-      setFilteredReports(reports.filter(report => {
+      // ✅ Filter only reports matching active filters
+      filtered = reports.filter(report => {
         const reportClass =
           report.status === "No leído" ? "cRedLight" :
           report.status === "En proceso" ? "cBlueLight" :
           report.status === "Resuelto" ? "cBlueDark" :
           report.status === "Eliminado" ? "cGrayDark" : "";
-  
+
         return updatedFilters.includes(reportClass);
-      }));
+      });
     } else {
-      setFilteredReports(reports.filter(report => report.status !== "Eliminado"));
+      // ✅ Default: Hide "Eliminado"
+      filtered = reports.filter(report => report.status !== "Eliminado");
     }
+
+    setFilteredReports(filtered);
   };
-  
+
   return (
     <>
       <ul className="category__nav category__nav-class list-inline mb-0">
@@ -53,6 +65,6 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
       </ul>
     </>
   )
-}
+};
 
-export default StateFilter
+export default StateFilter;

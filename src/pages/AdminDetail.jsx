@@ -5,6 +5,7 @@ import { createAdminNote } from "../services/adminNoteService";
 import { getAdminNoteByReportId } from "../services/adminNoteService";
 import { updateAdminNote } from "../services/adminNoteService";
 import { toggleReportFlag } from "../services/adminService";
+import { updateReportStatus } from "../services/reportService";
 
 function AdminDetail() {
   const { reportCode } = useParams(); 
@@ -17,14 +18,12 @@ function AdminDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [memoText, setMemoText] = useState("");
   const [existingMemo, setExistingMemo] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(report?.status || "No leído");
 
   console.log("🔹 useParams() output:", useParams());
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
 
-
-
-  
   const fetchMemo = async (id_report) => {
     if (!id_report) {
         console.error("❌ Error: Report ID is undefined");
@@ -93,6 +92,46 @@ function AdminDetail() {
     }
   }, [report]);
 
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+  
+    if (!report?.report_code) {
+      console.error("❌ Error: No report code found");
+      return;
+    }
+  
+    try {
+      await updateReportStatus(report.report_code, newStatus); // ✅ Call API
+      setSelectedStatus(newStatus); // ✅ Update UI
+      alert("✅ Report status updated successfully!");
+    } catch (error) {
+      console.error("❌ Error updating status:", error);
+      alert("❌ Failed to update status");
+    }
+  };
+
+  const handleSoftDelete = async () => {
+    if (!report?.report_code) {
+      console.error("❌ Error: No report code found");
+      return;
+    }
+  
+    try {
+      await updateReportStatus(report.report_code, "Eliminado"); // ✅ Call API to update status
+      setSelectedStatus("Eliminado"); // ✅ Update UI
+      alert("✅ Report marked as Eliminado!");
+  
+      // ✅ Optional: Redirect to admin page after deletion
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 1000);
+  
+    } catch (error) {
+      console.error("❌ Error updating status:", error);
+      alert("❌ Failed to delete the report.");
+    }
+  };  
+
   const toggleFlag = async () => {
     if (!report || !report.id_report) {
       console.error("❌ Error: No report ID found");
@@ -113,7 +152,9 @@ function AdminDetail() {
       console.error("❌ Error updating report flag:", error);
       alert("Failed to update flag status.");
     }
-  };       
+  };  
+  
+  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -273,12 +314,15 @@ function AdminDetail() {
                 <select 
                   name="situation"
                   className="select"
+                  value={selectedStatus} // ✅ Set value from state
+                  onChange={handleStatusChange} // ✅ Trigger function on change
                 >
-                  <option value="1">No leído</option>
-                  <option value="2">En proceso</option>
-                  <option value="3">Resuelto</option>
+                  <option value="No leído">No leído</option>
+                  <option value="En proceso">En proceso</option>
+                  <option value="Resuelto">Resuelto</option>
                 </select>
               </div>
+
               {/* ===== Flag  ===== */}
               <ul className="iconList">
                 <li>
@@ -313,7 +357,13 @@ function AdminDetail() {
                       <h5 className="mb-0">¿Deseas eliminar este reporte?</h5>
                     </div>
                     <div className="modal-footer flex-nowrap p-0">
-                      <button type="button" id="buttonEliminar" className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end"><strong>Sí, eliminar</strong></button>
+                      <button 
+                        type="button" 
+                        id="buttonEliminar" 
+                        className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end"
+                        onClick={handleSoftDelete} 
+                      >
+                        <strong>Sí, eliminar</strong></button>
                       <button type="button" className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">No, cancelar</button>
                     </div>
                   </div>

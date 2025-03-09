@@ -23,13 +23,10 @@ function Admin() {
         console.log("✅ Fetched Reports:", data);
   
         if (Array.isArray(data)) {
-          // ✅ Keep only reports that are not deleted
-          const filteredData = data.filter(report => report && report.status !== "Eliminado");
-  
-          // ✅ Ensure we store `is_flagged` correctly
-          setReports(filteredData);
-          setFilteredReports(filteredData);
-        } else {
+          setReports(data); // ✅ Store all reports
+          setFilteredReports(data.filter(report => report.status !== "Eliminado")); // ✅ Show only non-deleted reports initially
+        }        
+        else {
           throw new Error("Unexpected response format");
         }
       } catch (err) {
