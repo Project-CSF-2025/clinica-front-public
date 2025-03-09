@@ -20,6 +20,9 @@ function AdminDetail() {
   console.log("🔹 useParams() output:", useParams());
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
+
+
+
   
   const fetchMemo = async (id_report) => {
     if (!id_report) {
@@ -104,6 +107,25 @@ function AdminDetail() {
     setMemoText(e.target.value);
   };
 
+  const formatField = (value) => {
+    if (value === null || value === undefined || value.toString().trim() === "") {
+        return "No disponible"; 
+    }
+
+    // Check if value is a valid date
+    const parsedDate = new Date(value);
+    if (!isNaN(parsedDate.getTime())) {
+        return parsedDate.toLocaleString("es-ES", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+    }
+
+    return value;
+  };
 
   const handleSaveNote = async () => {
     if (!memoText.trim()) {
@@ -153,43 +175,43 @@ function AdminDetail() {
             <div className="detailBox">
               <div className="detailBox__item">
                 <span className="detailBox__title">Departamento:</span>
-                <span className="detailBox__text getDepartamento">{report.department || "N/A"}</span>
+                <span className="detailBox__text getDepartamento">{formatField(report.department)}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Professión:</span>
-                <span className="detailBox__text">{report.profession || "N/A"}</span>
+                <span className="detailBox__text">{formatField(report.profession)}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Fecha y hora:</span>
-                <span className="detailBox__text">{report.dateTime || "N/A"}</span>
+                <span className="detailBox__text">{formatField(report.created_at)}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Lugar:</span>
-                <span className="detailBox__text getLugar">{report.place || "N/A"}</span>
+                <span className="detailBox__text getLugar">{formatField(report.location)}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Asunto:</span>
-                <span className="detailBox__text getAsunto">{report.subject || "N/A"}</span>
+                <span className="detailBox__text getAsunto">{formatField(report.subject)}</span>
               </div>
               <div className="detailBox__item -column">
                 <span className="detailBox__title">Descripción:</span>
-                <div className="detailBox__textBox"><span className="getText">{report.description || "N/A"}</span></div>
+                <div className="detailBox__textBox"><span className="getText">{formatField(report.description)}</span></div>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Tiene consecuencias?:</span>
-                <span className="detailBox__text">{report.isConsequent || "N/A"}</span>
+                <span className="detailBox__text">{formatField(report.isConsequent ? "Sí" : "No")}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Que consecuencia?:</span>
-                <span className="detailBox__text">{report.consequenceType || ""}</span>
+                <span className="detailBox__text">{formatField(report.consequenceType)}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Evitable?:</span>
-                <span className="detailBox__text">{report.avoidable || "N/A"}</span>
+                <span className="detailBox__text">{formatField(report.avoidable ? "Sí" : "No")}</span>
               </div>
               <div className="detailBox__item -column">
                 <span className="detailBox__title">Sugerencias:</span>
-                <span className="detailBox__textBox getSugerencias">{report.suggestion || ""}</span>
+                <span className="detailBox__textBox getSugerencias">{formatField(report.suggestions)}</span>
               </div>
               {/* ===== Files  ===== */}
               <div className="detailBox__item">
@@ -295,7 +317,7 @@ function AdminDetail() {
                       cols="30"
                       rows="10"
                       value={memoText}
-                      onChange={(e) => setMemoText(e.target.value)}
+                      onChange={handleTextChange}
                     />
                   </div>
                 )}

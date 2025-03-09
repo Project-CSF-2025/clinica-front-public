@@ -26,7 +26,7 @@ function Form() {
     isConsequent: "",
     avoidable: "",
     consequenceType: "",
-    suggestion: "",
+    suggestions: "",
     files: []
   };
 
@@ -189,8 +189,8 @@ function Form() {
                 {/* ===== Suggestions ===== */}
                 <TextareaField
                   label="Sugerencias"
-                  name="suggestion"
-                  value={formData.suggestion}
+                  name="suggestions"
+                  value={formData.suggestions}
                   onChange={handleChange}
                 />            
                 
