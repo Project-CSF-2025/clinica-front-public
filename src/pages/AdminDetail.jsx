@@ -110,6 +110,28 @@ function AdminDetail() {
     }
   };
 
+  const handleSoftDelete = async () => {
+    if (!report?.report_code) {
+      console.error("❌ Error: No report code found");
+      return;
+    }
+  
+    try {
+      await updateReportStatus(report.report_code, "Eliminado"); // ✅ Call API to update status
+      setSelectedStatus("Eliminado"); // ✅ Update UI
+      alert("✅ Report marked as Eliminado!");
+  
+      // ✅ Optional: Redirect to admin page after deletion
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 1000);
+  
+    } catch (error) {
+      console.error("❌ Error updating status:", error);
+      alert("❌ Failed to delete the report.");
+    }
+  };  
+
   const toggleFlag = async () => {
     if (!report || !report.id_report) {
       console.error("❌ Error: No report ID found");
@@ -130,7 +152,9 @@ function AdminDetail() {
       console.error("❌ Error updating report flag:", error);
       alert("Failed to update flag status.");
     }
-  };       
+  };  
+  
+  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -333,7 +357,13 @@ function AdminDetail() {
                       <h5 className="mb-0">¿Deseas eliminar este reporte?</h5>
                     </div>
                     <div className="modal-footer flex-nowrap p-0">
-                      <button type="button" id="buttonEliminar" className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end"><strong>Sí, eliminar</strong></button>
+                      <button 
+                        type="button" 
+                        id="buttonEliminar" 
+                        className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end"
+                        onClick={handleSoftDelete} 
+                      >
+                        <strong>Sí, eliminar</strong></button>
                       <button type="button" className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">No, cancelar</button>
                     </div>
                   </div>
