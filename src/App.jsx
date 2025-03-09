@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Header from './components/Header';
 import Home from './pages/Home';
 import Form from './pages/Form';
@@ -12,11 +12,14 @@ import Admin from './pages/Admin';
 import AdminDetail from './pages/AdminDetail';
 import Footer from './components/Footer';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   return (
-    <Router>
-      <Header />
+    <>
+      <Header isAdminPage={isAdminPage} />
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/form" element={<Form />} />
@@ -26,9 +29,19 @@ function App() {
         <Route path="/view" element={<View />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/detail/:reportCode" element={<AdminDetail />} />
+        <Route path="/admin/detail/:id" element={<AdminDetail />} />
       </Routes>
+
       <Footer />
+    </>
+  );
+}
+
+function App() {
+
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
