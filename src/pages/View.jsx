@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
-import { getReportByCode } from "../services/reportService";
+import { getReportByCode, getStatusHistoryByReportId } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService";
 import ViewReportState from "../components/ViewReportState";
 
 function View() {
   const { reportCode } = useParams();
   const location = useLocation();
-
   const [report, setReport] = useState(location.state || null);
+  const [statusHistory, setStatusHistory] = useState([]);
   const [loading, setLoading] = useState(!location.state); 
   const [error, setError] = useState(null);
 
@@ -16,24 +16,18 @@ function View() {
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    if (report) {
-      setLoading(false);
-      return;
-    }
-
-    if (!reportCode) {
-      setError("No report code provided in URL");
-      setLoading(false);
-      return;
-    }
-
-    const fetchReport = async () => {
+    const fetchReportData = async () => {
       try {
+        setLoading(true);
         const fetchedReport = await getReportByCode(reportCode);
         if (!fetchedReport) {
           setError("Report not found");
         } else {
           setReport(fetchedReport);
+
+          // ✅ Fetch status history
+          const history = await getStatusHistoryByReportId(fetchedReport.id_report);
+          setStatusHistory(history);
         }
       } catch (err) {
         console.error("❌ Error fetching report:", err);
@@ -43,8 +37,10 @@ function View() {
       }
     };
 
-    fetchReport();
-  }, [report, reportCode]);
+    if (!report) {
+      fetchReportData();
+    }
+  }, [reportCode]); 
 
   useEffect(() => {
     if (!report?.id_report) return;
@@ -126,7 +122,7 @@ function View() {
           <span className="getCode -bold">{report.report_code || "N/A"}</span>
         </h2>
 
-        <ViewReportState />
+        <ViewReportState statusHistory={statusHistory} reportCreatedAt={report.created_at} />
 
         <div className="flexBox">
           <div className="flexBox__item">
@@ -308,11 +304,11 @@ function View() {
           </div>
         </div>
 
-        <div className="buttonA -centerContents -mt120">
+        {/* <div className="buttonA -centerContents -mt120">
           <Link to="/admin" className="-iconBack">
             Consultar estado
           </Link>
-        </div>
+        </div> */}
       </main>
     </>
   );
