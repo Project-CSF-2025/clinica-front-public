@@ -15,7 +15,7 @@ const Consult = () => {
     try {
       const response = await getReportByCode(code);
       if (response) {
-        navigate(`/view/#${code}`);
+        navigate(`/view/${code}`);
       }
     } catch (error) {
       setSnackbarMessage("El código introducido no es correcto.");
