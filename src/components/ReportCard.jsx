@@ -21,15 +21,15 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
           className={`know know-s useful__wrap ${statusClass} ${report.is_flagged && statusClass !== "cGrayDark" ? "cYellow" : ""}`}      >
         {/* ✅ Report Code */}
         <p className="know__num">
-          {highlightText(`${report.report_code}`, searchTerm)}
+          {highlightText(`${report.report_code}` || "", searchTerm)}
         </p>
 
         <span className={`know__label ${statusClass}`}>
-          {highlightText(report.status, searchTerm)}
+          {highlightText(report.status || "", searchTerm)}
         </span>
-        <span className="know__date">{highlightText(report.dateTime, searchTerm)}</span>
-        <h3 className="know__title">{highlightText(report.subject, searchTerm)}</h3>
-        <div className="know__info">{highlightText(report.description, searchTerm)}</div>
+        <span className="know__date">{highlightText(report.dateTime || "", searchTerm)}</span>
+        <h3 className="know__title">{highlightText(report.subject || "", searchTerm)}</h3>
+        <div className="know__info">{highlightText(report.description || "", searchTerm)}</div>
         {/* ✅ Flag Icon (Appears Only If Flagged) */}
         <span className={`iconFlag ${report.is_flagged && statusClass !== "cGrayDark" ? "iconFlaged" : ""}`}>
           <svg
