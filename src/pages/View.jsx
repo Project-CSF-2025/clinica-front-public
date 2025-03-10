@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ViewReportState from "../components/ViewReportState";
 
 function View() {
   const report = location.state || {};
@@ -8,6 +9,10 @@ function View() {
     <>
       <main className="wrapper container-xxl">
         <h2 className="adminDetailHeadding headdingA fs-1 -blue -center -regular">Nº REPORTE :  <span className="getCode -bold">{report.report_code || "N/A"}</span></h2>
+
+        {/* add status */}
+        <ViewReportState
+        />
 
         <div className="flexBox">
           <div className="flexBox__item">
@@ -88,7 +93,7 @@ function View() {
           <div className="flexBox__item">
             <div className="chatBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
-              <div className="chatBlock">
+              <div className="chatBlock -mt40">
                 <div className="chatBlock__inner">
                   <div className="chatBlock__body">
 
