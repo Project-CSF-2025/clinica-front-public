@@ -32,7 +32,6 @@
 }
 
 .actualizacion {
-    /* text-align: center; add Kanako */
     padding-bottom: 80px;
 }
 
@@ -57,13 +56,13 @@
 
 .reporte-container {
     width: 100%;
-    max-width: 1000px;
+    /* max-width: 1000px; */
     background: linear-gradient(135deg, #ffffff, #f7f7f7);
     border-radius: 16px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin: 40px auto 0;
-    padding: 20px;
+    padding: 30px;
     transition: all 0.3s ease-in-out;
 }
 
@@ -83,7 +82,7 @@
 .progreso {
     display: flex;
     justify-content: center;
-    gap: 80px;
+    gap: 10%;
     margin-top: 20px;
     padding: 10px 15px;
     background: #f7f7f7;
