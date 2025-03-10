@@ -18,19 +18,22 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
   };
 
   const applyFilters = (updatedFilters) => {
-    let filtered = reports; // ✅ Use all reports
+    let filtered = reports;
 
-    if (updatedFilters.length > 0) {
-      // ✅ Filter only reports matching active filters
-      filtered = reports.filter(report => {
-        const reportClass =
-          report.status === "No leído" ? "cRedLight" :
-          report.status === "En proceso" ? "cBlueLight" :
-          report.status === "Resuelto" ? "cBlueDark" :
-          report.status === "Eliminado" ? "cGrayDark" : "";
+  if (updatedFilters.length > 0) {
+    filtered = reports.filter(report => {
+      // ✅ 複数のクラスを持つようにする
+      let reportClasses = [];
 
-        return updatedFilters.includes(reportClass);
-      });
+      if (report.status === "No leído") reportClasses.push("cRedLight");
+      if (report.status === "En proceso") reportClasses.push("cBlueLight");
+      if (report.status === "Resuelto") reportClasses.push("cBlueDark");
+      if (report.status === "Eliminado") reportClasses.push("cGrayDark");
+      if (report.is_flagged) reportClasses.push("cYellow"); // ✅ Prioritario対象
+
+      // ✅ いずれかのクラスがフィルターに含まれているかチェック
+      return updatedFilters.some(filter => reportClasses.includes(filter));
+    });
     } else {
       // ✅ Default: Hide "Eliminado"
       filtered = reports.filter(report => report.status !== "Eliminado");
@@ -46,7 +49,8 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
           { label: "No leído", target: "cRedLight" },
           { label: "En proceso", target: "cBlueLight" },
           { label: "Resuelto", target: "cBlueDark" },
-          { label: "Eliminados", target: "cGrayDark" }
+          { label: "Eliminados", target: "cGrayDark" },
+          { label: "Prioritario", target: "cYellow" }
         ].map(filter => (
           <li key={filter.target} className="list-inline-item">
             <a
