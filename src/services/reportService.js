@@ -11,3 +11,7 @@ export const getReportByCode = (report_code) =>
 
 export const updateReportStatus = (reportCode, newStatus) => 
   apiRequest("PUT", `/reports/${reportCode}/status`, { status: newStatus });
+
+export const getStatusHistoryByReportId = (reportId) => 
+  apiRequest("GET", `/status-history/${reportId}`); 
+
