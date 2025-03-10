@@ -92,7 +92,7 @@ function Admin() {
                 {/* ===== Report card ===== */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
-                    filteredReports.map((report, index) => 
+                    filteredReports.slice().reverse().map((report, index) => 
                       report ? ( 
                         <ReportCard
                           key={report._id || index} 

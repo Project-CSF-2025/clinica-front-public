@@ -18,8 +18,7 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
         onClick={() => report.report_code 
           ? navigate(`/admin/detail/${report.report_code}`, { state: report }) 
           : console.error("Report code is undefined")}
-          className={`know know-s useful__wrap ${statusClass} ${report.is_flagged ? "cYellow" : ""}`}
-      >
+          className={`know know-s useful__wrap ${statusClass} ${report.is_flagged && statusClass !== "cGrayDark" ? "cYellow" : ""}`}      >
         {/* ✅ Report Code */}
         <p className="know__num">
           {highlightText(`${report.report_code}`, searchTerm)}
@@ -32,7 +31,7 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
         <h3 className="know__title">{highlightText(report.subject, searchTerm)}</h3>
         <div className="know__info">{highlightText(report.description, searchTerm)}</div>
         {/* ✅ Flag Icon (Appears Only If Flagged) */}
-        <span className={`iconFlag ${report.is_flagged ? "iconFlaged" : ""}`}>
+        <span className={`iconFlag ${report.is_flagged && statusClass !== "cGrayDark" ? "iconFlaged" : ""}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"

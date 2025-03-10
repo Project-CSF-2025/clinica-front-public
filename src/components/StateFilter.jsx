@@ -12,8 +12,6 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
     }
 
     setActiveFilters(updatedFilters);
-
-    // ✅ Apply the filters based on updated active filters
     applyFilters(updatedFilters);
   };
 
@@ -22,20 +20,27 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
 
   if (updatedFilters.length > 0) {
     filtered = reports.filter(report => {
-      // ✅ 複数のクラスを持つようにする
       let reportClasses = [];
 
       if (report.status === "No leído") reportClasses.push("cRedLight");
       if (report.status === "En proceso") reportClasses.push("cBlueLight");
       if (report.status === "Resuelto") reportClasses.push("cBlueDark");
       if (report.status === "Eliminado") reportClasses.push("cGrayDark");
-      if (report.is_flagged) reportClasses.push("cYellow"); // ✅ Prioritario対象
+      if (report.is_flagged) reportClasses.push("cYellow");
 
-      // ✅ いずれかのクラスがフィルターに含まれているかチェック
+      if (updatedFilters.length === 1 && updatedFilters.includes("cYellow")) {
+        return report.is_flagged && report.status !== "Eliminado";
+      }
+
+      if (updatedFilters.includes("cYellow")) {
+        return  report.is_flagged && 
+                report.status !== "Eliminado" &&
+                updatedFilters.some(filter => reportClasses.includes(filter) && filter !== "cYellow");
+      }
+
       return updatedFilters.some(filter => reportClasses.includes(filter));
     });
     } else {
-      // ✅ Default: Hide "Eliminado"
       filtered = reports.filter(report => report.status !== "Eliminado");
     }
 
