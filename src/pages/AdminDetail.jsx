@@ -7,6 +7,8 @@ import { updateAdminNote } from "../services/adminNoteService";
 import { toggleReportFlag } from "../services/adminService";
 import { updateReportStatus } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService"; 
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 function AdminDetail() {
   const { reportCode } = useParams(); 
@@ -22,36 +24,12 @@ function AdminDetail() {
   const [selectedStatus, setSelectedStatus] = useState(report?.status || "No leído");
 
   // ✅ For messages
-  const [messages, setMessages] = useState([]); // Always an array
+  const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("");
 
   console.log("🔹 useParams() output:", useParams());
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
-
-  const fetchMemo = async (id_report) => {
-    if (!id_report) {
-      console.error("❌ Error: Report ID is undefined");
-      return;
-    }
-
-    try {
-      const response = await getAdminNoteByReportId(id_report);
-      console.log("✅ Memo fetched:", response);
-
-      if (response) {
-        setMemoText(response.admin_message);
-        setExistingMemo(response);
-      } else {
-        setMemoText("");
-        setExistingMemo(null);
-      }
-    } catch (error) {
-      console.error("❌ Error fetching memo:", error);
-      setMemoText("");
-      setExistingMemo(null);
-    }
-  };
 
   // Modify fetchReportAndMessages to safely set messages as an array
   useEffect(() => {
@@ -92,6 +70,30 @@ function AdminDetail() {
       fetchMessages(report.id_report);
     }
   }, [report]);
+
+  const fetchMemo = async (id_report) => {
+    if (!id_report) {
+      console.error("❌ Error: Report ID is undefined");
+      return;
+    }
+
+    try {
+      const response = await getAdminNoteByReportId(id_report);
+      console.log("✅ Memo fetched:", response);
+
+      if (response) {
+        setMemoText(response.admin_message);
+        setExistingMemo(response);
+      } else {
+        setMemoText("");
+        setExistingMemo(null);
+      }
+    } catch (error) {
+      console.error("❌ Error fetching memo:", error);
+      setMemoText("");
+      setExistingMemo(null);
+    }
+  };
 
   // Modified fetchMessages to safely handle errors and non-array responses
   const fetchMessages = async (id_report) => {
@@ -197,6 +199,18 @@ function AdminDetail() {
       console.error("❌ Error updating report flag:", error);
       alert("Failed to update flag status.");
     }
+  };
+
+  const handleDownloadPDF = () => {
+    const detailBox = document.querySelector(".detailBox");
+    html2canvas(detailBox, { scale: 2, scrollX: 0, scrollY: 0 })
+      .then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
+        pdf.save(`reporte_${report?.report_code || "descarga"}.pdf`);
+      })
+      .catch(() => alert("❌ Error generating PDF"));
   };
 
   if (loading) return <p>Loading...</p>;
@@ -345,7 +359,16 @@ function AdminDetail() {
                 )}
               </div>
               <div className="buttonA -sizeS -thin">
-                <a href="#" id="downloadPDFButton">Descargar</a>
+                <a 
+                  href="#" 
+                  id="downloadPDFButton" 
+                  onClick={(event) => {
+                    event.preventDefault(); // Prevents the default anchor behavior
+                    handleDownloadPDF();    // Calls the function to generate and download the PDF
+                  }}
+                >
+                  Descargar
+                </a>
               </div>
             </div>
           </div>
