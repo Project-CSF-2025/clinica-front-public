@@ -8,6 +8,7 @@ import { toggleReportFlag } from "../services/adminService";
 import { updateReportStatus } from "../services/reportService";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { getMessagesByReportId, sendMessage } from "../services/messageService"; 
 
 function AdminDetail() {
   const { reportCode } = useParams(); 
@@ -22,89 +23,138 @@ function AdminDetail() {
   const [existingMemo, setExistingMemo] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(report?.status || "No leído");
 
+  // ✅ For messages
+  const [messages, setMessages] = useState([]); // Always an array
+  const [newMessage, setNewMessage] = useState("");
+
   console.log("🔹 useParams() output:", useParams());
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
 
   const fetchMemo = async (id_report) => {
     if (!id_report) {
-        console.error("❌ Error: Report ID is undefined");
-        return;
+      console.error("❌ Error: Report ID is undefined");
+      return;
     }
 
     try {
-        const response = await getAdminNoteByReportId(id_report);
-        console.log("✅ Memo fetched:", response);
+      const response = await getAdminNoteByReportId(id_report);
+      console.log("✅ Memo fetched:", response);
 
-        if (response) {
-            setMemoText(response.admin_message); // ✅ Set memo text
-            setExistingMemo(response); // ✅ Store memo ID for updates
-        } else {
-            setMemoText(""); // ✅ If no memo, set empty
-            setExistingMemo(null); // ✅ Reset existing memo
-        }
-    } catch (error) {
-        console.error("❌ Error fetching memo:", error);
-        setMemoText(""); // ✅ Prevents issues when there's an error
+      if (response) {
+        setMemoText(response.admin_message);
+        setExistingMemo(response);
+      } else {
+        setMemoText("");
         setExistingMemo(null);
+      }
+    } catch (error) {
+      console.error("❌ Error fetching memo:", error);
+      setMemoText("");
+      setExistingMemo(null);
+    }
+  };
+
+  // Modify fetchReportAndMessages to safely set messages as an array
+  useEffect(() => {
+    const fetchReportAndMessages = async () => {
+      const paramCode = reportCode || location.state?.report_code;
+      if (!paramCode) {
+        setError("No report code provided");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const reportDetails = await getReportByCode(paramCode);
+        setReport(reportDetails);
+
+        // ✅ Fetch messages if report ID exists
+        if (reportDetails?.id_report) {
+          const messageData = await getMessagesByReportId(reportDetails.id_report);
+          // Ensure messages is an array even if API returns nothing or null
+          setMessages(Array.isArray(messageData) ? messageData : []);
+        } else {
+          console.error("❌ No valid report ID found for message fetch.");
+        }
+      } catch (err) {
+        console.error("❌ Error fetching report or messages:", err);
+        setError("Error loading data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReportAndMessages();
+  }, [reportCode, location.state]);
+
+  // Additional effect to refresh messages when report is updated
+  useEffect(() => {
+    if (report?.id_report) {
+      fetchMessages(report.id_report);
+    }
+  }, [report]);
+
+  // Modified fetchMessages to safely handle errors and non-array responses
+  const fetchMessages = async (id_report) => {
+    try {
+      const data = await getMessagesByReportId(id_report);
+      setMessages(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("❌ Error fetching messages:", error);
+      setMessages([]);
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (!newMessage.trim()) {
+      alert("⚠️ Message cannot be empty!");
+      return;
+    }
+
+    if (!report || !report.id_report) {
+      alert("⚠️ Error: No report ID found.");
+      return;
+    }
+
+    const messagePayload = {
+      id_report: report.id_report,
+      sender_type: "admin", // Admin is sending the message
+      message_content: newMessage,
+      is_read: false
+    };
+
+    try {
+      await sendMessage(messagePayload);
+      console.log("✅ Message sent successfully!");
+
+      // Refresh messages after sending; ensure result is an array
+      const updatedMessages = await getMessagesByReportId(report.id_report);
+      setMessages(Array.isArray(updatedMessages) ? updatedMessages : []);
+      setNewMessage("");
+    } catch (error) {
+      console.error("❌ Error sending message:", error);
+      alert("⚠️ Failed to send message.");
     }
   };
 
   useEffect(() => {
-    console.log("useParams Report Code:", reportCode);
-    console.log("Location State Report Code:", location.state?.report_code);
-
-    const fetchReportAndMemo = async () => {
-        const paramCode = reportCode || location.state?.report_code;
-
-        if (!paramCode) {
-            setError("No report code provided");
-            setLoading(false);
-            return;
-        }
-
-        try {
-            // ✅ Fetch report
-            const reportDetails = await getReportByCode(paramCode);
-            console.log("✅ Report fetched:", reportDetails);
-            setReport(reportDetails);
-            setIsFlagged(reportDetails.is_flagged);
-
-            // ✅ Fetch memo if report ID exists
-            if (reportDetails?.id_report) {
-                await fetchMemo(reportDetails.id_report);
-            } else {
-                console.error("❌ Error: No valid report ID found for memo fetch.");
-            }
-        } catch (err) {
-            console.error("❌ Error fetching report:", err);
-            setError("Error loading report");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    fetchReportAndMemo();
-  }, [reportCode, location.state]); // ✅ Runs when reportCode or location.state changes
-
-   // ✅ Fetch Memo Details (PLACE THIS AFTER THE REPORT FETCH)
-   useEffect(() => {
     if (report?.id_report) {
-        fetchMemo(report.id_report);
+      fetchMemo(report.id_report);
     }
   }, [report]);
 
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
-  
+
     if (!report?.report_code) {
       console.error("❌ Error: No report code found");
       return;
     }
-  
+
     try {
-      await updateReportStatus(report.report_code, newStatus); // ✅ Call API
-      setSelectedStatus(newStatus); // ✅ Update UI
+      await updateReportStatus(report.report_code, newStatus);
+      setSelectedStatus(newStatus);
       alert("✅ Report status updated successfully!");
     } catch (error) {
       console.error("❌ Error updating status:", error);
@@ -117,46 +167,39 @@ function AdminDetail() {
       console.error("❌ Error: No report code found");
       return;
     }
-  
+
     try {
-      await updateReportStatus(report.report_code, "Eliminado"); // ✅ Call API to update status
-      setSelectedStatus("Eliminado"); // ✅ Update UI
+      await updateReportStatus(report.report_code, "Eliminado");
+      setSelectedStatus("Eliminado");
       alert("✅ Report marked as Eliminado!");
-  
-      // ✅ Optional: Redirect to admin page after deletion
+
+      // Optional: Redirect to admin page after deletion
       setTimeout(() => {
         window.location.href = "/admin";
       }, 1000);
-  
     } catch (error) {
       console.error("❌ Error updating status:", error);
       alert("❌ Failed to delete the report.");
     }
-  };  
+  };
 
   const toggleFlag = async () => {
     if (!report || !report.id_report) {
       console.error("❌ Error: No report ID found");
       return;
     }
-  
+
     try {
       const newFlagStatus = !isFlagged;
-      await toggleReportFlag(report.id_report, newFlagStatus); // ✅ Call backend API
-  
+      await toggleReportFlag(report.id_report, newFlagStatus);
       setIsFlagged(newFlagStatus);
       console.log("✅ Report flag updated successfully!");
-  
-      // ✅ Notify Admin Page to refresh reports from the database
       window.dispatchEvent(new Event("flagUpdated"));
-  
     } catch (error) {
       console.error("❌ Error updating report flag:", error);
       alert("Failed to update flag status.");
     }
-  };  
-  
-  
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -171,19 +214,18 @@ function AdminDetail() {
 
   const formatField = (value) => {
     if (value === null || value === undefined || value.toString().trim() === "") {
-        return "No disponible"; 
+      return "No disponible";
     }
 
-    // Check if value is a valid date
     const parsedDate = new Date(value);
     if (!isNaN(parsedDate.getTime())) {
-        return parsedDate.toLocaleString("es-ES", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
+      return parsedDate.toLocaleString("es-ES", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     }
 
     return value;
@@ -191,38 +233,35 @@ function AdminDetail() {
 
   const handleSaveNote = async () => {
     if (!memoText.trim()) {
-        alert("Memo cannot be empty!");
-        return;
+      alert("Memo cannot be empty!");
+      return;
     }
 
     if (!report || !report.id_report) {
-        alert("Error: No report ID found.");
-        return;
+      alert("Error: No report ID found.");
+      return;
     }
 
     const notePayload = {
-        id_report: report.id_report,
-        admin_message: memoText,
+      id_report: report.id_report,
+      admin_message: memoText,
     };
 
     console.log("📝 Saving note with payload:", notePayload);
 
     try {
-        if (existingMemo?.id_note) {
-            // ✅ If memo exists, update it
-            await updateAdminNote(existingMemo.id_note, notePayload);
-            alert("✅ Memo updated successfully!");
-        } else {
-            // ✅ If no memo exists, create a new one
-            await createAdminNote(notePayload);
-            alert("✅ Memo created successfully!");
-        }
-
-        setIsEditing(false); // ✅ Exit edit mode after saving
-        fetchMemo(report.id_report); // ✅ Refresh memo after saving
+      if (existingMemo?.id_note) {
+        await updateAdminNote(existingMemo.id_note, notePayload);
+        alert("✅ Memo updated successfully!");
+      } else {
+        await createAdminNote(notePayload);
+        alert("✅ Memo created successfully!");
+      }
+      setIsEditing(false);
+      fetchMemo(report.id_report);
     } catch (error) {
-        console.error("❌ Error saving memo:", error);
-        alert("Failed to save memo.");
+      console.error("❌ Error saving memo:", error);
+      alert("Failed to save memo.");
     }
   };
 
@@ -263,7 +302,9 @@ function AdminDetail() {
   return (
     <>
       <main className="wrapper container-xxl">
-        <h2 className="adminDetailHeadding headdingA fs-1 -blue -center -regular">Nº REPORTE :  <span className="getCode -bold">{report.report_code || "N/A"}</span></h2>
+        <h2 className="adminDetailHeadding headdingA fs-1 -blue -center -regular">
+          Nº REPORTE : <span className="getCode -bold">{report.report_code || "N/A"}</span>
+        </h2>
 
         <div className="flexBox">
           <div className="flexBox__item">
@@ -290,7 +331,9 @@ function AdminDetail() {
               </div>
               <div className="detailBox__item -column">
                 <span className="detailBox__title">Descripción:</span>
-                <div className="detailBox__textBox"><span className="getText">{formatField(report.description)}</span></div>
+                <div className="detailBox__textBox">
+                  <span className="getText">{formatField(report.description)}</span>
+                </div>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Tiene consecuencias?:</span>
@@ -346,11 +389,11 @@ function AdminDetail() {
                   id="downloadPDFButton"
                   style={{ color: "#fff" }}
                 >Descargar</a>
+                <a href="#" id="downloadPDFButton">Descargar</a>
               </div>
             </div>
           </div>
 
-          
           <div className="flexBox__item">
             <div className="operationUnit">
               {/* ===== Status  ===== */}
@@ -358,8 +401,8 @@ function AdminDetail() {
                 <select 
                   name="situation"
                   className="select"
-                  value={selectedStatus} // ✅ Set value from state
-                  onChange={handleStatusChange} // ✅ Trigger function on change
+                  value={selectedStatus}
+                  onChange={handleStatusChange}
                 >
                   <option value="No leído">No leído</option>
                   <option value="En proceso">En proceso</option>
@@ -407,8 +450,11 @@ function AdminDetail() {
                         className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end"
                         onClick={handleSoftDelete} 
                       >
-                        <strong>Sí, eliminar</strong></button>
-                      <button type="button" className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">No, cancelar</button>
+                        <strong>Sí, eliminar</strong>
+                      </button>
+                      <button type="button" className="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">
+                        No, cancelar
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -443,7 +489,6 @@ function AdminDetail() {
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clipboard-check">
                         <path fillRule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                         <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
-                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
                       </svg>
                     </span>
                   ) : (
@@ -457,52 +502,48 @@ function AdminDetail() {
               </div>
             </div>
 
-
-            {/* ========== MEMO ========== */}
+            {/* ========== CHAT ========== */}
             <div className="chatBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
               <div className="chatBlock">
                 <div className="chatBlock__inner">
                   <div className="chatBlock__body">
-
-                    {/* ========== CHAT ========== */}
-                    <div className="chatBlock__item -revers ">
-                      <div className="chatBlock__itemInner">
-                        <span className="chatBlock__circle -iconMemo">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil" viewBox="0 0 16 16">
-                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path>
-                          </svg>
-                        </span>
-                        <span className="chatBlock__itemHead -right">
-                          <span className="-time -bold">1/31 8:51</span>
-                        </span>
-                        <div className="chatBlock__itemBody">
-                          <p className="text">text 1111</p>
+                    {(messages?.length > 0 ? messages : []).map((msg, index) => (
+                      <div key={index} className={`chatBlock__item ${msg.sender_type === "admin" ? "-revers" : ""}`}>
+                        <div className="chatBlock__itemInner">
+                          {/* Sender icon */}
+                          <span className={`chatBlock__circle ${msg.sender_type === "admin" ? "-iconMemo" : "-iconUser"}`}>
+                            {msg.sender_type === "admin" ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                              </svg>
+                            )}
+                          </span>
+                          {/* Message content */}
+                          <span className="chatBlock__itemHead -right">
+                            <span className="-time -bold">{new Date(msg.created_at).toLocaleString()}</span>
+                          </span>
+                          <div className="chatBlock__itemBody">
+                            <p className="text">{msg.message_content}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="chatBlock__item">
-                      <div className="chatBlock__itemInner">
-                        <span className="chatBlock__circle -iconUser">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                          </svg>
-                        </span>
-                        <span className="chatBlock__itemHead -right">
-                          <span className="-time -bold">1/31 8:51</span>
-                        </span>
-                        <div className="chatBlock__itemBody">
-                          <p className="text">text 2222</p>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!--- chat ---> */}
-
+                    ))}
+                    {messages?.length === 0 && <p>No messages available</p>}
                   </div>
                   <div className="chatInputWrap">
                     <form className="chatInput">
-                      <textarea className="chatInput__inner"></textarea>
-                      <button className="buttonChat icon-send">
+                      <textarea
+                        className="chatInput__inner"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Escribe un mensaje..."
+                      ></textarea>
+                      <button type="button" className="buttonChat icon-send" onClick={handleSendMessage}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send" viewBox="0 0 16 16">
                           <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
                         </svg>
@@ -522,7 +563,7 @@ function AdminDetail() {
         </div>
       </main>
     </>
-  )
+  );
 }
 
-export default AdminDetail
+export default AdminDetail;

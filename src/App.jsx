@@ -26,7 +26,7 @@ function AppContent() {
         <Route path="/preview" element={<Preview />} />
         <Route path="/confirm" element={<Confirm />} />
         <Route path="/consult" element={<Consult />} />
-        <Route path="/view" element={<View />} />
+        <Route path="/view/:reportCode" element={<View />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/detail/:id" element={<AdminDetail />} />
