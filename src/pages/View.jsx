@@ -228,6 +228,11 @@ function View() {
                   <span className="detailBox__text">No se han subido archivos</span>
                 )}
               </div>
+              <div className="buttonA -sizeS -thin">
+                <a href="#" id="downloadPDFButton">
+                  Descargar
+                </a>
+              </div>
             </div>
           </div>
 
