@@ -55,15 +55,14 @@ function Admin() {
 
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
-    if (!text) return ""; // 🔹 text が undefined/null の場合、空文字を返す
     if (!keyword || keyword.trim() === "") return text;
-  
+
     const regex = new RegExp(`(${keyword})`, "gi");
     return text.split(regex).map((part, i) =>
       part.toLowerCase() === keyword.toLowerCase() ? <mark key={i} className="highlight">{part}</mark> : part
     );
   };
-  
+
   return (
     <>
       <div className="pageAdmin">
@@ -87,14 +86,13 @@ function Admin() {
                     setFilteredReports={setFilteredReports}
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
-                    activeFilters={activeFilters}
                   />
                 </div>
 
                 {/* ===== Report card ===== */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
-                    filteredReports.slice().reverse().map((report, index) => 
+                    filteredReports.map((report, index) => 
                       report ? ( 
                         <ReportCard
                           key={report._id || index} 
