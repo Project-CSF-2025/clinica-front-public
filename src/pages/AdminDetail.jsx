@@ -389,7 +389,6 @@ function AdminDetail() {
                   id="downloadPDFButton"
                   style={{ color: "#fff" }}
                 >Descargar</a>
-                <a href="#" id="downloadPDFButton">Descargar</a>
               </div>
             </div>
           </div>
