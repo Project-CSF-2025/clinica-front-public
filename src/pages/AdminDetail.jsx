@@ -202,16 +202,38 @@ function AdminDetail() {
   };
 
   const handleDownloadPDF = () => {
-    const detailBox = document.querySelector(".detailBox");
-    html2canvas(detailBox, { scale: 2, scrollX: 0, scrollY: 0 })
+    const detailBox = document.querySelector(".detailBox"); // detailBox の取得
+
+    window.scrollTo(0, 0); // スクロール位置をリセット
+
+    html2canvas(detailBox, {
+      scale: 2, // 🔥 ズームアウト（小さいほど縮小される）
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: document.documentElement.scrollHeight,
+    })
       .then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-        pdf.save(`reporte_${report?.report_code || "descarga"}.pdf`);
+        const imgData = canvas.toDataURL("image/png"); // Canvasを画像データに変換
+        const pdf = new jsPDF("p", "mm", "a4"); // PDF を作成（A4 縦向き）
+        
+        const pageWidth = 210; // A4 の横幅 (mm)
+        const pageHeight = 297; // A4 の縦幅 (mm)
+        const imgWidth = pageWidth - 70; // 🔥 ページ内に収めるため、余白を考慮
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // 🔥 比率を維持
+
+        // 🔥 X 軸で中央寄せ
+        const xPos = (pageWidth - imgWidth) / 2;
+
+        // 🔥 Y 軸で中央寄せ（ページの中央に配置）
+        const yPos = (pageHeight - imgHeight) / 2;
+        
+        pdf.addImage(imgData, "PNG", xPos, yPos, imgWidth, imgHeight); // 画像を PDF に追加
+        pdf.save(`reporte_${report?.report_code || "descarga"}.pdf`); // PDF を保存
       })
-      .catch(() => alert("❌ Error generating PDF"));
+      .catch((error) => console.error("❌ PDF 作成中にエラー:", error));
   };
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -360,15 +382,13 @@ function AdminDetail() {
               </div>
               <div className="buttonA -sizeS -thin">
                 <a 
-                  href="#" 
-                  id="downloadPDFButton" 
                   onClick={(event) => {
-                    event.preventDefault(); // Prevents the default anchor behavior
-                    handleDownloadPDF();    // Calls the function to generate and download the PDF
-                  }}
-                >
-                  Descargar
-                </a>
+                    event.preventDefault();
+                    handleDownloadPDF();
+                  }} 
+                  id="downloadPDFButton"
+                  style={{ color: "#fff" }}
+                >Descargar</a>
               </div>
             </div>
           </div>
