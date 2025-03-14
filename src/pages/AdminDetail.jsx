@@ -40,15 +40,14 @@ function AdminDetail() {
         setLoading(false);
         return;
       }
-
+  
       try {
         const reportDetails = await getReportByCode(paramCode);
         setReport(reportDetails);
-
-        // ✅ Fetch messages if report ID exists
+        setIsFlagged(reportDetails?.is_flagged || false); // ✅ Ensure flag state is updated
+  
         if (reportDetails?.id_report) {
           const messageData = await getMessagesByReportId(reportDetails.id_report);
-          // Ensure messages is an array even if API returns nothing or null
           setMessages(Array.isArray(messageData) ? messageData : []);
         } else {
           console.error("❌ No valid report ID found for message fetch.");
@@ -60,9 +59,21 @@ function AdminDetail() {
         setLoading(false);
       }
     };
-
+  
     fetchReportAndMessages();
-  }, [reportCode, location.state]);
+  
+    // ✅ Listen for flag changes
+    const handleFlagChange = () => {
+      console.log("🔄 Flag status changed, refreshing report...");
+      fetchReportAndMessages();
+    };
+  
+    window.addEventListener("flagUpdated", handleFlagChange);
+  
+    return () => {
+      window.removeEventListener("flagUpdated", handleFlagChange);
+    };
+  }, [reportCode, location.state]);  
 
   // Additional effect to refresh messages when report is updated
   useEffect(() => {
@@ -188,18 +199,21 @@ function AdminDetail() {
       console.error("❌ Error: No report ID found");
       return;
     }
-
+  
     try {
       const newFlagStatus = !isFlagged;
       await toggleReportFlag(report.id_report, newFlagStatus);
-      setIsFlagged(newFlagStatus);
+      
       console.log("✅ Report flag updated successfully!");
+      
+      // ✅ Dispatch event to refresh Admin & AdminDetail pages
       window.dispatchEvent(new Event("flagUpdated"));
+      
     } catch (error) {
       console.error("❌ Error updating report flag:", error);
       alert("Failed to update flag status.");
     }
-  };
+  };  
 
   const handleDownloadPDF = () => {
     const detailBox = document.querySelector(".detailBox"); // detailBox の取得

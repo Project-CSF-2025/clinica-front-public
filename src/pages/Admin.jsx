@@ -42,7 +42,7 @@ function Admin() {
     // ✅ Re-fetch reports when a flag is updated
     const handleFlagChange = () => {
       console.log("🔄 Flag status changed, refreshing reports...");
-      fetchReports(); // ✅ Fetch latest data from backend
+      fetchReports();
     };
   
     window.addEventListener("flagUpdated", handleFlagChange);
