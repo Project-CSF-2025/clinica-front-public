@@ -31,7 +31,6 @@ function AdminDetail() {
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
 
-  // Modify fetchReportAndMessages to safely set messages as an array
   useEffect(() => {
     const fetchReportAndMessages = async () => {
       const paramCode = reportCode || location.state?.report_code;
@@ -44,7 +43,7 @@ function AdminDetail() {
       try {
         const reportDetails = await getReportByCode(paramCode);
         setReport(reportDetails);
-        setIsFlagged(reportDetails?.is_flagged || false); // ✅ Ensure flag state is updated
+        setIsFlagged(reportDetails?.is_flagged || false); 
   
         if (reportDetails?.id_report) {
           const messageData = await getMessagesByReportId(reportDetails.id_report);
@@ -62,7 +61,6 @@ function AdminDetail() {
   
     fetchReportAndMessages();
   
-    // ✅ Listen for flag changes
     const handleFlagChange = () => {
       console.log("🔄 Flag status changed, refreshing report...");
       fetchReportAndMessages();
@@ -75,7 +73,6 @@ function AdminDetail() {
     };
   }, [reportCode, location.state]);  
 
-  // Additional effect to refresh messages when report is updated
   useEffect(() => {
     if (report?.id_report) {
       fetchMessages(report.id_report);
@@ -106,7 +103,6 @@ function AdminDetail() {
     }
   };
 
-  // Modified fetchMessages to safely handle errors and non-array responses
   const fetchMessages = async (id_report) => {
     try {
       const data = await getMessagesByReportId(id_report);
@@ -281,37 +277,37 @@ function AdminDetail() {
 
   const handleSaveNote = async () => {
     if (!memoText.trim()) {
-      alert("Memo cannot be empty!");
-      return;
+        alert("Memo cannot be empty!");
+        return;
     }
 
-    if (!report || !report.id_report) {
-      alert("Error: No report ID found.");
-      return;
+    if (!report?.id_report) {
+        alert("Error: No report ID found.");
+        return;
     }
 
     const notePayload = {
-      id_report: report.id_report,
-      admin_message: memoText,
+        id_report: report.id_report,
+        admin_message: memoText,
+        is_deleted: false, // ✅ Restore memo if deleted
     };
 
-    console.log("📝 Saving note with payload:", notePayload);
-
     try {
-      if (existingMemo?.id_note) {
-        await updateAdminNote(existingMemo.id_note, notePayload);
-        alert("✅ Memo updated successfully!");
-      } else {
-        await createAdminNote(notePayload);
-        alert("✅ Memo created successfully!");
-      }
-      setIsEditing(false);
-      fetchMemo(report.id_report);
+        if (existingMemo?.id_note) {
+            await updateAdminNote(existingMemo.id_note, notePayload);
+            alert("✅ Memo updated successfully!");
+        } else {
+            await createAdminNote(notePayload);
+            alert("✅ Memo created successfully!");
+        }
+
+        fetchMemo(report.id_report);
     } catch (error) {
-      console.error("❌ Error saving memo:", error);
-      alert("Failed to save memo.");
+        console.error("❌ Error saving memo:", error);
+        alert("Failed to save memo.");
     }
   };
+
 
   return (
     <>
