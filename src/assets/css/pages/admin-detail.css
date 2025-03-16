@@ -514,9 +514,9 @@
 }
 
 .disabled-icon {
-  opacity: 0.5; /* 半透明にする */
-  pointer-events: none; /* クリックを無効化 */
-  cursor: not-allowed; /* カーソルを変更 */
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 /* SP
