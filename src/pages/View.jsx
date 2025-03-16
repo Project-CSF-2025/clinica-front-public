@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { getReportByCode, getStatusHistoryByReportId } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService";
 import ViewReportState from "../components/ViewReportState";
@@ -7,61 +7,55 @@ import ViewReportState from "../components/ViewReportState";
 function View() {
   const { reportCode } = useParams();
   const location = useLocation();
-  const [report, setReport] = useState(location.state || null);
+  const [report, setReport] = useState(null);
   const [statusHistory, setStatusHistory] = useState([]);
-  const [loading, setLoading] = useState(!location.state); 
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    const fetchReportData = async () => {
-      try {
-        setLoading(true);
-        const fetchedReport = await getReportByCode(reportCode);
-        if (!fetchedReport) {
-          setError("Report not found");
-        } else {
-          setReport(fetchedReport);
+    const fetchReportAndMessages = async () => {
+      const paramCode = reportCode || location.state?.report_code;
+      if (!paramCode) {
+        setError("No report code provided");
+        setLoading(false);
+        return;
+      }
 
-          // ✅ Fetch status history
-          const history = await getStatusHistoryByReportId(fetchedReport.id_report);
+      try {
+        const reportDetails = await getReportByCode(paramCode);
+        setReport(reportDetails);
+
+        // ✅ Fetch status history
+        if (reportDetails?.id_report) {
+          const history = await getStatusHistoryByReportId(reportDetails.id_report);
           setStatusHistory(history);
+
+          // ✅ Fetch messages if report ID exists
+          const messageData = await getMessagesByReportId(reportDetails.id_report);
+          setMessages(Array.isArray(messageData) ? messageData : []);
+        } else {
+          console.error("❌ No valid report ID found for message fetch.");
+          setMessages([]);
         }
       } catch (err) {
-        console.error("❌ Error fetching report:", err);
-        setError("Error loading report");
+        console.error("❌ Error fetching report or messages:", err);
+        setError("Error loading data");
       } finally {
         setLoading(false);
       }
     };
 
-    if (!report) {
-      fetchReportData();
-    }
-  }, [reportCode]); 
-
-  useEffect(() => {
-    if (!report?.id_report) return;
-
-    const fetchMessages = async () => {
-      try {
-        const fetchedMessages = await getMessagesByReportId(report.id_report);
-        setMessages(fetchedMessages);
-      } catch (err) {
-        console.error("❌ Error fetching messages:", err);
-      }
-    };
-
-    fetchMessages();
-  }, [report]);
+    fetchReportAndMessages();
+  }, [reportCode, location.state]);
 
   const handleSendMessage = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     if (!newMessage.trim()) {
-      alert("⚠️ Cannot send empty message!");
+      alert("⚠️ Cannot send an empty message!");
       return;
     }
     if (!report?.id_report) {
@@ -69,27 +63,29 @@ function View() {
       return;
     }
 
-    // Example message payload
     const messagePayload = {
       id_report: report.id_report,
-      sender_type: "user",       
+      sender_type: "user",
       message_content: newMessage,
-      is_read: false,             
+      is_read: false,
     };
 
     try {
       await sendMessage(messagePayload);
-      console.log("✅ Message sent!");
+      console.log("✅ Message sent successfully!");
 
+      // ✅ Refresh messages after sending
       const updatedMessages = await getMessagesByReportId(report.id_report);
-      setMessages(updatedMessages);
-
+      setMessages(Array.isArray(updatedMessages) ? updatedMessages : []);
       setNewMessage("");
-    } catch (err) {
-      console.error("❌ Error sending message:", err);
-      alert("❌ Failed to send message.");
+    } catch (error) {
+      console.error("❌ Error sending message:", error);
+      alert("⚠️ Failed to send message.");
     }
   };
+
+  if (loading) return <p>Loading report...</p>;
+  if (error) return <p className="error">{error}</p>;
 
 
   if (loading) return <p>Loading report...</p>;
