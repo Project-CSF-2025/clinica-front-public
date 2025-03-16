@@ -155,9 +155,19 @@ function AdminDetail() {
     }
   }, [report]);
 
+  useEffect(() => {
+    if (report?.status) {
+      setSelectedStatus(report.status);
+    }
+  }, [report]);
+  
   const handleStatusChange = async (e) => {
-    const newStatus = e.target.value;
+    if (selectedStatus === "Eliminado") {
+      console.warn("❌ Status change disabled for 'Eliminado'");
+      return;
+    }
 
+    const newStatus = e.target.value;
     if (!report?.report_code) {
       console.error("❌ Error: No report code found");
       return;
@@ -413,9 +423,10 @@ function AdminDetail() {
               <div className="selectWrap">
                 <select 
                   name="situation"
-                  className="select"
+                  className={`select ${report?.status === "Eliminado" ? "disabled-select" : ""}`}
                   value={selectedStatus}
                   onChange={handleStatusChange}
+                  disabled={selectedStatus === "Eliminado"}
                 >
                   <option value="No leído">No leído</option>
                   <option value="En proceso">En proceso</option>
@@ -441,7 +452,12 @@ function AdminDetail() {
                 </li>
                 {/* ===== Bin  ===== */}
                 <li>
-                  <span className="icon-trash" data-bs-toggle="modal" data-bs-target="#modalChoice">
+                  <span
+                    className={`icon-trash ${selectedStatus === "Eliminado" ? "disabled-icon" : ""}`}
+                    data-bs-toggle={selectedStatus === "Eliminado" ? "" : "modal"}
+                    data-bs-target={selectedStatus === "Eliminado" ? "" : "#modalChoice"}
+                    onClick={selectedStatus === "Eliminado" ? (e) => e.preventDefault() : undefined}
+                  >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                       <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                       <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>

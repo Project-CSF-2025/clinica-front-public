@@ -1,5 +1,5 @@
 /* adminDetail
-============================== */
+============================================================ */
 .flexBox {
   /* height: 760px; */
   height: auto;
@@ -149,16 +149,18 @@
   font-size: 15px;
 }
 
-
 .select:focus {
   border-color: var(--blue);
 }
-
 
 .operationUnit {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.iconList .icon-trash {
+  cursor: pointer;
 }
 
 /* memoBlock
@@ -501,24 +503,24 @@
   z-index: 1;
 }
 
-/* .feedbackBlock__wrap {
-  display: flex;
-  align-items: center;
-} */
 
-/* .feedbackBlock {
-  width: 100%;
-  height: 250px;
-  border-radius: 32px;
-  border: 1px solid var(--blue);
-  padding: 24px;
-  resize: none;
-  margin-top: 16px;
-} */
+/* selectedStatus === "Eliminado"
+============================================================ */
+.disabled-select {
+  background-color: var(--gray5);
+  color: #6c757d;
+  cursor: not-allowed;
+  border: 1px solid var(--gray3);
+}
 
+.disabled-icon {
+  opacity: 0.5; /* 半透明にする */
+  pointer-events: none; /* クリックを無効化 */
+  cursor: not-allowed; /* カーソルを変更 */
+}
 
 /* SP
-============================== */
+============================================================ */
 
 @media screen and (max-width: 768px) {
   .flexBox {
