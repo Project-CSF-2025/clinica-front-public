@@ -539,6 +539,11 @@
   font-size: 1.1rem;
   font-weight: 700 !important;
   color: var(--blue);
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .notificationList__itemLink .date {

@@ -493,7 +493,7 @@ function AdminDetail() {
 
             {/* ========== MEMO ========== */}
             <div className="memoBlock__wrap">
-              <h2 className="headdingB fs-3 -blue -medium">Memo</h2>
+              <h2 className="headdingB fs-3 -blue -medium">Recordatorio</h2>
               <div className={`memoBlock ${isEditing ? "-active" : ""}`}>
                 {!isEditing ? (
                   <div className="memoBlock__static">

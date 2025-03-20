@@ -6,6 +6,7 @@
   padding: 80px 40px 0;
   z-index: 1;
   /* height: 10vh; */
+  pointer-events: none;
 }
 
 .header::before {
@@ -27,6 +28,7 @@
 
 .header__logo {
   width: 230px;
+  pointer-events: all;
 }
 .header__logo img {
   width: 100%;

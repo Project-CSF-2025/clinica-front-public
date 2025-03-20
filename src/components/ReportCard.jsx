@@ -28,7 +28,7 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
         <span className={`know__label ${statusClass}`}>
           {highlightText(report.status || "", searchTerm)}
         </span>
-        <span className="know__date">{highlightText(report.dateTime || "", searchTerm)}</span>
+        <span className="know__date">{highlightText(report.created_at || "", searchTerm)}</span>
         <h3 className="know__title">{highlightText(report.subject || "", searchTerm)}</h3>
         <div className="know__info">{highlightText(report.description || "", searchTerm)}</div>
         {/* ✅ Flag Icon (Appears Only If Flagged) */}
