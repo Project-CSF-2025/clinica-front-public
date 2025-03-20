@@ -80,6 +80,17 @@ function Admin() {
     }
   };
 
+  const handleOpenReport = (reportCode) => {
+    if (!reportCode) {
+        console.warn("⚠️ No report code found for this note.");
+        return;
+    }
+    console.log(`📄 Navigating to admin detail page for report ${reportCode}`);
+    navigate(`/admin/detail/${reportCode}`); // ✅ Use reportCode instead of ID
+};
+
+
+
 
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
@@ -148,7 +159,7 @@ function Admin() {
               <ul className="notificationList">
               {adminNotes.map((note) => (
                 <li key={note.id_note} className="notificationList__item -yellow">
-                    <a href="sample" className="notificationList__itemLink">
+                    <a onClick={() => handleOpenReport(note.report_code)} className="notificationList__itemLink" style={{ cursor: "pointer" }}>
                         <span className="title">Mensaje from: {note.admin_message}</span>
                         <span className="date">{note.created_at}</span>
                     </a>
