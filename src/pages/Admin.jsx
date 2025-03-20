@@ -80,6 +80,17 @@ function Admin() {
     }
   };
 
+  const handleOpenReport = (reportCode) => {
+    if (!reportCode) {
+        console.warn("⚠️ No report code found for this note.");
+        return;
+    }
+    console.log(`📄 Navigating to admin detail page for report ${reportCode}`);
+    navigate(`/admin/detail/${reportCode}`); // ✅ Use reportCode instead of ID
+};
+
+
+
 
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
