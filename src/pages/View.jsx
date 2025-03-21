@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { getReportByCode, getStatusHistoryByReportId } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService";
@@ -7,32 +7,44 @@ import ViewReportState from "../components/ViewReportState";
 function View() {
   const { reportCode } = useParams();
   const location = useLocation();
+
   const [report, setReport] = useState(null);
   const [statusHistory, setStatusHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("");
 
+    // Use a ref to store the report code to prevent infinite rerenders
+  const reportCodeRef = useRef(reportCode || location.state?.report_code);
+
   useEffect(() => {
     const fetchReportAndMessages = async () => {
-      const paramCode = reportCode || location.state?.report_code;
+      const paramCode = reportCodeRef.current;
       if (!paramCode) {
         setError("No report code provided");
         setLoading(false);
         return;
       }
-
+  
       try {
         const reportDetails = await getReportByCode(paramCode);
         setReport(reportDetails);
-
-        // ✅ Fetch status history
+  
         if (reportDetails?.id_report) {
-          const history = await getStatusHistoryByReportId(reportDetails.id_report);
-          setStatusHistory(history);
-
+          // ✅ Handle 404 for status history separately
+          try {
+            const history = await getStatusHistoryByReportId(reportDetails.id_report);
+            setStatusHistory(Array.isArray(history) ? history : []);
+          } catch (historyErr) {
+            if (historyErr.response?.status === 404) {
+              console.warn("No status history found.");
+              setStatusHistory([]); // No history, but not an error
+            } else {
+              throw historyErr; // Any other error, treat as failure
+            }
+          }
+  
           // ✅ Fetch messages if report ID exists
           const messageData = await getMessagesByReportId(reportDetails.id_report);
           setMessages(Array.isArray(messageData) ? messageData : []);
@@ -47,9 +59,9 @@ function View() {
         setLoading(false);
       }
     };
-
+  
     fetchReportAndMessages();
-  }, [reportCode, location.state]);
+  }, []);  
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
