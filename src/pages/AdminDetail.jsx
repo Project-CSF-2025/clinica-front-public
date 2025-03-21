@@ -494,7 +494,7 @@ function AdminDetail() {
             {/* ========== MEMO ========== */}
             <div className="memoBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Recordatorio</h2>
-              <div className={`memoBlock ${isEditing ? "-active" : ""}`}>
+              <div className={`memoBlock ${isEditing ? "-active" : ""} ${report?.status === "Eliminado" ? "disabled-click" : ""}`}>
                 {!isEditing ? (
                   <div className="memoBlock__static">
                     {memoText ? memoText : "No memo available"}
@@ -512,7 +512,8 @@ function AdminDetail() {
                 )}
                 <button 
                   className="memoBlock__btn" 
-                  onClick={isEditing ? handleSaveNote : toggleEdit} 
+                  onClick={isEditing ? handleSaveNote : toggleEdit}
+                  disabled={report?.status === "Eliminado"}
                 >
                   {isEditing ? (
                     <span className="iconCheck">
@@ -535,7 +536,8 @@ function AdminDetail() {
             {/* ========== CHAT ========== */}
             <div className="chatBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
-              <div className="chatBlock">
+              {/* <div className="chatBlock"> */}
+              <div className={`chatBlock ${report?.status === "Eliminado" ? "disabled-click" : ""}`}>
                 <div className="chatBlock__inner">
                   <div className="chatBlock__body">
                     {(messages?.length > 0 ? messages : []).map((msg, index) => (
@@ -572,8 +574,14 @@ function AdminDetail() {
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Escribe un mensaje..."
+                        disabled={report?.status === "Eliminado"}
                       ></textarea>
-                      <button type="button" className="buttonChat icon-send" onClick={handleSendMessage}>
+                      <button 
+                        type="button"
+                        className="buttonChat icon-send"
+                        onClick={handleSendMessage}
+                        disabled={report?.status === "Eliminado"}
+                      >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send" viewBox="0 0 16 16">
                           <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
                         </svg>
@@ -586,9 +594,12 @@ function AdminDetail() {
           </div>
         </div>
 
-        <div className="buttonA -centerContents -mt120">
+        <div className="btn btn-primary salir-adminDetail">
           <Link to="/admin" className="-iconBack">
-            Consultar estado
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+            </svg>
+            Volver
           </Link>
         </div>
       </main>
