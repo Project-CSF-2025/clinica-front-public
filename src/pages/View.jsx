@@ -15,8 +15,16 @@ function View() {
   const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("");
 
-    // Use a ref to store the report code to prevent infinite rerenders
+  const chatContainerRef = useRef(null);
+
+  // Use a ref to store the report code to prevent infinite rerenders
   const reportCodeRef = useRef(reportCode || location.state?.report_code);
+  
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
 
   useEffect(() => {
     const fetchReportAndMessages = async () => {
@@ -62,6 +70,10 @@ function View() {
   
     fetchReportAndMessages();
   }, []);  
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);  
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -250,7 +262,7 @@ function View() {
             <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
             <div className="chatBlock">
               <div className="chatBlock__inner">
-                <div className="chatBlock__body">
+                <div className="chatBlock__body" ref={chatContainerRef}>
                   {/* 5. Show messages or "No messages" */}
                   {messages.length === 0 ? (
                     <p>No messages yet</p>

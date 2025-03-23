@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { getReportByCode } from "../services/reportService";
 import { createAdminNote } from "../services/adminNoteService";
@@ -26,6 +26,14 @@ function AdminDetail() {
   // ✅ For messages
   const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("");
+
+  const chatContainerRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
 
   console.log("🔹 useParams() output:", useParams());
   console.log("🔹 Extracted reportCode:", reportCode);
@@ -72,6 +80,10 @@ function AdminDetail() {
       window.removeEventListener("flagUpdated", handleFlagChange);
     };
   }, [reportCode, location.state]);  
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);  
 
   useEffect(() => {
     if (report?.id_report) {
@@ -537,7 +549,7 @@ function AdminDetail() {
               <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
               <div className="chatBlock">
                 <div className="chatBlock__inner">
-                  <div className="chatBlock__body">
+                  <div className="chatBlock__body" ref={chatContainerRef}>
                     {(messages?.length > 0 ? messages : []).map((msg, index) => (
                       <div key={index} className={`chatBlock__item ${msg.sender_type === "admin" ? "-revers" : ""}`}>
                         <div className="chatBlock__itemInner">
