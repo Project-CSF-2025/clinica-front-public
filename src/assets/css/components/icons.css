@@ -53,9 +53,7 @@
 }
 
 .pageAdminDetail .iconFlag,
-.pageAdminDetail .iconFlaged,
-.pageVista .iconFlag,
-.pageVista .iconFlaged { 
+.pageAdminDetail .iconFlaged { 
   position: absolute;
   top: 0;
   bottom: 0;
@@ -65,13 +63,11 @@
 
 }
 
-.pageAdminDetail .iconFlag,
-.pageVista .iconFlag {
+.pageAdminDetail .iconFlag {
   display: none;
 }
 
-.pageAdminDetail .iconFlaged,
-.pageVista .iconFlaged {
+.pageAdminDetail .iconFlaged {
   display: none;
 }
 

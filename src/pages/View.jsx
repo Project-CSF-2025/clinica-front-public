@@ -136,7 +136,7 @@ function View() {
 
   return (
     <>
-      <main className="wrapper container-xxl">
+      <main className="wrapper container-xxl pageView">
         <h2 className="adminDetailHeadding headdingA fs-1 -blue -center -regular">
           Nº REPORTE :
           <span className="getCode -bold">{report.report_code || "N/A"}</span>
@@ -247,11 +247,6 @@ function View() {
                 ) : (
                   <span className="detailBox__text">No se han subido archivos</span>
                 )}
-              </div>
-              <div className="buttonA -sizeS -thin">
-                <a href="#" id="downloadPDFButton">
-                  Descargar
-                </a>
               </div>
             </div>
           </div>
