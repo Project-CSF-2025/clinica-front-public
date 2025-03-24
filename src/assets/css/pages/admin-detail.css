@@ -257,11 +257,11 @@
 .memoBlock.-active .memoBlock__edit {
   display: block;
 }
-.memoBlock .buttonA {
+/* .memoBlock .buttonA {
   position: absolute;
   bottom: 0;
   right: 0;
-}
+} */
 .memoBlock__btn {
   background-color: var(--blue);
   border-radius: 50%;
@@ -503,6 +503,23 @@
   z-index: 1;
 }
 
+/* button back admin top
+============================== */
+.salir-adminDetail {
+  padding: 10px 32px;
+  position: absolute;
+  top: 80px;
+  right: 80px;
+}
+.salir-adminDetail a {
+  display: flex;
+  align-items: center;
+  gap: 0 8px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+}
+
 
 /* selectedStatus === "Eliminado"
 ============================================================ */
@@ -517,6 +534,10 @@
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
+}
+
+.disabled-click {
+  opacity: .6;
 }
 
 /* SP

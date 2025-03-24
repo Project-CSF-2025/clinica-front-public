@@ -367,6 +367,9 @@
 
 .pageAdmin .salir-admin{
   height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 0 8px;
   position: absolute;
   top: -106px;
   right: 12px;
