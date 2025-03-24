@@ -121,8 +121,8 @@
     margin-top: 5px;
 }
 
-.fase .-active{
-    color: #2e7d32; 
+.fase.-active{
+    color: Orange; 
     /* color: green; */
 }
 
