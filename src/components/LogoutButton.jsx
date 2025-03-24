@@ -1,15 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../services/adminAuthService";
 
 const LogoutButton = () => {
   const navigate = useNavigate();
 
   /* ===== Logout button =====  */
   const handleLogout = () => {
-    sessionStorage.removeItem("is_authenticated"); // 認証情報削除
-    sessionStorage.removeItem("user"); // ユーザー情報削除
-    navigate("/admin-login"); 
-  };
+    logout(); 
+    navigate("/admin-login");
+  }; 
 
   return (
     <>

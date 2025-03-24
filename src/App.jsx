@@ -1,47 +1,39 @@
-import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Header from './components/Header';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import UserLayout from './layouts/UserLayout';
+import AdminLayout from './layouts/AdminLayout';
 import Home from './pages/Home';
 import Form from './pages/Form';
 import Preview from './pages/Preview';
 import Confirm from './pages/Confirm';
 import Consult from './pages/Consult';
 import View from './pages/View';
-import AdminLogin from "./pages/AdminLogin";
+import AdminLogin from './pages/AdminLogin';
 import Admin from './pages/Admin';
 import AdminDetail from './pages/AdminDetail';
-import Footer from './components/Footer';
-
-function AppContent() {
-  const location = useLocation();
-  const isAdminPage = location.pathname.startsWith("/admin");
-
-  return (
-    <>
-      <Header isAdminPage={isAdminPage} />
-      
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/form" element={<Form />} />
-        <Route path="/preview" element={<Preview />} />
-        <Route path="/confirm" element={<Confirm />} />
-        <Route path="/consult" element={<Consult />} />
-        <Route path="/view/:reportCode" element={<View />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/detail/:id" element={<AdminDetail />} />
-      </Routes>
-
-      <Footer />
-    </>
-  );
-}
 
 function App() {
-
   return (
     <Router>
-      <AppContent />
+      <Routes>
+        {/* 👥 Public/user-facing pages */}
+        <Route element={<UserLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/form" element={<Form />} />
+          <Route path="/preview" element={<Preview />} />
+          <Route path="/confirm" element={<Confirm />} />
+          <Route path="/consult" element={<Consult />} />
+          <Route path="/view/:reportCode" element={<View />} />
+        </Route>
+
+        {/* 🔐 Admin login - no layout */}
+        <Route path="/admin-login" element={<AdminLogin />} />
+
+        {/* 🛡 Protected admin pages */}
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/detail/:id" element={<AdminDetail />} />
+        </Route>
+      </Routes>
     </Router>
   );
 }
