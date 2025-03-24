@@ -11,6 +11,7 @@ import AdminLogin from "./pages/AdminLogin";
 import Admin from './pages/Admin';
 import AdminDetail from './pages/AdminDetail';
 import Footer from './components/Footer';
+import RequireAdminAuth from './components/RequireAdminAuth';
 
 function AppContent() {
   const location = useLocation();

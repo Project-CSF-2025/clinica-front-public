@@ -39,9 +39,9 @@ function View() {
           } catch (historyErr) {
             if (historyErr.response?.status === 404) {
               console.warn("No status history found.");
-              setStatusHistory([]); // No history, but not an error
+              setStatusHistory([]); 
             } else {
-              throw historyErr; // Any other error, treat as failure
+              throw historyErr;
             }
           }
   
