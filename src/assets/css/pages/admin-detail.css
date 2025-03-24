@@ -21,11 +21,6 @@
   gap: 54px;
 }
 
-/* pageVista */
-.pageVista .flexBox {
-  height: 760px;
-}
-
 .detailBox {
   height: 100%;
   border-radius: 32px;
@@ -45,7 +40,7 @@
 
 .detailBox__item {
   display: flex;
-  gap: 0 24px;
+  gap: 0 18px;
 }
 
 .detailBox__item.-column {
@@ -55,7 +50,8 @@
 .detailBox__title{
   color: var(--blue);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 17px;
+  line-height: 1.3;
   width: 110px;
 }
 
@@ -123,11 +119,6 @@
 
 .detailBox__textBox::-webkit-scrollbar-thumb:hover {
   background: var(--gray2);
-}
-
-/* pageVista */
-.pageVista .detailBox {
-  gap: 24px 0;
 }
 
 .selectWrap {

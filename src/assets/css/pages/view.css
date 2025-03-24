@@ -4,7 +4,7 @@
     align-items: center; /* Alinea verticalmente el logo y el botón */
     margin-bottom: 0px;
     padding-bottom: 0px;
-  }
+}
 
 .container-button-consulta {
     margin-left: auto; /* Empuja el botón hacia la derecha */
@@ -150,12 +150,18 @@
 }
 
 
-/* add kanako */
-.pageVista .chatBlock__wrap {
-    height: 100%;
-    margin-top: 0;
+.pageView .detailBox {
+    gap: 24px 0;
+    padding-bottom: 64px;
 }
 
-.pageVista .chatBlock {
-    height: 715px;
+.pageView .chatBlock__wrap {
+    height: 100%;
 }
+.pageView .chatBlock__wrap .headdingB {
+    margin-bottom: 24px;
+}
+.pageView .chatBlock {
+    height: 876px;
+}
+
