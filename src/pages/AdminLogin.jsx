@@ -1,45 +1,27 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../services/adminAuthService';
 
 const AdminLogin = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  // const location = useLocation();
 
-  console.log("VITE_ADMIN_USERNAME:", import.meta.env.VITE_ADMIN_USERNAME);
-  console.log("VITE_ADMIN_PASSWORD:", import.meta.env.VITE_ADMIN_PASSWORD);
-    
   useEffect(() => {
-    // If you are already logged in, you will be redirected to the admin page
-    if (sessionStorage.getItem('is_authenticated') === 'true') {
+    if (localStorage.getItem('adminToken')) {
       navigate('/admin');
     }
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 環境変数から管理者情報を取得（必ず設定されていることを確認）
-    const adminUsername = import.meta.env.VITE_ADMIN_USERNAME;
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
-
-    if (!adminUsername || !adminPassword) {
-      console.error("環境変数が設定されていません。");
-      setError("サーバーエラーが発生しました。");
-      return;
-    }
-
-    // 入力値と環境変数の値を比較
-    if (username === adminUsername && password === adminPassword) {
-      sessionStorage.setItem('is_authenticated', 'true');
-      sessionStorage.setItem('user', JSON.stringify({ username }));
-
+    try {
+      await login(email, password); // calls your backend, stores token
       setError('');
-      navigate('/admin'); // 管理ページへリダイレクト
-    } else {
-      setError('Usuario o contraseña incorrectos');
+      navigate('/admin'); // go to dashboard
+    } catch (err) {
+      setError(err.response?.data?.error || 'Login failed');
     }
   };
 
@@ -65,8 +47,8 @@ const AdminLogin = () => {
                 name="username"
                 className="unique-login-input"
                 placeholder="ingresa tu nombre de usuario"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}                
                 required
               />
 
