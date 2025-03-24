@@ -11,6 +11,7 @@ import View from './pages/View';
 import AdminLogin from './pages/AdminLogin';
 import Admin from './pages/Admin';
 import AdminDetail from './pages/AdminDetail';
+import Dashboard from './pages/Dashboard';
 import RequireAdminAuth from './components/RequireAdminAuth';
 
 function AppContent() {
@@ -50,6 +51,15 @@ function AppContent() {
             </RequireAdminAuth>
           }
         />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <RequireAdminAuth>
+              <Dashboard />
+            </RequireAdminAuth>
+          }
+        />
+
       </Routes>
 
       <Footer />
