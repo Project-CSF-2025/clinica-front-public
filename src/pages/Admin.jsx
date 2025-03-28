@@ -134,6 +134,10 @@ function Admin() {
                   <button className="btn btn-outline-primary" onClick={handleDownloadCSV}>
                     Descargar CSV
                   </button>
+                  <button className="btn btn-outline-secondary" onClick={() => navigate('/admin/dashboard')}>
+                    📊
+                  </button>
+
 
                   
                   {/* ===== Search box =====  */}
