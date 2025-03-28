@@ -6,7 +6,7 @@ import SearchBox from "../components/SearchBox";
 import ReportCard from "../components/ReportCard";
 import { apiRequest } from "../services/apiService"; 
 import { getAllAdminNotes, softDeleteAdminNote } from "../services/adminNoteService";
-
+import { downloadReportCSV } from "../services/reportService";
 
 function Admin() {
   const [reports, setReports] = useState([]);
@@ -87,10 +87,22 @@ function Admin() {
     }
     console.log(`📄 Navigating to admin detail page for report ${reportCode}`);
     navigate(`/admin/detail/${reportCode}`); // ✅ Use reportCode instead of ID
-};
+  };
 
-
-
+  const handleDownloadCSV = async () => {
+    try {
+      const blob = await downloadReportCSV();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "reportes_clinica.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (error) {
+      alert("No se pudo descargar el archivo CSV.");
+    }
+  };
 
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
@@ -119,6 +131,10 @@ function Admin() {
                     reports={reports}
                     setFilteredReports={setFilteredReports}
                   />
+                  <button className="btn btn-outline-primary" onClick={handleDownloadCSV}>
+                    Descargar CSV
+                  </button>
+
                   
                   {/* ===== Search box =====  */}
                   <SearchBox 
