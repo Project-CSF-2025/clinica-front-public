@@ -1,7 +1,6 @@
 import { useLocation, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from './components/Header';
 import Footer from './components/Footer';
-
 import Home from './pages/Home';
 import Form from './pages/Form';
 import Preview from './pages/Preview';
@@ -13,6 +12,8 @@ import Admin from './pages/Admin';
 import AdminDetail from './pages/AdminDetail';
 import Dashboard from './pages/Dashboard';
 import RequireAdminAuth from './components/RequireAdminAuth';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function AppContent() {
   const location = useLocation();
@@ -33,7 +34,9 @@ function AppContent() {
 
         {/* 🔐 Admin login (no protection needed) */}
         <Route path="/admin-login" element={<AdminLogin />} />
-
+        <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin/reset-password/:token" element={<ResetPassword />} />
+        
         {/* 🔐 Protected admin routes */}
         <Route
           path="/admin"
