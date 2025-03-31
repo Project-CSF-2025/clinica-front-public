@@ -68,9 +68,21 @@ const AdminLogin = () => {
 
               {error && <p style={{ color: 'red' }}>{error}</p>}
               
+              <div className="text-end mt-2">
+                <button
+                  type="button"
+                  className="btn btn-link p-0 text-decoration-underline"
+                  style={{ color: '#007bff', fontWeight: '500', fontSize: '0.9rem' }}
+                  onClick={() => navigate("/admin/forgot-password")}
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </div>
+
               <button type="submit" className="buttonLogin">
                 Iniciar Sesión
               </button>
+
             </form>
           </div>
         </div>
