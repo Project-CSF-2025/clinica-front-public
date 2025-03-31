@@ -28,7 +28,7 @@ function SearchBox ({ reports, setFilteredReports, searchTerm, setSearchTerm, ac
   return (
     <>
       {/* 🔹 検索バー */}
-      <div className="input-group" style={{maxWidth: "300px"}}>
+      <div className="input-group" style={{maxWidth: "250px"}}>
         <input
           type="text"
           className="form-control"

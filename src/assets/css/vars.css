@@ -12,7 +12,11 @@
   --gray4: #F9F9F9; /* chat area */
   --gray5: #d3d3d3;
   --yellow: #F4C867;
-  --orange: orange;
+  --orange: #ffa500;
   --red: red;
   --black: #333;
+  --noLeido: #f34235;
+  --enProceso: #3587F2;
+  --resuelto: #0F2E5E;
+  --eliminado: #A1A197;
 }

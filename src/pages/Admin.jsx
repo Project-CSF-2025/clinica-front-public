@@ -6,7 +6,6 @@ import SearchBox from "../components/SearchBox";
 import ReportCard from "../components/ReportCard";
 import { apiRequest } from "../services/apiService"; 
 import { getAllAdminNotes, softDeleteAdminNote } from "../services/adminNoteService";
-import { downloadReportCSV } from "../services/reportService";
 
 function Admin() {
   const [reports, setReports] = useState([]);
@@ -89,21 +88,6 @@ function Admin() {
     navigate(`/admin/detail/${reportCode}`); // ✅ Use reportCode instead of ID
   };
 
-  const handleDownloadCSV = async () => {
-    try {
-      const blob = await downloadReportCSV();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "reportes_clinica.csv";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch (error) {
-      alert("No se pudo descargar el archivo CSV.");
-    }
-  };
-
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
     if (!text) return "";
@@ -131,14 +115,11 @@ function Admin() {
                     reports={reports}
                     setFilteredReports={setFilteredReports}
                   />
-                  <button className="btn btn-outline-primary" onClick={handleDownloadCSV}>
-                    Descargar CSV
+                  
+                  <div className="filterList__right">
+                  <button className="btnDashboard btn btn-outline-secondary" onClick={() => navigate('/admin/dashboard')}>
+                    📊 Panel de Control
                   </button>
-                  <button className="btn btn-outline-secondary" onClick={() => navigate('/admin/dashboard')}>
-                    📊
-                  </button>
-
-
                   
                   {/* ===== Search box =====  */}
                   <SearchBox 
@@ -148,6 +129,7 @@ function Admin() {
                     setSearchTerm={setSearchTerm}
                     activeFilters={activeFilters}
                   />
+                  </div>
                 </div>
 
                 {/* ===== Report card ===== */}
@@ -243,9 +225,3 @@ function Admin() {
 }
 
 export default Admin
-
-
-
-
-// loginの方法とclose session
-// eliminadoの色、トップ非表示、

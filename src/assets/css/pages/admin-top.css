@@ -9,6 +9,18 @@
   max-width:100%;
 }
 
+.filterList__right {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  gap: 0 16px;
+}
+
+.filterList__right .btnDashboard {
+  width: 13vw;
+  height: fit-content;
+}
+
 .useful {
   position:relative;
   padding:0 15px;
@@ -126,7 +138,7 @@
   -o-transition:all .4s;
   transition:all .4s;
   display:inline-block;
-  padding:7px 24px 7px 12px;
+  padding:7px 20px 7px 12px;
   position:relative;
 }
 .category__nav li a:focus,
