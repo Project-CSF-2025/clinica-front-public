@@ -15,6 +15,7 @@
 @import url("./pages/login.css");
 @import url("./pages/admin-top.css");
 @import url("./pages/admin-detail.css");
+@import url("./pages/dashboard.css");
 
 /* others */
 @import url("vars.css");
