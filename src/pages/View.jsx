@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { getReportByCode, getStatusHistoryByReportId } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService";
 import ViewReportState from "../components/ViewReportState";
+import iconSearch from "../assets/img/icon_search.png";
 
 function View() {
   const { reportCode } = useParams();
@@ -318,12 +319,13 @@ function View() {
           </div>
           </div>
         </div>
-
-        {/* <div className="buttonA -centerContents -mt120">
-          <Link to="/admin" className="-iconBack">
-            Consultar estado
+        
+        <div className="btn btn-primary salir-adminDetail">
+          <Link to="/consult" className="-iconBack">
+            <img src={iconSearch} alt="Icono Consultar Incidencia" class="button-icon" />
+            Consultar otro código
           </Link>
-        </div> */}
+        </div>
       </main>
     </>
   );
