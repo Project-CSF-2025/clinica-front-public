@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { getReportByCode, getStatusHistoryByReportId } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService";
 import ViewReportState from "../components/ViewReportState";
+import iconSearch from "../assets/img/icon_search.png";
 
 function View() {
   const { reportCode } = useParams();
@@ -318,12 +319,15 @@ function View() {
           </div>
           </div>
         </div>
-
-        {/* <div className="buttonA -centerContents -mt120">
-          <Link to="/admin" className="-iconBack">
-            Consultar estado
+        
+        <div className="btn btn-primary salir-adminDetail">
+          <Link to="/" className="-iconBack">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+            </svg>
+            Salir
           </Link>
-        </div> */}
+        </div>
       </main>
     </>
   );
