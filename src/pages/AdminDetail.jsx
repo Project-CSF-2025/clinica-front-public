@@ -317,15 +317,17 @@ function AdminDetail() {
     };
 
     try {
-        if (existingMemo?.id_note) {
-            await updateAdminNote(existingMemo.id_note, notePayload);
-            alert("✅ Memo updated successfully!");
-        } else {
-            await createAdminNote(notePayload);
-            alert("✅ Memo created successfully!");
-        }
+      if (existingMemo?.id_note) {
+          await updateAdminNote(existingMemo.id_note, notePayload);
+          alert("✅ Memo updated successfully!");
+      } else {
+          await createAdminNote(notePayload);
+          alert("✅ Memo created successfully!");
+      }
 
-        fetchMemo(report.id_report);
+      fetchMemo(report.id_report);
+
+      setIsEditing(false);
     } catch (error) {
         console.error("❌ Error saving memo:", error);
         alert("Failed to save memo.");
