@@ -1,16 +1,3 @@
-/* .icon-trash {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin: auto;
-  cursor: pointer;
-}
-.icon-trash svg {
-  width: 100%;
-  height: 100%;
-} */
 .iconFlag {
   display: none;
 }
@@ -31,19 +18,6 @@
 .iconFlaged svg {
   fill: var(--yellow);
 }
-
-/* .iconFlag__wrp {
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin: auto;
-  z-index: 10;
-} */
 
 .iconFlag__wrp {
   width: 25px;
@@ -133,4 +107,22 @@
 
 .know:hover .iconFlag__wrp svg {
   fill: white; 
+}
+
+.msgIconBadge {
+  display: inline-flex;
+  align-items: center;
+  background-color: #6f42c1; 
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 10px;
+  gap: 4px;
+}
+
+.msgIconBadge svg {
+  fill: white;
+  width: 14px;
+  height: 14px;
 }
