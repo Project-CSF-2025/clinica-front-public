@@ -103,6 +103,18 @@ function Admin() {
     );
   };
 
+  const formatDateTime = (value) => {
+    const date = new Date(value);
+    return date.toLocaleString("es-ES", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };  
+
   return (
     <>
       <div className="pageAdmin">
@@ -188,7 +200,7 @@ function Admin() {
                       className="notificationList__itemLink"
                     >
                       <span className="title">{note.admin_message}</span>
-                      <span className="date">{note.last_update_at}</span>
+                      <span className="date">{formatDateTime(note.last_update_at)}</span>
                     </a>
                     <span className="notificationList__itemSub">
                         <div className="icon-trash" onClick={() => handleSoftDelete(note.id_note)}>
