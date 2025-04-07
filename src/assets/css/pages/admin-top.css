@@ -549,6 +549,10 @@
   background-color: var(--labelBlue);
 }
 
+.-green .notificationList__itemLink::after {
+  background-color: var(--labelGreen);
+}
+
 .notificationList__itemLink .title {
   display: block;
   font-size: 1.1rem;

@@ -166,7 +166,11 @@ function Admin() {
                 const report = reports.find(report => report.id_report === note.id_report);
 
                 return(
-                  <li key={note.id_note} className="notificationList__item -blue">
+                  <li key={note.id_note}
+                    className={`notificationList__item ${
+                      report?.status === "Resuelto" ? "-green" : "-blue"
+                    }`}
+                  >
                     <a 
                       onClick={(e) => {
                         e.preventDefault(); // デフォルトのリンク動作を防ぐ
