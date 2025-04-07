@@ -25,7 +25,11 @@ function Admin() {
   
         if (Array.isArray(data)) {
           setReports(data);
-          setFilteredReports(data.filter(report => report.status !== "Eliminado"));
+          setFilteredReports(
+            data
+              .filter(report => report.status !== "Eliminado")
+              .sort((a, b) => (b.unread_messages || 0) - (a.unread_messages || 0)) // 🔝 Unread first
+          );          
         } else {
           throw new Error("Unexpected response format");
         }

@@ -7,6 +7,7 @@ import { updateAdminNote } from "../services/adminNoteService";
 import { toggleReportFlag } from "../services/adminService";
 import { updateReportStatus } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService"; 
+import { markMessagesAsRead } from "../services/messageService";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -90,6 +91,19 @@ function AdminDetail() {
       fetchMessages(report.id_report);
     }
   }, [report]);
+
+  useEffect(() => {
+    if (report?.id_report) {
+      markMessagesAsRead(report.id_report)
+        .then(() => {
+          console.log("✅ Marked messages as read");
+          window.dispatchEvent(new Event("flagUpdated")); 
+        })
+        .catch((error) => {
+          console.error("❌ Failed to mark messages as read:", error);
+        });
+    }
+  }, [report?.id_report]);  
 
   const fetchMemo = async (id_report) => {
     if (!id_report) {
