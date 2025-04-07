@@ -83,15 +83,6 @@ function Admin() {
     }
   };
 
-  const handleOpenReport = (reportCode) => {
-    if (!reportCode) {
-        console.warn("⚠️ No report code found for this note.");
-        return;
-    }
-    console.log(`📄 Navigating to admin detail page for report ${reportCode}`);
-    navigate(`/admin/detail/${reportCode}`); // ✅ Use reportCode instead of ID
-  };
-
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
     if (!text) return "";
@@ -151,20 +142,29 @@ function Admin() {
                 {/* ===== Report card ===== */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
-                    filteredReports.slice().reverse().map((report, index) => 
-                      report ? ( 
-                        <ReportCard
-                          key={report._id || index} 
-                          report={report}
-                          searchTerm={searchTerm}
-                          highlightText={highlightText}
-                        />
-                      ) : null
-                    )
+                    [...filteredReports]
+                      .sort((a, b) => {
+                        // 🔥 Always sort by the unified activity field
+                        const timeA = new Date(a.last_activity_at).getTime();
+                        const timeB = new Date(b.last_activity_at).getTime();
+                        return timeB - timeA;
+                      })
+                      .map((report, index) =>
+                        report ? (
+                          <ReportCard
+                            key={report._id || index}
+                            report={report}
+                            searchTerm={searchTerm}
+                            highlightText={highlightText}
+                          />
+                        ) : null
+                      )
                   ) : (
                     <p>No hay reportes disponibles</p>
                   )}
                 </div>
+
+
               </div>
             </div>
 
