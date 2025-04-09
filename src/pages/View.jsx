@@ -3,7 +3,7 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import { getReportByCode, getStatusHistoryByReportId } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService";
 import ViewReportState from "../components/ViewReportState";
-import iconSearch from "../assets/img/icon_search.png";
+import { markAdminMessagesAsRead } from "../services/messageService"; 
 
 function View() {
   const { reportCode } = useParams();
@@ -75,6 +75,14 @@ function View() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);  
+
+  useEffect(() => {
+    if (report?.report_code) {
+      markAdminMessagesAsRead(report.report_code)
+        .then(() => console.log("✅ Admin messages marked as read"))
+        .catch((err) => console.error("❌ Failed to mark admin messages as read:", err));
+    }
+  }, [report]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();

@@ -83,15 +83,6 @@ function Admin() {
     }
   };
 
-  const handleOpenReport = (reportCode) => {
-    if (!reportCode) {
-        console.warn("⚠️ No report code found for this note.");
-        return;
-    }
-    console.log(`📄 Navigating to admin detail page for report ${reportCode}`);
-    navigate(`/admin/detail/${reportCode}`); // ✅ Use reportCode instead of ID
-  };
-
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
     if (!text) return "";
@@ -102,6 +93,18 @@ function Admin() {
       part.toLowerCase() === keyword.toLowerCase() ? <mark key={i} className="highlight">{part}</mark> : part
     );
   };
+
+  const formatDateTime = (value) => {
+    const date = new Date(value);
+    return date.toLocaleString("es-ES", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };  
 
   return (
     <>
@@ -139,20 +142,29 @@ function Admin() {
                 {/* ===== Report card ===== */}
                 <div id="incidentContainer" className="js-kw know-s-wrap">
                   {filteredReports.length > 0 ? (
-                    filteredReports.slice().reverse().map((report, index) => 
-                      report ? ( 
-                        <ReportCard
-                          key={report._id || index} 
-                          report={report}
-                          searchTerm={searchTerm}
-                          highlightText={highlightText}
-                        />
-                      ) : null
-                    )
+                    [...filteredReports]
+                      .sort((a, b) => {
+                        // 🔥 Always sort by the unified activity field
+                        const timeA = new Date(a.last_activity_at).getTime();
+                        const timeB = new Date(b.last_activity_at).getTime();
+                        return timeB - timeA;
+                      })
+                      .map((report, index) =>
+                        report ? (
+                          <ReportCard
+                            key={report._id || index}
+                            report={report}
+                            searchTerm={searchTerm}
+                            highlightText={highlightText}
+                          />
+                        ) : null
+                      )
                   ) : (
                     <p>No hay reportes disponibles</p>
                   )}
                 </div>
+
+
               </div>
             </div>
 
@@ -188,7 +200,7 @@ function Admin() {
                       className="notificationList__itemLink"
                     >
                       <span className="title">{note.admin_message}</span>
-                      <span className="date">{note.last_update_at}</span>
+                      <span className="date">{formatDateTime(note.last_update_at)}</span>
                     </a>
                     <span className="notificationList__itemSub">
                         <div className="icon-trash" onClick={() => handleSoftDelete(note.id_note)}>

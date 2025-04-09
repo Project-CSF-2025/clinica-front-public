@@ -12,5 +12,8 @@ export const markMessagesAsRead = async (reportId) => {
   return await apiRequest("PUT", `/messages/mark-read/${reportId}`, {});
 };
 
+export const markAdminMessagesAsRead = async (reportCode) => {
+  return await apiRequest("PUT", `/messages/mark-read-admin/${reportCode}`, {});
+};
 
 

@@ -1,6 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+const formatDateTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("es-ES", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
 const ReportCard = ({ report, searchTerm, highlightText }) => {
   const navigate = useNavigate();
   console.log("Report Data in ReportCard:", report);
@@ -52,7 +64,7 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
           {highlightText(report.status || "", searchTerm)}
         </span>
         <span className="know__date">
-          {highlightText(report.created_at || "", searchTerm)}
+          {highlightText(formatDateTime(report.created_at), searchTerm)}
         </span>
 
         {/* Subject */}
