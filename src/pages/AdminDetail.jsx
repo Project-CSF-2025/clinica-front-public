@@ -565,7 +565,7 @@ function AdminDetail() {
             <div className="chatBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
               {/* <div className="chatBlock"> */}
-              <div className={`chatBlock ${report?.status === "Eliminado" ? "disabled-click" : ""}`}>
+              <div className={`chatBlock ${(report?.status === "Eliminado" || report?.status === "Resuelto") ? "disabled-click" : ""}`}>
                 <div className="chatBlock__inner">
                   <div className="chatBlock__body" ref={chatContainerRef}>
                     {(messages?.length > 0 ? messages : []).map((msg, index) => (
