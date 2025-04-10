@@ -8,13 +8,8 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
 
   const currentStatus = sortedHistory[sortedHistory.length - 1]?.new_status;
 
-  const statusOrder = ["No leído", "En proceso", "Resuelto"];
+  const statusOrder = ["No leído", "En proceso", "Resuelto", "Eliminado"];
   const currentIndex = statusOrder.indexOf(currentStatus);
-
-  // Resueltoの最新のchanged_atを取得
-  const latestResueltoEntry = [...statusHistory]
-    .filter((s) => s.new_status === "Resuelto")
-    .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
 
   // 特定ステータスの最新 changed_at を取得（条件つき）
   const getLatestChangedAt = (status) => {
@@ -24,6 +19,11 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
         : "--:--";
     }
 
+  // Resueltoの最新のchanged_atを取得
+  const latestResueltoEntry = [...statusHistory]
+    .filter((s) => s.new_status === "Resuelto")
+    .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
+
     const latestEntry = [...statusHistory]
       .filter((s) => s.new_status === status)
       .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
@@ -31,7 +31,7 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
     const statusIndex = statusOrder.indexOf(status);
     if (!latestEntry || statusIndex > currentIndex) return "--:--";
 
-    // ❗ Resueltoに直接ジャンプしていた場合はEn proceso非表示
+    //❗ Resueltoに直接ジャンプしていた場合はEn proceso非表示
     if (
       currentStatus === "Resuelto" &&
       status === "En proceso" &&
@@ -44,6 +44,9 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
     ) {
       return "--:--";
     }
+
+    // 👇 条件を見直して、履歴があれば必ず表示するように変更
+    if (!latestEntry) return "--:--";
 
     return new Date(latestEntry.changed_at).toLocaleString("es-ES");
   };
