@@ -46,11 +46,11 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
     <>
       <ul className="category__nav category__nav-class list-inline mb-0">
         {[
-          { label: "No leído", target: "cRedLight" },
-          { label: "En proceso", target: "cBlueLight" },
-          { label: "Resuelto", target: "cBlueDark" },
-          { label: "Eliminados", target: "cGrayDark" },
-          { label: "Prioritario", target: "cYellow" }
+          { label: "NO LEIDO", target: "cRedLight" },
+          { label: "EN PROCESO", target: "cBlueLight" },
+          { label: "RESUELTO", target: "cBlueDark" },
+          { label: "ELIMINADOS", target: "cGrayDark" },
+          { label: "PRIORITARIO", target: "cYellow" }
         ].map(filter => (
           <li key={filter.target} className="list-inline-item">
             <a

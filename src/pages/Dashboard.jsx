@@ -40,14 +40,14 @@ function Dashboard() {
 
   // 🔢 Status counts
   const statusCounts = {
-    "No leído": 0,
-    "En proceso": 0,
-    "Resuelto": 0,
-    "Eliminado": 0,
+    "NO LEIDO": 0,
+    "EN PROCESO": 0,
+    "RESUELTO": 0,
+    "ELIMINADO": 0,
   };
 
   filteredReports.forEach((report) => {
-    const status = report.status || "No leído";
+    const status = report.status || "NO LEIDO";
     if (statusCounts[status] !== undefined) {
       statusCounts[status]++;
     }
@@ -227,11 +227,6 @@ function Dashboard() {
             Volver
           </Link>
         </div>
-      {/* <div className="text-center mt-4">
-        <button className="btn btn-secondary" onClick={() => navigate("/admin")}>
-          ← Volver al Panel de Admin
-        </button>
-      </div> */}
     </div>
   );
 }
