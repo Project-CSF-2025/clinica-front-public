@@ -184,7 +184,7 @@ function Admin() {
                 return(
                   <li key={note.id_note}
                     className={`notificationList__item ${
-                      report?.status === "Resuelto" ? "-green" : "-blue"
+                      report?.status === "RESUELTO" ? "-green" : "-blue"
                     }`}
                   >
                     <a 
