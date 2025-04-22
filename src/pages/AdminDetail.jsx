@@ -185,7 +185,7 @@ function AdminDetail() {
   
   const handleStatusChange = async (e) => {
     if (selectedStatus === "ELIMINADO") {
-      console.warn("❌ Status change disabled for 'Eliminado'");
+      console.warn("❌ Status change disabled for 'ELIMINADO'");
       return;
     }
 
@@ -449,10 +449,10 @@ function AdminDetail() {
               <div className="selectWrap">
                 <select 
                   name="situation"
-                  className={`select ${report?.status === "Eliminado" ? "disabled-select" : ""}`}
+                  className={`select ${report?.status === "ELIMINADO" ? "disabled-select" : ""}`}
                   value={selectedStatus}
                   onChange={handleStatusChange}
-                  disabled={selectedStatus === "Eliminado"}
+                  disabled={selectedStatus === "ELIMINADO"}
                 >
                   <option value="NO LEIDO">No leído</option>
                   <option value="EN PROCESO">En proceso</option>
@@ -464,8 +464,8 @@ function AdminDetail() {
               <ul className="iconList">
                 <li>
                   <span
-                    className={`iconFlag__wrp ${selectedStatus === "Eliminado" ? "disabled-icon" : ""}`} 
-                    onClick={selectedStatus === "Eliminado" ? (e) => e.preventDefault() : toggleFlag}
+                    className={`iconFlag__wrp ${selectedStatus === "ELIMINADO" ? "disabled-icon" : ""}`} 
+                    onClick={selectedStatus === "ELIMINADO" ? (e) => e.preventDefault() : toggleFlag}
                   >
                     <span className={`iconFlag ${isFlagged ? "" : "-show"}`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-flag" viewBox="0 0 16 16">
@@ -522,7 +522,7 @@ function AdminDetail() {
             {/* ========== MEMO ========== */}
             <div className="memoBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Recordatorio</h2>
-              <div className={`memoBlock ${isEditing ? "-active" : ""} ${report?.status === "Eliminado" ? "disabled-click" : ""}`}>
+              <div className={`memoBlock ${isEditing ? "-active" : ""} ${report?.status === "ELIMINADO" ? "disabled-click" : ""}`}>
                 {!isEditing ? (
                   <div className="memoBlock__static">
                     {memoText ? memoText : "No memo available"}
@@ -541,7 +541,7 @@ function AdminDetail() {
                 <button 
                   className="memoBlock__btn" 
                   onClick={isEditing ? handleSaveNote : toggleEdit}
-                  disabled={report?.status === "Eliminado"}
+                  disabled={report?.status === "ELIMINADO"}
                 >
                   {isEditing ? (
                     <span className="iconCheck">
