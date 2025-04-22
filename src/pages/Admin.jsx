@@ -27,7 +27,7 @@ function Admin() {
           setReports(data);
           setFilteredReports(
             data
-              .filter(report => report.status !== "Eliminado")
+              .filter(report => report.status !== "ELIMINADO")
               .sort((a, b) => (b.unread_messages || 0) - (a.unread_messages || 0)) // 🔝 Unread first
           );          
         } else {
