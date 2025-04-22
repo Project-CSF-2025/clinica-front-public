@@ -18,13 +18,13 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
   console.log("Report Data in ReportCard:", report);
 
   const statusClass =
-    report.status === "No leído"
+    report.status === "NO LEIDO"
       ? "cRedLight"
-      : report.status === "En proceso"
+      : report.status === "EN PROCESO"
       ? "cBlueLight"
-      : report.status === "Resuelto"
+      : report.status === "RESUELTO"
       ? "cBlueDark"
-      : report.status === "Eliminado"
+      : report.status === "ELIMINADO"
       ? "cGrayDark"
       : "";
 
