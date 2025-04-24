@@ -1,0 +1,6 @@
+[
+  { "value": "NO_LEIDO", "label": "No leído" },
+  { "value": "EN_PROCESO", "label": "En proceso" },
+  { "value": "RESUELTO", "label": "Resuelto" },
+  { "value": "ELIMINADO", "label": "Eliminado" }
+]
