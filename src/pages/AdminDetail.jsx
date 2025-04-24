@@ -8,6 +8,7 @@ import { toggleReportFlag } from "../services/adminService";
 import { updateReportStatus } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService"; 
 import { markMessagesAsRead } from "../services/messageService";
+import statusOptions from "../data/statusOptions.json";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -447,19 +448,22 @@ function AdminDetail() {
             <div className="operationUnit">
               {/* ===== Status  ===== */}
               <div className="selectWrap">
-                <select 
-                  name="situation"
-                  className={`select ${report?.status === "ELIMINADO" ? "disabled-select" : ""}`}
-                  value={selectedStatus}
-                  onChange={handleStatusChange}
-                  disabled={selectedStatus === "ELIMINADO"}
-                >
-                  <option value="NO LEIDO">No leído</option>
-                  <option value="EN PROCESO">En proceso</option>
-                  <option value="RESUELTO">Resuelto</option>
-                </select>
+              <select
+                name="status"
+                className={`select ${selectedStatus === "ELIMINADO" ? "disabled-select" : ""}`}
+                value={selectedStatus}
+                onChange={handleStatusChange}
+                disabled={selectedStatus === "ELIMINADO"}
+              >
+                {statusOptions
+                  .filter(option => option.value !== "ELIMINADO") // block deleted status from dropdown
+                  .map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+              </select>
               </div>
-
               {/* ===== Flag  ===== */}
               <ul className="iconList">
                 <li>

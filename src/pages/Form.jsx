@@ -78,14 +78,19 @@ function Form() {
     e.preventDefault();
     const form = e.target;
     setIsSubmitted(true);
-
+  
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
     } else {
-      navigate("/preview", { state: formData });
+      const cleanedData = {
+        ...formData,
+        isConsequent: formData.isConsequent === "si" ? "YES" : "NO",
+        avoidable: formData.avoidable === "si" ? "YES" : "NO"
+      };
+      navigate("/preview", { state: cleanedData });
     }
-  };
+  };  
 
   return (
     <>

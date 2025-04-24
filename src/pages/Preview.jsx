@@ -49,9 +49,11 @@ function Preview() {
     }
 
     const reportData = {
-        ...formData,
-        id_user: userId,  // Now sending correct user ID
-        location: formData.place,
+      ...formData,
+      id_user: userId,
+      location: formData.place,
+      isConsequent: formData.isConsequent === "si" ? "YES" : "NO",
+      avoidable: formData.avoidable === "si" ? "YES" : "NO"
     };
 
     console.log("🚀 Sending Report Data:", reportData);
