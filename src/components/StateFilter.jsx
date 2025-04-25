@@ -25,10 +25,10 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
       // ✅ 複数のクラスを持つようにする
       let reportClasses = [];
 
-      if (report.status === "No leído") reportClasses.push("cRedLight");
-      if (report.status === "En proceso") reportClasses.push("cBlueLight");
-      if (report.status === "Resuelto") reportClasses.push("cBlueDark");
-      if (report.status === "Eliminado") reportClasses.push("cGrayDark");
+      if (report.status === "NO LEIDO") reportClasses.push("cRedLight");
+      if (report.status === "EN PROCESO") reportClasses.push("cBlueLight");
+      if (report.status === "RESUELTO") reportClasses.push("cBlueDark");
+      if (report.status === "ELIMINADO") reportClasses.push("cGrayDark");
       if (report.is_flagged) reportClasses.push("cYellow"); // ✅ Prioritario対象
 
       // ✅ いずれかのクラスがフィルターに含まれているかチェック
@@ -36,7 +36,7 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
     });
     } else {
       // ✅ Default: Hide "Eliminado"
-      filtered = reports.filter(report => report.status !== "Eliminado");
+      filtered = reports.filter(report => report.status !== "ELIMINADO");
     }
 
     setFilteredReports(filtered);
@@ -46,11 +46,11 @@ const StateFilter = ({ activeFilters, setActiveFilters, reports, setFilteredRepo
     <>
       <ul className="category__nav category__nav-class list-inline mb-0">
         {[
-          { label: "No leído", target: "cRedLight" },
-          { label: "En proceso", target: "cBlueLight" },
-          { label: "Resuelto", target: "cBlueDark" },
-          { label: "Eliminados", target: "cGrayDark" },
-          { label: "Prioritario", target: "cYellow" }
+          { label: "NO LEIDO", target: "cRedLight" },
+          { label: "EN PROCESO", target: "cBlueLight" },
+          { label: "RESUELTO", target: "cBlueDark" },
+          { label: "ELIMINADO", target: "cGrayDark" },
+          { label: "PRIORITARIO", target: "cYellow" }
         ].map(filter => (
           <li key={filter.target} className="list-inline-item">
             <a

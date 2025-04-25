@@ -8,12 +8,17 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
 
   const currentStatus = sortedHistory[sortedHistory.length - 1]?.new_status;
 
-  const statusOrder = ["No leído", "En proceso", "Resuelto", "Eliminado"];
+  const statusOrder = ["NO LEIDO", "EN PROCESO", "RESUELTO"];
   const currentIndex = statusOrder.indexOf(currentStatus);
 
+  // Resueltoの最新のchanged_atを取得
+  const latestResueltoEntry = [...statusHistory]
+    .filter((s) => s.new_status === "RESUELTO")
+    .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
+  
   // 特定ステータスの最新 changed_at を取得（条件つき）
   const getLatestChangedAt = (status) => {
-    if (status === "No leído") {
+    if (status === "NO LEIDO") {
       return reportCreatedAt
         ? new Date(reportCreatedAt).toLocaleString("es-ES")
         : "--:--";
@@ -33,12 +38,12 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
 
     //❗ Resueltoに直接ジャンプしていた場合はEn proceso非表示
     if (
-      currentStatus === "Resuelto" &&
-      status === "En proceso" &&
+      currentStatus === "RESUELTO" &&
+      status === "EN PROCESO" &&
       latestResueltoEntry &&
       !statusHistory.some(
         (s) =>
-          s.new_status === "En proceso" &&
+          s.new_status === "EN PROCESO" &&
           new Date(s.changed_at) < new Date(latestResueltoEntry.changed_at)
       )
     ) {
@@ -57,21 +62,21 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
       <div className="progreso">
 
         {/* ✅ Show "Enviado" instead of "No leído" */}
-        <div className={`fase ${currentStatus === "No leído" ? "-active" : ""}`}>
+        <div className={`fase ${currentStatus === "NO LEIDO" ? "-active" : ""}`}>
           <span className="estado">Enviado</span>
-          <span className="fecha">{getLatestChangedAt("No leído")}</span>
+          <span className="fecha">{getLatestChangedAt("NO LEIDO")}</span>
         </div>
 
         {/* ✅ Show "En Proceso" if present */}
-        <div className={`fase ${currentStatus === "En proceso" ? "-active" : ""}`}>
+        <div className={`fase ${currentStatus === "EN PROCESO" ? "-active" : ""}`}>
           <span className="estado">En Proceso</span>
-          <span className="fecha">{getLatestChangedAt("En proceso")}</span>
+          <span className="fecha">{getLatestChangedAt("EN PROCESO")}</span>
         </div>
 
         {/* ✅ Show "Resuelto" if present */}
-        <div className={`fase ${currentStatus === "Resuelto" ? "-active" : ""}`}>
+        <div className={`fase ${currentStatus === "RESUELTO" ? "-active" : ""}`}>
           <span className="estado">Resuelto</span>
-          <span className="fecha">{getLatestChangedAt("Resuelto")}</span>
+          <span className="fecha">{getLatestChangedAt("RESUELTO")}</span>
         </div>
 
       </div>

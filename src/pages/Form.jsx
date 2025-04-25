@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -34,6 +33,14 @@ function Form() {
   const [validated, setValidated] = useState(false); 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // ✅ Check for existing submission
+  React.useEffect(() => {
+    const isSubmitted = localStorage.getItem("reportAlreadySubmitted");
+    if (isSubmitted) {
+      navigate("/confirm", { replace: true });
+    }
+  }, [navigate]);
+  
   // Option: departamento
   const departmentOptions = [
     "Hospitalización",
@@ -78,14 +85,19 @@ function Form() {
     e.preventDefault();
     const form = e.target;
     setIsSubmitted(true);
-
+  
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
     } else {
-      navigate("/preview", { state: formData });
+      const cleanedData = {
+        ...formData,
+        isConsequent: formData.isConsequent === "si" ? "YES" : "NO",
+        avoidable: formData.avoidable === "si" ? "YES" : "NO"
+      };
+      navigate("/preview", { state: cleanedData });
     }
-  };
+  };  
 
   return (
     <>

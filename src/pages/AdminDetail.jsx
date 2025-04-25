@@ -8,6 +8,7 @@ import { toggleReportFlag } from "../services/adminService";
 import { updateReportStatus } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService"; 
 import { markMessagesAsRead } from "../services/messageService";
+import statusOptions from "../data/statusOptions.json";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -22,7 +23,7 @@ function AdminDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [memoText, setMemoText] = useState("");
   const [existingMemo, setExistingMemo] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(report?.status || "No leído");
+  const [selectedStatus, setSelectedStatus] = useState(report?.status || "NO LEIDO");
 
   // ✅ For messages
   const [messages, setMessages] = useState([]); 
@@ -184,8 +185,8 @@ function AdminDetail() {
   }, [report]);
   
   const handleStatusChange = async (e) => {
-    if (selectedStatus === "Eliminado") {
-      console.warn("❌ Status change disabled for 'Eliminado'");
+    if (selectedStatus === "ELIMINADO") {
+      console.warn("❌ Status change disabled for 'ELIMINADO'");
       return;
     }
 
@@ -213,10 +214,10 @@ function AdminDetail() {
 
     try {
       await toggleReportFlag(report.id_report, false);
-      await updateReportStatus(report.report_code, "Eliminado");
-      setSelectedStatus("Eliminado");
+      await updateReportStatus(report.report_code, "ELIMINADO");
+      setSelectedStatus("ELIMINADO");
       setIsFlagged(false);
-      alert("✅ Report marked as Eliminado!");
+      alert("✅ Report marked as ELIMINADO!");
 
       // Optional: Redirect to admin page after deletion
       setTimeout(() => {
@@ -279,7 +280,7 @@ function AdminDetail() {
         pdf.addImage(imgData, "PNG", xPos, yPos, imgWidth, imgHeight); // 画像を PDF に追加
         pdf.save(`reporte_${report?.report_code || "descarga"}.pdf`); // PDF を保存
       })
-      .catch((error) => console.error("❌ PDF 作成中にエラー:", error));
+      .catch((error) => console.error("❌ PDF creation:", error));
   };
 
 
@@ -447,25 +448,28 @@ function AdminDetail() {
             <div className="operationUnit">
               {/* ===== Status  ===== */}
               <div className="selectWrap">
-                <select 
-                  name="situation"
-                  className={`select ${report?.status === "Eliminado" ? "disabled-select" : ""}`}
-                  value={selectedStatus}
-                  onChange={handleStatusChange}
-                  disabled={selectedStatus === "Eliminado"}
-                >
-                  <option value="No leído">No leído</option>
-                  <option value="En proceso">En proceso</option>
-                  <option value="Resuelto">Resuelto</option>
-                </select>
+              <select
+                name="status"
+                className={`select ${selectedStatus === "ELIMINADO" ? "disabled-select" : ""}`}
+                value={selectedStatus}
+                onChange={handleStatusChange}
+                disabled={selectedStatus === "ELIMINADO"}
+              >
+                {statusOptions
+                  .filter(option => option.value !== "ELIMINADO") // block deleted status from dropdown
+                  .map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+              </select>
               </div>
-
               {/* ===== Flag  ===== */}
               <ul className="iconList">
                 <li>
                   <span
-                    className={`iconFlag__wrp ${selectedStatus === "Eliminado" ? "disabled-icon" : ""}`} 
-                    onClick={selectedStatus === "Eliminado" ? (e) => e.preventDefault() : toggleFlag}
+                    className={`iconFlag__wrp ${selectedStatus === "ELIMINADO" ? "disabled-icon" : ""}`} 
+                    onClick={selectedStatus === "ELIMINADO" ? (e) => e.preventDefault() : toggleFlag}
                   >
                     <span className={`iconFlag ${isFlagged ? "" : "-show"}`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-flag" viewBox="0 0 16 16">
@@ -482,10 +486,10 @@ function AdminDetail() {
                 {/* ===== Bin  ===== */}
                 <li>
                   <span
-                    className={`icon-trash ${selectedStatus === "Eliminado" ? "disabled-icon" : ""}`}
-                    data-bs-toggle={selectedStatus === "Eliminado" ? "" : "modal"}
-                    data-bs-target={selectedStatus === "Eliminado" ? "" : "#modalChoice"}
-                    onClick={selectedStatus === "Eliminado" ? (e) => e.preventDefault() : undefined}
+                    className={`icon-trash ${selectedStatus === "ELIMINADO" ? "disabled-icon" : ""}`}
+                    data-bs-toggle={selectedStatus === "ELIMINADO" ? "" : "modal"}
+                    data-bs-target={selectedStatus === "ELIMINADO" ? "" : "#modalChoice"}
+                    onClick={selectedStatus === "ELIMINADO" ? (e) => e.preventDefault() : undefined}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                       <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -522,7 +526,7 @@ function AdminDetail() {
             {/* ========== MEMO ========== */}
             <div className="memoBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Recordatorio</h2>
-              <div className={`memoBlock ${isEditing ? "-active" : ""} ${report?.status === "Eliminado" ? "disabled-click" : ""}`}>
+              <div className={`memoBlock ${isEditing ? "-active" : ""} ${report?.status === "ELIMINADO" ? "disabled-click" : ""}`}>
                 {!isEditing ? (
                   <div className="memoBlock__static">
                     {memoText ? memoText : "No memo available"}
@@ -541,7 +545,7 @@ function AdminDetail() {
                 <button 
                   className="memoBlock__btn" 
                   onClick={isEditing ? handleSaveNote : toggleEdit}
-                  disabled={report?.status === "Eliminado"}
+                  disabled={report?.status === "ELIMINADO"}
                 >
                   {isEditing ? (
                     <span className="iconCheck">
@@ -565,7 +569,9 @@ function AdminDetail() {
             <div className="chatBlock__wrap">
               <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
               {/* <div className="chatBlock"> */}
-              <div className={`chatBlock ${(report?.status === "Eliminado" || report?.status === "Resuelto") ? "disabled-click" : ""}`}>
+
+              <div className={`chatBlock ${report?.status === "ELIMINADO" ? "disabled-click" : ""}`}>
+
                 <div className="chatBlock__inner">
                   <div className="chatBlock__body" ref={chatContainerRef}>
                     {(messages?.length > 0 ? messages : []).map((msg, index) => (
@@ -602,13 +608,13 @@ function AdminDetail() {
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Escribe un mensaje..."
-                        disabled={report?.status === "Eliminado"}
+                        disabled={report?.status === "ELIMINADO"}
                       ></textarea>
                       <button 
                         type="button"
                         className="buttonChat icon-send"
                         onClick={handleSendMessage}
-                        disabled={report?.status === "Eliminado"}
+                        disabled={report?.status === "ELIMINADO"}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send" viewBox="0 0 16 16">
                           <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
