@@ -12,21 +12,28 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (newPassword !== confirmPassword) {
       return setError("Las contraseñas no coinciden");
     }
-
+  
     try {
       await resetPassword(token, newPassword);
+  
+      // ✅ Clear localStorage/sessionStorage to force logout
+      localStorage.removeItem('adminToken'); // use your actual token key name
+      sessionStorage.removeItem('adminToken');
+  
       setMessage("✅ Contraseña actualizada correctamente.");
       setError("");
+  
+      // ✅ After 3 seconds, redirect to login page
       setTimeout(() => navigate("/admin-login"), 3000);
     } catch (err) {
       setMessage("");
       setError(err.response?.data?.error || "No se pudo restablecer la contraseña");
     }
-  };
+  };  
 
   return (
     <div className="loginPage">
