@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -34,6 +33,14 @@ function Form() {
   const [validated, setValidated] = useState(false); 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // ✅ Check for existing submission
+  React.useEffect(() => {
+    const isSubmitted = localStorage.getItem("reportAlreadySubmitted");
+    if (isSubmitted) {
+      navigate("/confirm", { replace: true });
+    }
+  }, [navigate]);
+  
   // Option: departamento
   const departmentOptions = [
     "Hospitalización",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import FlowState from "../components/FlowState";
 import { createReport } from "../services/reportService";
@@ -26,6 +26,13 @@ function Preview() {
     return value;
   };
 
+  useEffect(() => {
+    const isSubmitted = localStorage.getItem("reportAlreadySubmitted");
+    if (isSubmitted) {
+      navigate("/confirm", { replace: true });
+    }
+  }, [navigate]);  
+
 
   const handleEdit = () => {
     navigate("/form", { state: formData });
@@ -34,20 +41,20 @@ function Preview() {
   const handleSend = async () => {
     setLoading(true);
     setError(null);
-
+  
     let userId = 1; // Default to anonymous user
-
+  
     if (email) {
-        try {
-            const userResponse = await createUser({ email });
-            if (userResponse?.user?.id_user) {
-                userId = userResponse.user.id_user;  // Correctly assign user ID
-            }
-        } catch (err) {
-            console.warn("⚠️ User creation failed, proceeding with anonymous user ID.");
+      try {
+        const userResponse = await createUser({ email });
+        if (userResponse?.user?.id_user) {
+          userId = userResponse.user.id_user;
         }
+      } catch (err) {
+        console.warn("⚠️ User creation failed, proceeding with anonymous user ID.");
+      }
     }
-
+  
     const reportData = {
       ...formData,
       id_user: userId,
@@ -55,26 +62,27 @@ function Preview() {
       isConsequent: formData.isConsequent === "si" ? "YES" : "NO",
       avoidable: formData.avoidable === "si" ? "YES" : "NO"
     };
-
+  
     console.log("🚀 Sending Report Data:", reportData);
-
+  
     try {
-        const response = await createReport(reportData);
-        console.log("✅ API Response:", response);
-
-        if (response?.report_code) {
-            navigate("/confirm", { state: { reportCode: response.report_code } });
-        } else {
-            console.error("No report_code received from the server.");
-            setError("Error: No report_code returned from the server.");
-        }
+      const response = await createReport(reportData);
+      console.log("✅ API Response:", response);
+  
+      if (response?.report_code) {
+        localStorage.setItem("reportAlreadySubmitted", "true"); // ✅ ✅ SET FLAG HERE
+        navigate(`/confirm?reportCode=${response.report_code}`);
+      } else {
+        console.error("No report_code received from the server.");
+        setError("Error: No report_code returned from the server.");
+      }
     } catch (err) {
-        console.error("❌ API Error:", err.response?.data || err.message);
-        setError(err.message);
+      console.error("❌ API Error:", err.response?.data || err.message);
+      setError(err.message);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-  };
+  };  
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();

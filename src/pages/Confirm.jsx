@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import iconCheck from "../assets/img/icon_check.png";
 import FlowState from "../components/FlowState";
@@ -7,11 +7,17 @@ function Confirm() {
     const navigate = useNavigate();
     const location = useLocation();
     
-    const reportCode = location.state?.reportCode || "XXXXXXX"; 
-
+    const reportCode = new URLSearchParams(location.search).get("reportCode") || "XXXXXXX";
+  
     const handleReturnToTop = () => {
-        navigate("/");
-    };
+        localStorage.removeItem("reportAlreadySubmitted"); // still good to reset
+        navigate("/"); 
+      };      
+  
+    useEffect(() => {
+      localStorage.setItem("reportAlreadySubmitted", "true");
+    }, []);  
+    
 
     return (
         <>
