@@ -132,15 +132,15 @@ function Dashboard() {
             />
           </div>
           <button className="btn btn-outline-primary" onClick={handleDownloadCSV}>
-            📂 Descargar CSV
+            📂 Descargar todo
           </button>
         </div>
         
         <div className="dashboardCards d-flex flex-wrap justify-content-between">
-          <div className="dashboardCards__item p-3 rounded text-center shadow-sm -total">
+          {/* <div className="dashboardCards__item p-3 rounded text-center shadow-sm -total">
             <h4 className="fw-bold">Total Reportes</h4>
             <p className="fs-2 fw-bold">{filteredReports.length}</p>
-          </div>
+          </div> */}
           {Object.entries(statusCounts).map(([status, count], index) => {
             const safeStatus = status
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // アクセント除去
@@ -159,6 +159,10 @@ function Dashboard() {
               </div>
             );
           })}
+          <div className="dashboardCards__item p-3 rounded text-center shadow-sm -total">
+            <h4 className="fw-bold">Total Reportes</h4>
+            <p className="fs-2 fw-bold">{filteredReports.length}</p>
+          </div>
         </div>
       </div>
 
