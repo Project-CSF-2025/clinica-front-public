@@ -59,6 +59,7 @@ function Preview() {
       ...formData,
       id_user: userId,
       location: formData.place,
+      date_time: formData.dateTime,
       isConsequent: formData.isConsequent === "si" ? "YES" : "NO",
       avoidable: formData.avoidable === "si" ? "YES" : "NO"
     };
@@ -173,7 +174,9 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Tiene consecuencias?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formatField(formData.isConsequent ? "Sí" : "No")}
+                        {formatField(
+                          formData.isConsequent === "si" || formData.isConsequent === "YES" ? "Sí" : "No"
+                        )}
                       </span>
                     </p>
 
@@ -189,7 +192,9 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Evitable?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formatField(formData.avoidable ? "Sí" : "No")}
+                        {formatField(
+                          formData.avoidable === "si" || formData.avoidable === "YES" ? "Sí" : "No"
+                        )}
                       </span>
                     </p>
 
