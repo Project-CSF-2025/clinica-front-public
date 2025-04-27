@@ -171,7 +171,7 @@ function View() {
               <div className="detailBox__item">
                 <span className="detailBox__title">Fecha y hora:</span>
                 <span className="detailBox__text">
-                  {formatField(report.created_at)}
+                  {formatField(report.date_time)}
                 </span>
               </div>
               <div className="detailBox__item">

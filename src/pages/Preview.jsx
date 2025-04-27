@@ -12,6 +12,8 @@ function Preview() {
   const [error, setError] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
+  const [originalFormData] = useState(location.state || {});
+
 
   const handleRemoveFile = (index) => {
     const updatedFiles = [...formData.files];
@@ -35,9 +37,14 @@ function Preview() {
 
 
   const handleEdit = () => {
-    navigate("/form", { state: formData });
-  }
-
+    const formDataForEdit = {
+      ...originalFormData,
+      isConsequent: originalFormData.isConsequent === true ? "si" : originalFormData.isConsequent === false ? "no" : "",
+      avoidable: originalFormData.avoidable === true ? "si" : originalFormData.avoidable === false ? "no" : "",
+    };
+    navigate("/form", { state: formDataForEdit });
+  };  
+  
   const handleSend = async () => {
     setLoading(true);
     setError(null);
@@ -59,9 +66,10 @@ function Preview() {
       ...formData,
       id_user: userId,
       location: formData.place,
-      isConsequent: formData.isConsequent === "si" ? "YES" : "NO",
-      avoidable: formData.avoidable === "si" ? "YES" : "NO"
-    };
+      date_time: formData.dateTime,
+      isConsequent: formData.isConsequent === true ? 1 : 0,
+      avoidable: formData.avoidable === true ? 1 : 0
+    };    
   
     console.log("🚀 Sending Report Data:", reportData);
   
@@ -173,7 +181,9 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Tiene consecuencias?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formatField(formData.isConsequent ? "Sí" : "No")}
+                        {formatField(
+                          formData.isConsequent ? "Sí" : "No"
+                        )}
                       </span>
                     </p>
 
@@ -189,7 +199,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Evitable?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formatField(formData.avoidable ? "Sí" : "No")}
+                      {formatField(formData.avoidable ? "Sí" : "No")}
                       </span>
                     </p>
 

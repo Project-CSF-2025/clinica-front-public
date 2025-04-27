@@ -92,10 +92,10 @@ function Form() {
     } else {
       const cleanedData = {
         ...formData,
-        isConsequent: formData.isConsequent === "si" ? "YES" : "NO",
-        avoidable: formData.avoidable === "si" ? "YES" : "NO"
+        isConsequent: formData.isConsequent === "si" ? true : false,
+        avoidable: formData.avoidable === "si" ? true : false
       };
-      navigate("/preview", { state: cleanedData });
+      navigate("/preview", { state: cleanedData });      
     }
   };  
 
@@ -130,7 +130,7 @@ function Form() {
 
                 {/* ===== Fecha =====  */}
                 <InputDateTime 
-                  label="Fecha y hora"
+                  label="Fecha y Hora: Incidente"
                   name="dateTime"
                   date={formData.dateTime ? dayjs(formData.dateTime, 'DD/MM/YYYY HH:mm') : null}
                   handleChange={(newValue) => handleChange({ 
