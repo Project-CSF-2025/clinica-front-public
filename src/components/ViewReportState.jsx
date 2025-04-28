@@ -20,7 +20,7 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
   const getLatestChangedAt = (status) => {
     if (status === "NO LEIDO") {
       return reportCreatedAt
-        ? new Date(reportCreatedAt).toLocaleString("es-ES")
+        ? new Date(reportCreatedAt).toLocaleString('es-ES', { timeZone: 'UTC' })
         : "--:--";
     }
 

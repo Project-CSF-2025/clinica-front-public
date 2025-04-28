@@ -12,5 +12,14 @@ export const getAdminNoteByReportId = (id_report) =>
 export const updateAdminNote = (noteId, memoData) =>
   apiRequest("PUT", `/admin-notes/${noteId}`, memoData);
 
-export const softDeleteAdminNote = (noteId) =>
-  apiRequest("DELETE", `/admin-notes/${noteId}`);
+export async function softDeleteAdminNote(noteId) {
+  const response = await fetch(`/api/admin-notes/${noteId}`, {
+    method: 'DELETE'
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText);
+  }
+}
+
