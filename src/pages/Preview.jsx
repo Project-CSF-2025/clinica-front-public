@@ -14,6 +14,11 @@ function Preview() {
   const [email, setEmail] = useState("");
   const [originalFormData] = useState(location.state || {});
 
+  const parseDateTimeForSQL = (input) => {
+    const [day, month, yearAndTime] = input.split('/');
+    const [year, time] = yearAndTime.split(' ');
+    return `${year}-${month}-${day} ${time || '00:00:00'}`;
+  };  
 
   const handleRemoveFile = (index) => {
     const updatedFiles = [...formData.files];
@@ -66,10 +71,10 @@ function Preview() {
       ...formData,
       id_user: userId,
       location: formData.place,
-      date_time: formData.dateTime,
+      date_time: parseDateTimeForSQL(formData.dateTime), // ✅ parse before sending
       isConsequent: formData.isConsequent === true ? 1 : 0,
       avoidable: formData.avoidable === true ? 1 : 0
-    };    
+    };       
   
     console.log("🚀 Sending Report Data:", reportData);
   
