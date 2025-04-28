@@ -180,31 +180,36 @@ function AdminDetail() {
 
   useEffect(() => {
     if (report?.status) {
-      setSelectedStatus(report.status);
+      const dropdownCompatibleStatus = report.status.replace(" ", "_"); 
+      setSelectedStatus(dropdownCompatibleStatus);
     }
-  }, [report]);
+  }, [report]);  
   
   const handleStatusChange = async (e) => {
     if (selectedStatus === "ELIMINADO") {
       console.warn("❌ Status change disabled for 'ELIMINADO'");
       return;
     }
-
-    const newStatus = e.target.value;
+  
+    const newStatusRaw = e.target.value; // Example: EN_PROCESO
     if (!report?.report_code) {
       console.error("❌ Error: No report code found");
       return;
     }
-
+  
     try {
-      await updateReportStatus(report.report_code, newStatus);
-      setSelectedStatus(newStatus);
+      const formattedStatus = newStatusRaw.replace("_", " "); // For database: EN PROCESO
+      await updateReportStatus(report.report_code, formattedStatus);
+      
+      // ✅ Update the selectedStatus properly for dropdown
+      setSelectedStatus(newStatusRaw); 
+      
       alert("✅ Report status updated successfully!");
     } catch (error) {
       console.error("❌ Error updating status:", error);
       alert("❌ Failed to update status");
     }
-  };
+  };  
 
   const handleSoftDelete = async () => {
     if (!report?.report_code) {
@@ -370,7 +375,7 @@ function AdminDetail() {
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Fecha y hora:</span>
-                <span className="detailBox__text">{formatField(report.created_at)}</span>
+                <span className="detailBox__text">{formatField(report.date_time)}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">Lugar:</span>
