@@ -388,11 +388,11 @@ function AdminDetail() {
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Tiene consecuencias?:</span>
-                <span className="detailBox__text">{formatField(report.isConsequent ? "Sí" : "No")}</span>
+                <span className="detailBox__text">{formatField(report.is_consequent ? "Sí" : "No")}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Que consecuencia?:</span>
-                <span className="detailBox__text">{formatField(report.consequenceType)}</span>
+                <span className="detailBox__text">{formatField(report.consequence_type)}</span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Evitable?:</span>

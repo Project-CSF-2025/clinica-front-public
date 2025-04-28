@@ -196,13 +196,13 @@ function View() {
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Tiene consecuencias?:</span>
                 <span className="detailBox__text">
-                  {formatField(report.is_Consequent ? "Sí" : "No")}
+                  {formatField(report.is_consequent ? "Sí" : "No")}
                 </span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Que consecuencia?:</span>
                 <span className="detailBox__text">
-                  {formatField(report.consequence_Type)}
+                  {formatField(report.consequence_type)}
                 </span>
               </div>
               <div className="detailBox__item">
