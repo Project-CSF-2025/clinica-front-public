@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "../services/adminAuthService"; // 🔄 Use shared service
 
@@ -9,6 +9,11 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  // --- Page title
+  useEffect(() => {
+    document.title = "Restablecimiento de Contraseña | Clinica Sagrada Familia";
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -17,6 +17,11 @@ function Admin() {
   const [adminNotes, setAdminNotes] = useState([]); 
   const navigate = useNavigate(); 
   
+  // --- Page title
+  useEffect(() => {
+    document.title = "Admin | Clinica Sagrada Familia";
+  }, []);
+
   useEffect(() => {
     const fetchReports = async () => {
       try {

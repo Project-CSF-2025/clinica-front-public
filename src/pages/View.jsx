@@ -27,6 +27,13 @@ function View() {
     }
   };
 
+  // --- Page title
+  useEffect(() => {
+    if (report?.report_code) {
+      document.title = `Nº ${report.report_code} | Clinica Sagrada Familia`;
+    }
+  }, [report?.report_code]);
+
   useEffect(() => {
     const fetchReportAndMessages = async () => {
       const paramCode = reportCodeRef.current;

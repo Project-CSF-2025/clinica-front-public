@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import FlowState from "../components/FlowState";
 import { createReport } from "../services/reportService";
@@ -13,6 +13,11 @@ function Preview() {
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Vista Previa | Clinica Sagrada Familia";
+  }, []);
+  
   const handleRemoveFile = (index) => {
     const updatedFiles = [...formData.files];
     updatedFiles.splice(index, 1);

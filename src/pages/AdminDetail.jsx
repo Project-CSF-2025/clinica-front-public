@@ -40,6 +40,13 @@ function AdminDetail() {
   console.log("🔹 Extracted reportCode:", reportCode);
   console.log("🔹 Location State:", location.state);
 
+  // --- Page title
+  useEffect(() => {
+    if (report?.report_code) {
+      document.title = `Nº ${report.report_code} | Clinica Sagrada Familia`;
+    }
+  }, [report?.report_code]);
+
   useEffect(() => {
     const fetchReportAndMessages = async () => {
       const paramCode = reportCode || location.state?.report_code;

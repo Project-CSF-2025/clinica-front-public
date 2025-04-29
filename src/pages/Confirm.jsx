@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import iconCheck from "../assets/img/icon_check.png";
 import FlowState from "../components/FlowState";
@@ -12,6 +12,12 @@ function Confirm() {
     const handleReturnToTop = () => {
         navigate("/");
     };
+
+    // --- Page title
+    useEffect(() => {
+        document.title = "Confirmación | Clinica Sagrada Familia";
+    }, []);
+
 
     return (
         <>

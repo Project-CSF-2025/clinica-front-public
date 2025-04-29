@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -39,36 +38,10 @@ function Form() {
   const [validated, setValidated] = useState(false); 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // // Option: departamento
-  // const departmentOptions = [
-  //   "Hospitalización",
-  //   "Área de cuidados intensivos",
-  //   "Urgencias",
-  //   "Quirófano",
-  //   "Reanimación",
-  //   "CMA/UCA",
-  //   "Consultas externas",
-  //   "Otros"
-  // ];
-
-  // // Option: professión 
-  // const professionOptions = [
-  //   "Facultativo",
-  //   "Enfermeria",
-  //   "Auxiliar",
-  //   "Celador",
-  //   "Paciente",
-  //   "Otro",
-  // ];
-
-  // // Option: Consecuencia 
-  // const consequenceOptions = [
-  //   "Precisa tratamiento",
-  //   "Precisa ingreso",
-  //   "Prolongación de estancia",
-  //   "Lesión permanente",
-  //   "Muerte del paciente"
-  // ];
+  // --- Page title
+  useEffect(() => {
+    document.title = "Form | Clinica Sagrada Familia";
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material'; 
 import { getReportByCode } from '../services/reportService';
@@ -9,6 +9,11 @@ const Consult = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const navigate = useNavigate();
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Consulta | Clinica Sagrada Familia";
+  }, []);
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
