@@ -67,14 +67,24 @@ function Preview() {
       }
     }
   
+    const normalizeYes = (val) => {
+      if (val === true) return true; // ✅ covers boolean
+      if (typeof val === 'string') {
+        const normalized = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return normalized.startsWith("s"); // ✅ covers "sí", "si", "Sí", etc.
+      }
+      return false;
+    };
+    
     const reportData = {
       ...formData,
       id_user: userId,
       location: formData.place,
-      date_time: parseDateTimeForSQL(formData.dateTime), // ✅ parse before sending
-      isConsequent: formData.isConsequent === true ? 1 : 0,
-      avoidable: formData.avoidable === true ? 1 : 0
-    };       
+      date_time: parseDateTimeForSQL(formData.dateTime),
+      isConsequent: normalizeYes(formData.isConsequent) ? 1 : 0,
+      avoidable: normalizeYes(formData.avoidable) ? 1 : 0
+    };
+             
   
     console.log("🚀 Sending Report Data:", reportData);
   
