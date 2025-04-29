@@ -354,6 +354,10 @@ function AdminDetail() {
     }
   };
 
+  console.log("🧩 is_consequent raw value:", report.is_consequent);
+  console.log("🧩 avoidable raw value:", report.avoidable);
+
+
 
   return (
     <>
@@ -393,7 +397,7 @@ function AdminDetail() {
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Tiene consecuencias?:</span>
-                <span className="detailBox__text">{formatField(report.is_consequent ? "Sí" : "No")}</span>
+                  {formatField(report.is_consequent === true || report.is_consequent ? "Sí" : "No")}
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Que consecuencia?:</span>
@@ -401,7 +405,7 @@ function AdminDetail() {
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Evitable?:</span>
-                <span className="detailBox__text">{formatField(report.avoidable ? "Sí" : "No")}</span>
+                  {formatField(report.avoidable === true || report.avoidable === 1 ? "Sí" : "No")}
               </div>
               <div className="detailBox__item -column">
                 <span className="detailBox__title">Sugerencias:</span>
