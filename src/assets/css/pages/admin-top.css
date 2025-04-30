@@ -440,6 +440,20 @@
   gap: 16px;
   padding: 0;
   margin: 0;
+  position: relative;
+}
+
+.notificationList .textGray {
+  height: fit-content;
+  color: var(--gray3);
+  font-weight: 700;
+  font-size: 24px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
 }
 
 .notificationList__item {

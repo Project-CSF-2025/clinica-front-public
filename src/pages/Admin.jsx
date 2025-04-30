@@ -177,7 +177,7 @@ function Admin() {
               <ul className="notificationList">
               {
                 adminNotes.length === 0 ? (
-                  <p>No hay recordatorios disponibles...</p>
+                  <p className="textGray">No hay recordatorios disponibles...</p>
                 ) : (
                 [...adminNotes]
                 .sort((a, b) => new Date(b.last_update_at) - new Date(a.last_update_at)) // 最新の更新順にソート
