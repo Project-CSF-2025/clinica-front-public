@@ -9,6 +9,11 @@ import SelectField from "../components/SelectField";
 import TextareaField from "../components/TextareaField"; 
 import RadioField from "../components/RadioField"; 
 import UploadFile from "../components/UploadFile"; 
+import options from "../data/formOptions.json";
+
+const departmentOptions = options.departmentOptions;
+const professionOptions = options.professionOptions;
+const consequenceOptions = options.consequenceOptions;
 
 dayjs.extend(customParseFormat);
 
@@ -40,37 +45,6 @@ function Form() {
       navigate("/confirm", { replace: true });
     }
   }, [navigate]);
-  
-  // Option: departamento
-  const departmentOptions = [
-    "Hospitalización",
-    "Área de cuidados intensivos",
-    "Urgencias",
-    "Quirófano",
-    "Reanimación",
-    "CMA/UCA",
-    "Consultas externas",
-    "Otros"
-  ];
-
-  // Option: professión 
-  const professionOptions = [
-    "Facultativo",
-    "Enfermeria",
-    "Auxiliar",
-    "Celador",
-    "Paciente",
-    "Otro",
-  ];
-
-  // Option: Consecuencia 
-  const consequenceOptions = [
-    "Precisa tratamiento",
-    "Precisa ingreso",
-    "Prolongación de estancia",
-    "Lesión permanente",
-    "Muerte del paciente"
-  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -149,6 +123,7 @@ function Form() {
                   value={formData.place}
                   onChange={handleChange}
                   required
+                  maxLength={50}
                 />
 
                 {/* ===== Asunto ===== */}
@@ -158,6 +133,7 @@ function Form() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
+                  maxLength={50}
                 />
 
                 {/* ===== Description ===== */}
@@ -167,6 +143,7 @@ function Form() {
                   value={formData.description}
                   onChange={handleChange}
                   required
+                  maxLength={1000}
                 />
 
                 {/* ===== Consecuencia si / no ===== */}
@@ -204,7 +181,8 @@ function Form() {
                   name="suggestions"
                   value={formData.suggestions}
                   onChange={handleChange}
-                />            
+                  maxLength={1000}
+                />          
                 
                 {/* ===== File upload ===== */}
                 <hr className="my-4" />
