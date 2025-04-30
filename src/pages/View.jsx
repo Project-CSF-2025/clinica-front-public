@@ -171,7 +171,7 @@ function View() {
               <div className="detailBox__item">
                 <span className="detailBox__title">Fecha y hora:</span>
                 <span className="detailBox__text">
-                  {formatField(report.created_at)}
+                  {formatField(report.date_time)}
                 </span>
               </div>
               <div className="detailBox__item">
@@ -196,13 +196,13 @@ function View() {
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Tiene consecuencias?:</span>
                 <span className="detailBox__text">
-                  {formatField(report.isConsequent ? "Sí" : "No")}
+                  {formatField(report.is_consequent ? "Sí" : "No")}
                 </span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Que consecuencia?:</span>
                 <span className="detailBox__text">
-                  {formatField(report.consequenceType)}
+                  {formatField(report.consequence_type)}
                 </span>
               </div>
               <div className="detailBox__item">
@@ -264,7 +264,9 @@ function View() {
           <div className="flexBox__item">
           <div className="chatBlock__wrap">
             <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
-            <div className={`chatBlock ${report?.status === "Eliminado" ? "disabled-click" : ""}`}>
+
+            <div className={`chatBlock ${report?.status === "ELIMINADO" ? "disabled-click" : ""}`}>
+
               <div className="chatBlock__inner">
                 <div className="chatBlock__body" ref={chatContainerRef}>
                   {/* 5. Show messages or "No messages" */}

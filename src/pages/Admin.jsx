@@ -27,7 +27,7 @@ function Admin() {
           setReports(data);
           setFilteredReports(
             data
-              .filter(report => report.status !== "Eliminado")
+              .filter(report => report.status !== "ELIMINADO")
               .sort((a, b) => (b.unread_messages || 0) - (a.unread_messages || 0)) // 🔝 Unread first
           );          
         } else {
@@ -71,17 +71,18 @@ function Admin() {
 
   const handleSoftDelete = async (noteId) => {
     try {
-        console.log("🗑️ Attempting to soft delete note:", noteId);
-        await softDeleteAdminNote(noteId);
-
-        // ✅ Update UI by removing the deleted note from the list
-        setAdminNotes((prevNotes) => prevNotes.filter(note => note.id_note !== noteId));
-
-        console.log("✅ Soft deleted note:", noteId);
+      console.log("🗑️ Attempting to soft delete note:", noteId);
+      await softDeleteAdminNote(noteId);
+  
+      // 🆕 Re-fetch updated notes after deletion
+      const updatedNotes = await getAllAdminNotes();
+      setAdminNotes(updatedNotes.filter(note => note.is_deleted === false));
+  
+      console.log("✅ Soft deleted note and refreshed notes:", noteId);
     } catch (error) {
-        console.error("❌ Error deleting note:", error);
+      console.error("❌ Error deleting note:", error);
     }
-  };
+  };  
 
   /* ===== Searched text highlight =====  */
   const highlightText = (text, keyword) => {
@@ -184,7 +185,7 @@ function Admin() {
                 return(
                   <li key={note.id_note}
                     className={`notificationList__item ${
-                      report?.status === "Resuelto" ? "-green" : "-blue"
+                      report?.status === "RESUELTO" ? "-green" : "-blue"
                     }`}
                   >
                     <a 
