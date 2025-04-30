@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
-import { getReportByCode } from "../services/reportService";
+// import { getReportByCode } from "../services/reportService";
 import { createAdminNote } from "../services/adminNoteService";
 import { getAdminNoteByReportId } from "../services/adminNoteService";
 import { updateAdminNote } from "../services/adminNoteService";
@@ -8,6 +8,8 @@ import { toggleReportFlag } from "../services/adminService";
 import { updateReportStatus } from "../services/reportService";
 import { getMessagesByReportId, sendMessage } from "../services/messageService"; 
 import { markMessagesAsRead } from "../services/messageService";
+import AdminReportState from "../components/AdminReportState";
+import { getReportByCode, getStatusHistoryByReportId } from "../services/reportService";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -24,6 +26,8 @@ function AdminDetail() {
   const [existingMemo, setExistingMemo] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(report?.status || "No leído");
 
+  const [statusHistory, setStatusHistory] = useState([]);
+  
   // ✅ For messages
   const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("");
@@ -182,6 +186,18 @@ function AdminDetail() {
       setSelectedStatus(report.status);
     }
   }, [report]);
+
+  useEffect(() => {
+    if (report?.id_report) {
+      getStatusHistoryByReportId(report.id_report)
+        .then((history) => {
+          setStatusHistory(Array.isArray(history) ? history : []);
+        })
+        .catch((err) => {
+          console.error("❌ Failed to fetch status history:", err);
+        });
+    }
+  }, [report?.id_report]); 
   
   const handleStatusChange = async (e) => {
     if (selectedStatus === "Eliminado") {
@@ -199,6 +215,12 @@ function AdminDetail() {
       await updateReportStatus(report.report_code, newStatus);
       setSelectedStatus(newStatus);
       alert("✅ Report status updated successfully!");
+
+      // ✅ ステータス履歴の再取得
+      if (report.id_report) {
+        const updatedHistory = await getStatusHistoryByReportId(report.id_report);
+        setStatusHistory(Array.isArray(updatedHistory) ? updatedHistory : []);
+      }
     } catch (error) {
       console.error("❌ Error updating status:", error);
       alert("❌ Failed to update status");
@@ -355,6 +377,8 @@ function AdminDetail() {
         <h2 className="adminDetailHeadding headdingA fs-1 -blue -center -regular">
           Nº REPORTE : <span className="getCode -bold">{report.report_code || "N/A"}</span>
         </h2>
+
+        <AdminReportState statusHistory={statusHistory} reportCreatedAt={report.created_at} />
 
         <div className="flexBox">
           <div className="flexBox__item">
@@ -636,3 +660,4 @@ function AdminDetail() {
 }
 
 export default AdminDetail;
+

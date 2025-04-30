@@ -1,6 +1,6 @@
 import React from "react";
 
-const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
+const AdminReportState = ({ statusHistory, reportCreatedAt }) => {
   // 並び替え（古い順）
   const sortedHistory = [...statusHistory].sort(
     (a, b) => new Date(a.changed_at) - new Date(b.changed_at)
@@ -55,7 +55,7 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
 
         {/* ✅ Show "Enviado" instead of "No leído" */}
         <div className={`fase ${currentStatus === "No leído" || !currentStatus ? "-active" : ""}`}>
-          <span className="estado">Enviado</span>
+          <span className="estado">No leído</span>
           <span className="fecha">{getLatestChangedAt("No leído")}</span>
         </div>
 
@@ -76,4 +76,5 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
   );
 };
 
-export default ViewReportState;
+export default AdminReportState;
+
