@@ -1,6 +1,6 @@
 import React from "react";
 
-function SelectField ({label, name, value, onChange, required, options, disabled}) {
+function SelectField ({label, name, value, onChange, required, options = [], disabled}) {
 
   return (
     <>
@@ -20,9 +20,9 @@ function SelectField ({label, name, value, onChange, required, options, disabled
             style={{ color: value === "" ? "var(--gray3)" : "var(--gray1)" }}
           >
           <option value="">Selecciona...</option>
-            {options.map((option) => (
-              <option key={option} value={option}>{
-                option}
+            {(options || []).map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>
