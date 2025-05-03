@@ -19,6 +19,12 @@ function Confirm() {
     }, []);  
     
 
+    // --- Page title
+    useEffect(() => {
+        document.title = "Confirmación | Clinica Sagrada Familia";
+    }, []);
+
+
     return (
         <>
             <main className="wrapper container-xxl -noScroll">

@@ -38,8 +38,9 @@ function Form() {
   const [validated, setValidated] = useState(false); 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // ✅ Check for existing submission
-  React.useEffect(() => {
+
+  useEffect(() => {
+    document.title = "Form | Clinica Sagrada Familia";
     const isSubmitted = localStorage.getItem("reportAlreadySubmitted");
     if (isSubmitted) {
       navigate("/confirm", { replace: true });

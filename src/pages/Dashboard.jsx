@@ -17,6 +17,12 @@ function Dashboard() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Panel de Control | Clinica Sagrada Familia";
+  }, []);
+  
+
   useEffect(() => {
     const fetchReports = async () => {
       try {

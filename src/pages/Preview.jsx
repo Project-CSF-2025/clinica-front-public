@@ -20,6 +20,11 @@ function Preview() {
     return `${year}-${month}-${day} ${time || '00:00:00'}`;
   };  
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Vista Previa | Clinica Sagrada Familia";
+  }, []);
+  
   const handleRemoveFile = (index) => {
     const updatedFiles = [...formData.files];
     updatedFiles.splice(index, 1);
@@ -93,7 +98,7 @@ function Preview() {
       console.log("✅ API Response:", response);
   
       if (response?.report_code) {
-        localStorage.setItem("reportAlreadySubmitted", "true"); // ✅ ✅ SET FLAG HERE
+        localStorage.setItem("reportAlreadySubmitted", "true"); 
         navigate(`/confirm?reportCode=${response.report_code}`);
       } else {
         console.error("No report_code received from the server.");
