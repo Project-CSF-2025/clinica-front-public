@@ -20,11 +20,13 @@ function SelectField ({label, name, value, onChange, required, options = [], dis
             style={{ color: value === "" ? "var(--gray3)" : "var(--gray1)" }}
           >
           <option value="">Selecciona...</option>
+
             {(options || []).map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
+
           </select>
 
           {/* ERROR message */}

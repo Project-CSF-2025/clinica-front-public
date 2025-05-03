@@ -1,0 +1,29 @@
+{
+  "departmentOptions": [
+    "Hospitalización",
+    "Área de cuidados intensivos",
+    "Urgencias",
+    "Quirófano",
+    "Reanimación",
+    "CMA/UCA",
+    "Consultas externas",
+    "Otros"
+  ],
+
+  "professionOptions": [
+    "Facultativo",
+    "Enfermeria",
+    "Auxiliar",
+    "Celador",
+    "Paciente",
+    "Otro"
+  ],
+
+  "consequenceOptions": [
+    "Precisa tratamiento",
+    "Precisa ingreso",
+    "Prolongación de estancia",
+    "Lesión permanente",
+    "Muerte del paciente"
+  ]
+}
