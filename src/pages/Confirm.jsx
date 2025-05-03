@@ -7,11 +7,17 @@ function Confirm() {
     const navigate = useNavigate();
     const location = useLocation();
     
-    const reportCode = location.state?.reportCode || "XXXXXXX"; 
-
+    const reportCode = new URLSearchParams(location.search).get("reportCode") || "XXXXXXX";
+  
     const handleReturnToTop = () => {
-        navigate("/");
-    };
+        localStorage.removeItem("reportAlreadySubmitted"); // still good to reset
+        navigate("/"); 
+      };      
+  
+    useEffect(() => {
+      localStorage.setItem("reportAlreadySubmitted", "true");
+    }, []);  
+    
 
     // --- Page title
     useEffect(() => {

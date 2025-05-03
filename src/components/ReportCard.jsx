@@ -18,13 +18,13 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
   console.log("Report Data in ReportCard:", report);
 
   const statusClass =
-    report.status === "No leído"
+    report.status === "NO LEIDO"
       ? "cRedLight"
-      : report.status === "En proceso"
+      : report.status === "EN PROCESO"
       ? "cBlueLight"
-      : report.status === "Resuelto"
+      : report.status === "RESUELTO"
       ? "cBlueDark"
-      : report.status === "Eliminado"
+      : report.status === "ELIMINADO"
       ? "cGrayDark"
       : "";
 
@@ -39,10 +39,11 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
         }
         className={`know know-s useful__wrap ${statusClass} ${report.is_flagged ? "cYellow" : ""}`}
       >
-        {/* Report Code + Unread Icon */}
-        <p className="know__num" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+       {/* Report Code + Unread Icon */}
+      <div className="know__numWrap">
+        <p className="know__num">
           {highlightText(`${report.report_code}` || "", searchTerm)}
-
+        </p>
           {report.unread_messages > 0 && (
             <span className="msgIconBadge">
               <svg
@@ -58,7 +59,7 @@ const ReportCard = ({ report, searchTerm, highlightText }) => {
               <span>{report.unread_messages}</span>
             </span>
           )}
-        </p>
+        </div>
 
         <span className={`know__label ${statusClass}`}>
           {highlightText(report.status || "", searchTerm)}
