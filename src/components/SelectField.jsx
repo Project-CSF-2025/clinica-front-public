@@ -21,11 +21,11 @@ function SelectField ({label, name, value, onChange, required, options = [], dis
           >
           <option value="">Selecciona...</option>
 
-            {(options || []).map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+          {(options || []).map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
 
           </select>
 
