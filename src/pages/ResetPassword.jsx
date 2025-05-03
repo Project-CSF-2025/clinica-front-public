@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "../services/adminAuthService"; // 🔄 Use shared service
 
@@ -10,23 +10,35 @@ const ResetPassword = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Restablecimiento de Contraseña | Clinica Sagrada Familia";
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (newPassword !== confirmPassword) {
       return setError("Las contraseñas no coinciden");
     }
-
+  
     try {
       await resetPassword(token, newPassword);
+  
+      // ✅ Clear localStorage/sessionStorage to force logout
+      localStorage.removeItem('adminToken'); // use your actual token key name
+      sessionStorage.removeItem('adminToken');
+  
       setMessage("✅ Contraseña actualizada correctamente.");
       setError("");
+  
+      // ✅ After 3 seconds, redirect to login page
       setTimeout(() => navigate("/admin-login"), 3000);
     } catch (err) {
       setMessage("");
       setError(err.response?.data?.error || "No se pudo restablecer la contraseña");
     }
-  };
+  };  
 
   return (
     <div className="loginPage">

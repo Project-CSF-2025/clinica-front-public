@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import iconNew from "../assets/img/icon_new.png";
 import iconSearch from "../assets/img/icon_search.png";
 
 
 function Home() {
+  // --- Page title
+  useEffect(() => {
+    document.title = "Inicio | Clinica Sagrada Familia";
+  }, []);
+
+  
   return (
     <>
       <div className="inicio">
@@ -17,10 +23,15 @@ function Home() {
 
           <div className="button-container">
             <div className="buttonInicio">
-              <Link to="/form" className="button-link">
+              <Link 
+                to="/form" 
+                className="button-link"
+                onClick={() => localStorage.removeItem("reportAlreadySubmitted")}
+              >
                 <img src={iconNew} alt="" className="button-icon-inicio" />
                 Nuevo Reporte
               </Link>
+
               <Link to="/consult" className="button-link">
                 <img src={iconSearch} alt="" className="button-icon-inicio" />
                 Consultar estado

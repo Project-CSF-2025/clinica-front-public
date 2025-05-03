@@ -529,6 +529,7 @@
 
 .disabled-click {
   opacity: .6;
+  pointer-events: none;
 }
 
 /* SP

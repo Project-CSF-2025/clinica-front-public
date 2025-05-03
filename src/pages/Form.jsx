@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -10,7 +9,7 @@ import SelectField from "../components/SelectField";
 import TextareaField from "../components/TextareaField"; 
 import RadioField from "../components/RadioField"; 
 import UploadFile from "../components/UploadFile"; 
-import options from "../assets/formOptions.json";
+import options from "../data/formOptions.json";
 
 const departmentOptions = options.departmentOptions;
 const professionOptions = options.professionOptions;
@@ -39,36 +38,14 @@ function Form() {
   const [validated, setValidated] = useState(false); 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // // Option: departamento
-  // const departmentOptions = [
-  //   "Hospitalización",
-  //   "Área de cuidados intensivos",
-  //   "Urgencias",
-  //   "Quirófano",
-  //   "Reanimación",
-  //   "CMA/UCA",
-  //   "Consultas externas",
-  //   "Otros"
-  // ];
 
-  // // Option: professión 
-  // const professionOptions = [
-  //   "Facultativo",
-  //   "Enfermeria",
-  //   "Auxiliar",
-  //   "Celador",
-  //   "Paciente",
-  //   "Otro",
-  // ];
-
-  // // Option: Consecuencia 
-  // const consequenceOptions = [
-  //   "Precisa tratamiento",
-  //   "Precisa ingreso",
-  //   "Prolongación de estancia",
-  //   "Lesión permanente",
-  //   "Muerte del paciente"
-  // ];
+  useEffect(() => {
+    document.title = "Form | Clinica Sagrada Familia";
+    const isSubmitted = localStorage.getItem("reportAlreadySubmitted");
+    if (isSubmitted) {
+      navigate("/confirm", { replace: true });
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,14 +60,19 @@ function Form() {
     e.preventDefault();
     const form = e.target;
     setIsSubmitted(true);
-
+  
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
     } else {
-      navigate("/preview", { state: formData });
+      const cleanedData = {
+        ...formData,
+        isConsequent: formData.isConsequent === "si" ? true : false,
+        avoidable: formData.avoidable === "si" ? true : false
+      };
+      navigate("/preview", { state: cleanedData });      
     }
-  };
+  };  
 
   return (
     <>
@@ -123,7 +105,7 @@ function Form() {
 
                 {/* ===== Fecha =====  */}
                 <InputDateTime 
-                  label="Fecha y hora"
+                  label="Fecha y Hora: Incidente"
                   name="dateTime"
                   date={formData.dateTime ? dayjs(formData.dateTime, 'DD/MM/YYYY HH:mm') : null}
                   handleChange={(newValue) => handleChange({ 
@@ -142,6 +124,7 @@ function Form() {
                   value={formData.place}
                   onChange={handleChange}
                   required
+                  maxLength={50}
                 />
 
                 {/* ===== Asunto ===== */}
@@ -151,6 +134,7 @@ function Form() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
+                  maxLength={50}
                 />
 
                 {/* ===== Description ===== */}
@@ -160,6 +144,7 @@ function Form() {
                   value={formData.description}
                   onChange={handleChange}
                   required
+                  maxLength={1000}
                 />
 
                 {/* ===== Consecuencia si / no ===== */}
@@ -197,7 +182,8 @@ function Form() {
                   name="suggestions"
                   value={formData.suggestions}
                   onChange={handleChange}
-                />            
+                  maxLength={1000}
+                />          
                 
                 {/* ===== File upload ===== */}
                 <hr className="my-4" />

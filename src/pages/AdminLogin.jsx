@@ -8,6 +8,11 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Admin login | Clinica Sagrada Familia";
+  }, []);
+  
   useEffect(() => {
     if (localStorage.getItem('adminToken')) {
       navigate('/admin');

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requestPasswordReset } from "../services/adminAuthService";
 
@@ -8,6 +8,11 @@ const ForgotPassword = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Recuperar Contraseña | Clinica Sagrada Familia";
+  }, []);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

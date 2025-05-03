@@ -20,7 +20,7 @@ function SearchBox ({ reports, setFilteredReports, searchTerm, setSearchTerm, ac
 
     // 🔹 検索をクリアした場合、"Eliminado" を非表示
     if (!searchText && !activeFilters.includes("cGrayDark")) {
-      filtered = filtered.filter(report => report.status !== "Eliminado");
+      filtered = filtered.filter(report => report.status !== "ELIMINADO");
     }
     setFilteredReports(filtered);
   };
