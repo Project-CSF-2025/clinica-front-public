@@ -256,10 +256,15 @@
 .know.cGrayDark .know__label.cBlueDark {
   color: var(--gray1) !important;
 }
+.know__numWrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
 .know__num{
   font-size:20px;
   font-weight: 600;
-  width:100%;
   position:relative;
   z-index:1;
   -webkit-transition:none;
