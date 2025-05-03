@@ -27,6 +27,13 @@ function View() {
     }
   };
 
+  // --- Page title
+  useEffect(() => {
+    if (report?.report_code) {
+      document.title = `Nº ${report.report_code} | Clinica Sagrada Familia`;
+    }
+  }, [report?.report_code]);
+
   useEffect(() => {
     const fetchReportAndMessages = async () => {
       const paramCode = reportCodeRef.current;
@@ -171,7 +178,7 @@ function View() {
               <div className="detailBox__item">
                 <span className="detailBox__title">Fecha y hora:</span>
                 <span className="detailBox__text">
-                  {formatField(report.created_at)}
+                  {formatField(report.date_time)}
                 </span>
               </div>
               <div className="detailBox__item">
@@ -196,13 +203,13 @@ function View() {
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Tiene consecuencias?:</span>
                 <span className="detailBox__text">
-                  {formatField(report.isConsequent ? "Sí" : "No")}
+                  {formatField(report.is_consequent ? "Sí" : "No")}
                 </span>
               </div>
               <div className="detailBox__item">
                 <span className="detailBox__title">¿Que consecuencia?:</span>
                 <span className="detailBox__text">
-                  {formatField(report.consequenceType)}
+                  {formatField(report.consequence_type)}
                 </span>
               </div>
               <div className="detailBox__item">
@@ -264,7 +271,9 @@ function View() {
           <div className="flexBox__item">
           <div className="chatBlock__wrap">
             <h2 className="headdingB fs-3 -blue -medium">Notificación al usuario</h2>
-            <div className={`chatBlock ${report?.status === "Eliminado" ? "disabled-click" : ""}`}>
+
+            <div className={`chatBlock ${report?.status === "ELIMINADO" ? "disabled-click" : ""}`}>
+
               <div className="chatBlock__inner">
                 <div className="chatBlock__body" ref={chatContainerRef}>
                   {/* 5. Show messages or "No messages" */}
@@ -276,19 +285,19 @@ function View() {
                       return (
                         <div
                           key={index}
-                          className={`chatBlock__item ${isAdmin ? "-revers" : ""}`}
+                          className={`chatBlock__item ${isAdmin ? "" : "-revers"}`}
                         >
                           <div className="chatBlock__itemInner">
-                            <span className={`chatBlock__circle ${isAdmin ? "-iconMemo" : "-iconUser"}`}>
+                            <span className={`chatBlock__circle ${isAdmin ? "-iconUser" : "-iconMemo"}`}>
                               {/* icon logic */}
                               {isAdmin ? (
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil" viewBox="0 0 16 16">
-                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path>
-                              </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
+                                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                </svg>
                               ) : (
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                              </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil" viewBox="0 0 16 16">
+                                  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path>
+                                </svg>
                               )}
                             </span>
                             <span className="chatBlock__itemHead -right">

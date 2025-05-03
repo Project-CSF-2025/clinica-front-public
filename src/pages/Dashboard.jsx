@@ -17,6 +17,12 @@ function Dashboard() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  // --- Page title
+  useEffect(() => {
+    document.title = "Panel de Control | Clinica Sagrada Familia";
+  }, []);
+  
+
   useEffect(() => {
     const fetchReports = async () => {
       try {
@@ -40,14 +46,14 @@ function Dashboard() {
 
   // 🔢 Status counts
   const statusCounts = {
-    "No leído": 0,
-    "En proceso": 0,
-    "Resuelto": 0,
-    "Eliminado": 0,
+    "NO LEIDO": 0,
+    "EN PROCESO": 0,
+    "RESUELTO": 0,
+    "ELIMINADO": 0,
   };
 
   filteredReports.forEach((report) => {
-    const status = report.status || "No leído";
+    const status = report.status || "NO LEIDO";
     if (statusCounts[status] !== undefined) {
       statusCounts[status]++;
     }
@@ -132,15 +138,15 @@ function Dashboard() {
             />
           </div>
           <button className="btn btn-outline-primary" onClick={handleDownloadCSV}>
-            📂 Descargar CSV
+            📂 Descargar todo
           </button>
         </div>
         
         <div className="dashboardCards d-flex flex-wrap justify-content-between">
-          <div className="dashboardCards__item p-3 rounded text-center shadow-sm -total">
+          {/* <div className="dashboardCards__item p-3 rounded text-center shadow-sm -total">
             <h4 className="fw-bold">Total Reportes</h4>
             <p className="fs-2 fw-bold">{filteredReports.length}</p>
-          </div>
+          </div> */}
           {Object.entries(statusCounts).map(([status, count], index) => {
             const safeStatus = status
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // アクセント除去
@@ -159,6 +165,10 @@ function Dashboard() {
               </div>
             );
           })}
+          <div className="dashboardCards__item p-3 rounded text-center shadow-sm -total">
+            <h4 className="fw-bold">Total Reportes</h4>
+            <p className="fs-2 fw-bold">{filteredReports.length}</p>
+          </div>
         </div>
       </div>
 
@@ -227,11 +237,6 @@ function Dashboard() {
             Volver
           </Link>
         </div>
-      {/* <div className="text-center mt-4">
-        <button className="btn btn-secondary" onClick={() => navigate("/admin")}>
-          ← Volver al Panel de Admin
-        </button>
-      </div> */}
     </div>
   );
 }

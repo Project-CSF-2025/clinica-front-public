@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import FlowState from "../components/FlowState";
 import { createReport } from "../services/reportService";
@@ -12,7 +12,19 @@ function Preview() {
   const [error, setError] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
+  const [originalFormData] = useState(location.state || {});
 
+  const parseDateTimeForSQL = (input) => {
+    const [day, month, yearAndTime] = input.split('/');
+    const [year, time] = yearAndTime.split(' ');
+    return `${year}-${month}-${day} ${time || '00:00:00'}`;
+  };  
+
+  // --- Page title
+  useEffect(() => {
+    document.title = "Vista Previa | Clinica Sagrada Familia";
+  }, []);
+  
   const handleRemoveFile = (index) => {
     const updatedFiles = [...formData.files];
     updatedFiles.splice(index, 1);
@@ -26,53 +38,79 @@ function Preview() {
     return value;
   };
 
+  useEffect(() => {
+    const isSubmitted = localStorage.getItem("reportAlreadySubmitted");
+    if (isSubmitted) {
+      navigate("/confirm", { replace: true });
+    }
+  }, [navigate]);  
+
 
   const handleEdit = () => {
-    navigate("/form", { state: formData });
-  }
-
+    const formDataForEdit = {
+      ...originalFormData,
+      isConsequent: originalFormData.isConsequent === true ? "si" : originalFormData.isConsequent === false ? "no" : "",
+      avoidable: originalFormData.avoidable === true ? "si" : originalFormData.avoidable === false ? "no" : "",
+    };
+    navigate("/form", { state: formDataForEdit });
+  };  
+  
   const handleSend = async () => {
     setLoading(true);
     setError(null);
-
+  
     let userId = 1; // Default to anonymous user
-
+  
     if (email) {
-        try {
-            const userResponse = await createUser({ email });
-            if (userResponse?.user?.id_user) {
-                userId = userResponse.user.id_user;  // Correctly assign user ID
-            }
-        } catch (err) {
-            console.warn("⚠️ User creation failed, proceeding with anonymous user ID.");
+      try {
+        const userResponse = await createUser({ email });
+        if (userResponse?.user?.id_user) {
+          userId = userResponse.user.id_user;
         }
+      } catch (err) {
+        console.warn("⚠️ User creation failed, proceeding with anonymous user ID.");
+      }
     }
-
-    const reportData = {
-        ...formData,
-        id_user: userId,  // Now sending correct user ID
-        location: formData.place,
+  
+    const normalizeYes = (val) => {
+      if (val === true) return true; // ✅ covers boolean
+      if (typeof val === 'string') {
+        const normalized = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return normalized.startsWith("s"); // ✅ covers "sí", "si", "Sí", etc.
+      }
+      return false;
     };
-
+    
+    const reportData = {
+      ...formData,
+      id_user: userId,
+      location: formData.place,
+      date_time: parseDateTimeForSQL(formData.dateTime),
+      isConsequent: normalizeYes(formData.isConsequent) ? 1 : 0,
+      avoidable: normalizeYes(formData.avoidable) ? 1 : 0
+    };
+             
+  
     console.log("🚀 Sending Report Data:", reportData);
-
+  
     try {
-        const response = await createReport(reportData);
-        console.log("✅ API Response:", response);
-
-        if (response?.report_code) {
-            navigate("/confirm", { state: { reportCode: response.report_code } });
-        } else {
-            console.error("No report_code received from the server.");
-            setError("Error: No report_code returned from the server.");
-        }
+      const response = await createReport(reportData);
+      console.log("✅ API Response:", response);
+  
+      if (response?.report_code) {
+        localStorage.setItem("reportAlreadySubmitted", "true"); 
+        navigate(`/confirm?reportCode=${response.report_code}`);
+      } else {
+        console.error("No report_code received from the server.");
+        setError("Error: No report_code returned from the server.");
+      }
     } catch (err) {
-        console.error("❌ API Error:", err.response?.data || err.message);
-        setError(err.message);
+      console.error("❌ API Error:", err.response?.data || err.message);
+      setError(err.message);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-  };
+  };  
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -163,7 +201,9 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Tiene consecuencias?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formatField(formData.isConsequent ? "Sí" : "No")}
+                        {formatField(
+                          formData.isConsequent ? "Sí" : "No"
+                        )}
                       </span>
                     </p>
 
@@ -179,7 +219,7 @@ function Preview() {
                     <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Evitable?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
-                        {formatField(formData.avoidable ? "Sí" : "No")}
+                      {formatField(formData.avoidable ? "Sí" : "No")}
                       </span>
                     </p>
 
