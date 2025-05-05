@@ -54,6 +54,8 @@ function Preview() {
     setLoading(true);
     setError(null);
   
+    console.log("📦 Files before sending:", formData.files);
+    
     let userId = 1; // Default to anonymous user
   
     if (email) {
@@ -88,8 +90,9 @@ function Preview() {
         type: file.type,
         file_path: file.file_path,
         server_filename: file.server_filename,
-        attachment_type: file.attachment_type
-      }))
+        attachment_type: file.attachment_type,
+        original_name: file.original_name || file.name
+      }))      
     };             
   
     console.log("🚀 Sending Report Data:", reportData);

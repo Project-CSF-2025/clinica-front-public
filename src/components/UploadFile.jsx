@@ -37,9 +37,10 @@ function UploadFile({ setFormData, files }) {
                 type: file.type,
                 data: reader.result,
                 file_path: response.data.file_path,
-                attachment_type: attachmentType, // ⬅️ Capitalized
+                attachment_type: attachmentType,
                 server_filename: response.data.filename,
-              });
+                original_name: response.data.original_name  
+              });              
             };
           });
         })
