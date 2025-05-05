@@ -468,9 +468,6 @@ function AdminDetail() {
                 <span className="detailBox__text">No se han subido archivos</span>
               )}
 
-                
-
-
               </div>
               <div className="buttonA -sizeS -thin">
                 <a 
