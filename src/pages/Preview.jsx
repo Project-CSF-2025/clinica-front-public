@@ -59,6 +59,8 @@ function Preview() {
     setLoading(true);
     setError(null);
   
+    console.log("📦 Files before sending:", formData.files);
+    
     let userId = 1; // Default to anonymous user
   
     if (email) {
@@ -87,9 +89,16 @@ function Preview() {
       location: formData.place,
       date_time: parseDateTimeForSQL(formData.dateTime),
       isConsequent: normalizeYes(formData.isConsequent) ? 1 : 0,
-      avoidable: normalizeYes(formData.avoidable) ? 1 : 0
-    };
-             
+      avoidable: normalizeYes(formData.avoidable) ? 1 : 0,
+      files: formData.files.map(file => ({
+        name: file.name,
+        type: file.type,
+        file_path: file.file_path,
+        server_filename: file.server_filename,
+        attachment_type: file.attachment_type,
+        original_name: file.original_name || file.name
+      }))      
+    };             
   
     console.log("🚀 Sending Report Data:", reportData);
   

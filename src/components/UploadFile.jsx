@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-function UploadFile ({setFormData, files}) {
+function UploadFile({ setFormData, files }) {
   const [fileList, setFileList] = useState(files || []);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (files) {
@@ -10,43 +12,68 @@ function UploadFile ({setFormData, files}) {
   }, [files]);
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const newFiles = files.map((file) => {
-        const reader = new FileReader();
-        return new Promise((resolve) => {
-          reader.readAsDataURL(file);
-          reader.onload = () => {
-            resolve({
-              name: file.name,
-              type: file.type,
-              data: reader.result, // Base64 encode
-            });
-          };
-        });
-      });
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length === 0) return;
 
-      Promise.all(newFiles).then((fileData) => {
-        setFormData((prevData) => ({
-          ...prevData,
-          files: [...prevData.files, ...fileData],
-        }));
-        setFileList((prevList) => [...prevList, ...fileData]);
-      });
-    }
+    setUploading(true);
+
+    const uploadPromises = selectedFiles.map((file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      return axios
+        .post("/api/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          const attachmentType = response.data.attachment_type?.toUpperCase() || "DOCUMENT";
+
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              resolve({
+                name: file.name,
+                type: file.type,
+                data: reader.result,
+                file_path: response.data.file_path,
+                attachment_type: attachmentType,
+                server_filename: response.data.filename,
+                original_name: response.data.original_name  
+              });              
+            };
+          });
+        })
+        .catch((error) => {
+          console.error(`❌ Upload failed for ${file.name}`, error.response?.data || error.message);
+          return null;
+        });
+    });
+
+    Promise.all(uploadPromises).then((uploadedFiles) => {
+      const validFiles = uploadedFiles.filter((f) => f !== null);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        files: [...(prevData.files || []), ...validFiles],
+      }));
+
+      setFileList((prevList) => [...prevList, ...validFiles]);
+      setUploading(false);
+    });
   };
 
   const handleRemoveFile = (index) => {
     setFormData((prevData) => {
-      const newFiles = [...prevData.files];
-      newFiles.splice(index, 1);
-      return { ...prevData, files: newFiles };
+      const updated = [...prevData.files];
+      updated.splice(index, 1);
+      return { ...prevData, files: updated };
     });
 
     setFileList((prevList) => {
-      const newList = [...prevList];
-      newList.splice(index, 1);
-      return newList;
+      const updated = [...prevList];
+      updated.splice(index, 1);
+      return updated;
     });
   };
 
@@ -57,14 +84,21 @@ function UploadFile ({setFormData, files}) {
       </p>
 
       <div className="input-group mb-3">
-        <input 
+        <input
           type="file"
           className="form-control"
           id="inputGroupFile02"
           onChange={handleFileChange}
           multiple
+          disabled={uploading}
         />
-      </div> 
+      </div>
+
+      {uploading && (
+        <p style={{ color: "var(--blue)" }}>
+          Subiendo archivos...
+        </p>
+      )}
 
       {fileList.length > 0 && (
         <div style={{ marginTop: "0px" }}>
@@ -84,7 +118,7 @@ function UploadFile ({setFormData, files}) {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default UploadFile
+export default UploadFile;
