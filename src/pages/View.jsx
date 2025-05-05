@@ -4,6 +4,7 @@ import { getReportByCode, getStatusHistoryByReportId } from "../services/reportS
 import { getMessagesByReportId, sendMessage } from "../services/messageService";
 import ViewReportState from "../components/ViewReportState";
 import { markAdminMessagesAsRead } from "../services/messageService"; 
+import FilePreviewModal from "../components/FilePreviewModal";
 
 function View() {
   const { reportCode } = useParams();
@@ -228,41 +229,7 @@ function View() {
               {/* ===== Files  ===== */}
               <div className="detailBox__item">
                 <span className="detailBox__title">Archivo:</span>
-                {report.files && report.files.length > 0 ? (
-                  report.files.map((file, index) => (
-                    <React.Fragment key={index}>
-                      <a
-                        href="#"
-                        className="btn btn-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target={`#fileModal${index}`}
-                      >
-                        Visualizar {file}
-                      </a>
-                      <div
-                        className="modal fade detailBox__mdal"
-                        id={`fileModal${index}`}
-                        tabIndex="-1"
-                        aria-hidden="true"
-                      >
-                        <div className="modal-dialog">
-                          <div className="modal-content">
-                            <div className="detailBox__mdal_image">
-                              <img
-                                src={`/uploads/${file}`}
-                                alt={file}
-                                className="small-img"
-                                style={{ marginTop: "20px", maxWidth: "100%" }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  ))
-                ) : (
-                  <span className="detailBox__text">No se han subido archivos</span>
-                )}
+                <FilePreviewModal files={report.files} />
               </div>
             </div>
           </div>
