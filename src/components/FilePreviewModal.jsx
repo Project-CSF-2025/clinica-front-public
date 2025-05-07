@@ -28,7 +28,7 @@ function FilePreviewModal({ files }) {
           "pptx",
         ].includes(extension);
 
-        const fileUrl = `http://localhost:5000/api/attachments/download/${filename}`;
+        const fileUrl = `${import.meta.env.VITE_API_URL}/attachments/download/${filename}`;
 
         if (isImage) {
           return (

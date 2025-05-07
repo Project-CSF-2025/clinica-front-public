@@ -445,28 +445,28 @@ function AdminDetail() {
               {/* ===== Files  ===== */}
               <div className="detailBox__item">
               <span className="detailBox__title">Archivo:</span>
-              {report.files && report.files.length > 0 ? (
-                report.files.map((file, index) => {
-                  const filename = file.filename || (file.file_path && file.file_path.split("/").pop());
+                {report.files && report.files.length > 0 ? (
+                  report.files.map((file, index) => {
+                    const filename = file.filename || (file.file_path && file.file_path.split("/").pop());
 
-                  return (
-                    <React.Fragment key={index}>
-                      <a
-                        href={`http://localhost:5000/api/attachments/download/${filename}`}
-                        className="btn btn-outline-primary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        download
-                        style={{ marginBottom: "10px", display: "inline-block" }}
-                      >
-                        Descargar {file.original_name || file.name || filename}
-                      </a>
-                    </React.Fragment>
-                  );
-                })
-              ) : (
-                <span className="detailBox__text">No se han subido archivos</span>
-              )}
+                    return (
+                      <React.Fragment key={index}>
+                        <a
+                          href={`/api/attachments/download/${filename}`}  // ✅ FIXED
+                          className="btn btn-outline-primary"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                          style={{ marginBottom: "10px", display: "inline-block" }}
+                        >
+                          Descargar {file.original_name || file.name || filename}
+                        </a>
+                      </React.Fragment>
+                    );
+                  })
+                ) : (
+                  <span className="detailBox__text">No se han subido archivos</span>
+                )}
 
               </div>
               <div className="buttonA -sizeS -thin">
