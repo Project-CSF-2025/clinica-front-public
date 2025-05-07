@@ -11,10 +11,6 @@ const ViewReportState = ({ statusHistory, reportCreatedAt }) => {
   const statusOrder = ["NO LEIDO", "EN PROCESO", "RESUELTO"];
   const currentIndex = statusOrder.indexOf(currentStatus);
 
-  const latestResueltoEntry = [...statusHistory]
-    .filter((s) => s.new_status === "RESUELTO")
-    .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
-
   const getLatestChangedAt = (status) => {
     if (status === "NO LEIDO") {
       return reportCreatedAt

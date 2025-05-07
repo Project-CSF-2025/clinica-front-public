@@ -214,31 +214,36 @@ function AdminDetail() {
       return;
     }
   
-    const newStatusRaw = e.target.value; // Example: EN_PROCESO
+    const newStatusRaw = e.target.value;
     if (!report?.report_code) {
       console.error("❌ Error: No report code found");
       return;
     }
   
     try {
-      const formattedStatus = newStatusRaw.replace("_", " "); // For database: EN PROCESO
+      const formattedStatus = newStatusRaw.replace("_", " ");
       await updateReportStatus(report.report_code, formattedStatus);
-      
-      // ✅ Update the selectedStatus properly for dropdown
-      setSelectedStatus(newStatusRaw); 
-      
+  
+      // ✅ Update local state
+      setSelectedStatus(newStatusRaw);
+      setReport((prev) => ({
+        ...prev,
+        status: formattedStatus,
+      }));
+  
       alert("✅ Report status updated successfully!");
-
-      // ✅ ステータス履歴の再取得
+  
+      // ✅ Refresh history to reflect the new change
       if (report.id_report) {
         const updatedHistory = await getStatusHistoryByReportId(report.id_report);
         setStatusHistory(Array.isArray(updatedHistory) ? updatedHistory : []);
       }
+  
     } catch (error) {
       console.error("❌ Error updating status:", error);
       alert("❌ Failed to update status");
     }
-  };  
+  };   
 
   const handleSoftDelete = async () => {
     if (!report?.report_code) {
