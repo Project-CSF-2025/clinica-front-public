@@ -4,6 +4,8 @@ import axios from "axios";
 function UploadFile({ setFormData, files }) {
   const [fileList, setFileList] = useState(files || []);
   const [uploading, setUploading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     if (files) {
@@ -22,7 +24,7 @@ function UploadFile({ setFormData, files }) {
       formData.append("file", file);
 
       return axios
-        .post("/api/upload", formData, {
+        .post(`${API_URL}/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
