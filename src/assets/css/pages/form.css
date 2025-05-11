@@ -6,7 +6,6 @@
   color: var(--blue) !important;
 }
 
-/* confirmation button size */
 .small-img {
   width: 72px; 
   height: 72px; 
@@ -65,8 +64,6 @@
   background-color: var(--darkBlue);
 }
 
-
-/* Style for invalid feedback to appear below input */
 .input-box {
   display: flex;
   flex-direction: column;
@@ -74,31 +71,19 @@
   flex: 1;
 }
 
-/* Target the input by its ID */
 #Sugerencias::placeholder {
-  font-size: 0.8rem; /* Adjust the size as needed */
+  font-size: 0.8rem;
   color:  var(--gray2);
 }
 
-/* Target the input by its ID */
 #descripción::placeholder {
-  font-size: 0.8rem; /* Adjust the size as needed */
+  font-size: 0.8rem;
   color:  var(--gray2);
 }
 
- /* Target the first option and change its color */
 #department{
   color: var(--gray1);
 } 
-
-
-/* 
-@media screen and (max-width: 768px) {
-768pxまでの幅の場合に適用される
-      body {
-        background-color:#f10010;
-    }
-} */
 
 .preview{
   display: flex;
@@ -144,8 +129,6 @@ textarea#descripción::-webkit-scrollbar-track {
   border-radius: 100px;
 }
 
-
-
 textarea#sugerencias::-webkit-scrollbar {
   width: 6px;
 }
@@ -163,7 +146,6 @@ textarea#sugerencias::-webkit-scrollbar-track {
   background-color: #e4e4e4;
   border-radius: 100px;
 }
-
 
 textarea#Sugerencias {
   word-wrap: break-word;

@@ -29,12 +29,12 @@ function Home() {
                 onClick={() => localStorage.removeItem("reportAlreadySubmitted")}
               >
                 <img src={iconNew} alt="" className="button-icon-inicio" />
-                Nuevo Reporte
+                <span>Nuevo Reporte</span>
               </Link>
 
               <Link to="/consult" className="button-link">
                 <img src={iconSearch} alt="" className="button-icon-inicio" />
-                Consultar estado
+                <span>Consultar estado</span>
               </Link>
             </div>
           </div>

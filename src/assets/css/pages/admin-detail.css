@@ -1,7 +1,6 @@
 /* adminDetail
 ============================================================ */
 .flexBox {
-  /* height: 760px; */
   height: auto;
   display: flex;
   align-items: stretch;
@@ -9,12 +8,7 @@
   margin-top: 80px;
 }
 
-.flexBox + * {
-  /* margin-top: px; */
-}
-
 .flexBox__item {
-  /* height: 100%; */
   width: calc((100% - 64px) / 2);
   display: flex;
   flex-direction: column;
@@ -61,19 +55,10 @@
   border-bottom: 1px solid var(--gray3);
 }
 
-.detailBox__img{
-
-}
-
 .detailBox__mdal .modal-dialog {
   height: calc(100% - (28px * 2));
 }
 .detailBox__mdal .modal-content {
-  /* height: 600px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto; */
   position: absolute;
   top: 0;
   bottom: 0;
@@ -122,10 +107,8 @@
 }
 
 .selectWrap {
-  /* background-color: var(--gray3); */
   position: relative;
   width: 200px;
-  /* height: ; */
 }
 
 .select {
@@ -164,14 +147,13 @@
   width: 100%;
   height: 260px;
   padding: 40px 84px 40px 24px;
-  /* border-radius: 0 32px 32px 0;
-  border-radius: 32px; */
   background: #fff;
   box-shadow:  
     12px 12px 35px var(--gray),
     -12px -12px 35px #fff;
   position: relative;
 }
+
 .memoBlock::before {
   content: "";
   position: absolute;
@@ -184,10 +166,10 @@
   left: 0;
   margin: 0 auto;
 }
+
 .memoBlock::after {
   content: "";
   background-color:  var(--labelBlue);
-  /* border-radius: 32px; */
   position: absolute;
   top: 0;
   left: 0;
@@ -196,19 +178,11 @@
   height: 100%;
 }
 .memoBlock__static {
-  /* border-radius: 32px; */
   height: 100%;
   position: relative;
   z-index: 1;
   overflow-x: auto;
   padding-right: 5px;
-  /* word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere; */
-  /* overflow-x: auto; */
-
-  /* opacity: 0; */
-  /* display: none; */
 }
 .memoBlock__static::-webkit-scrollbar {
   width: 6px;
@@ -227,46 +201,38 @@
 .memoBlock__static::-webkit-scrollbar-thumb:hover {
   background: var(--gray2);
 }
+
 .memoBlock.-active .memoBlock__static {
   display: none;
 }
-/* .memoBlock__static */
+
 .memoBlock__edit {
   height: 100%;
   position: relative;
   z-index: 1;
-  /* opacity: 0; */
   display: none;
 }
 .memoBlock__edit textarea {
   width: 100%;
   height: 100%;
-  /* box-sizing: content-box; */
   margin: 2px;
   resize: none;
 }
 .memoBlock.-active .memoBlock__edit {
   display: block;
 }
-/* .memoBlock .buttonA {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-} */
+
 .memoBlock__btn {
   background-color: var(--blue);
   border-radius: 50%;
   width: 45px;
   height: 45px;
-  /* position: relative; */
   position: absolute;
   bottom: 24px;
   right: 20px;
   z-index: 1;
 }
-.memoBlock__btn .iconEdit {
-  /* display: none; */
-}
+
 .memoBlock__btn .iconCheck {
   display: none;
 }
@@ -279,10 +245,6 @@
 
 /* chatBlock
 ============================== */
-.chatBlock__wrap {
-  /* margin-top: 24px; */
-}
-
 .chatBlock {
   height: 695px;
   border-radius: 32px;
@@ -290,12 +252,9 @@
   box-shadow:  
   12px 12px 35px var(--gray),
   -12px -12px 35px #fff;
-
-  /* overflow: scroll; */
 }
 
 .chatBlock__inner {
-  /* height: 100%; */
   height: calc(100% + 80px);
   padding: 32px 24px;
   position: relative;
@@ -319,7 +278,6 @@
 .chatBlock__body {
   height: calc(100% - 168px);
   padding-right: 10px;
-  /* overflow: scroll; */
   overflow: auto;
 }
 
@@ -341,22 +299,9 @@
   background: var(--gray2);
 }
 
-
-
-.chatBlock__item {
-  /* display: flex;
-  align-items: flex-start;
-  gap: 0 16px; */
-}
-
-.chatBlock__item.-revers {
-  /* flex-direction: row-reverse; */
-}
-
 .chatBlock__itemInner {
   display: flex;
   flex-wrap: wrap;
-  /* align-items: flex-start; */
   align-items: center;
   gap: 8px 16px;
 }
@@ -385,15 +330,6 @@
   width: .8em;
   height: .8em;
 }
-/* .chatBlock__circle.-iconRecieve svg{
-  width: .8em;
-  height: .8em;
-} */
-
-/* .chatBlock__itemInner {
-  flex: 1;
-  padding-top: 7px;
-} */
 
 .chatBlock__itemHead {
   display: flex;
@@ -408,10 +344,6 @@
   font-size: 18px;
 }
 
-/* .chatBlock__itemHead.-right {
-  justify-content: flex-end;
-} */
-
 .chatBlock__itemHead .-state {
   font-size: 18px;
   color: var(--lightBlue);
@@ -419,13 +351,9 @@
 
 .chatBlock__itemBody {
   background-color: #fff;
-  /* margin-top: 8px; */
   padding: 24px;
   border-radius: 10px;
   width: 100%;
-}
-
-.chatBlock__itemBody .text {
 }
 
 .chatBlock__img {
@@ -484,7 +412,6 @@
   height: 100%;
   padding: 16px;
   box-sizing: border-box;
-  /* background-color: aqua; */
   background-color: var(--white);
   border-radius: 42px;
   border: none;
@@ -502,6 +429,7 @@
   top: 80px;
   right: 80px;
 }
+
 .salir-adminDetail a {
   display: flex;
   align-items: center;
@@ -510,7 +438,6 @@
   text-decoration: none;
   font-size: 16px;
 }
-
 
 /* selectedStatus === "Eliminado"
 ============================================================ */
@@ -534,7 +461,6 @@
 
 /* SP
 ============================================================ */
-
 @media screen and (max-width: 768px) {
   .flexBox {
     flex-direction: column;
@@ -549,7 +475,6 @@
   }
 
   .detailBox__item {
-    /* width: fit-content; */
     flex-direction: column;
   }
 
@@ -558,5 +483,31 @@
   .detailBox__textBox {
     margin-top: 8px;
   }
-}
 
+  .salir-adminDetail {
+    right: 24px;
+    padding: 10px 24px;
+  }
+
+  .reporte-container {
+    padding: 24px;
+  }
+
+  .progreso {
+    flex-direction: column;
+    gap: 16px 0;
+    padding: 16px;
+  }
+
+  .fase {
+    width: 100%;
+  }
+  
+  .flexBox {
+    flex-direction: column-reverse;
+  }
+
+  .pageView .chatBlock {
+    height: 640px;
+  }
+}

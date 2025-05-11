@@ -61,53 +61,55 @@
   background-color:var(--blue);
   opacity: .8;
 }
-/* .useful__wrap.cYellow:before{
-  background-color:var(--yellow) !important;
-} */
+
 .useful__wrap.cRedLight:before{
   background-color:#f34235;
   opacity: .8;
 }
+
 .useful__wrap.cGrayDark:before{
   background-color:var(--gray3);
   opacity: .8;
 }
+
 .useful__wrap.cBlueLight:before{
-  background-color: var(--lightBlue); /* #ffc006 */
+  background-color: var(--lightBlue);
   opacity: .8;
 }
+
 .useful__wrap:focus,.useful__wrap:hover{
   text-decoration:none;
 }
+
 .useful__wrap:focus:before,
 .useful__wrap:hover:before{
   width:100%
 }
+
 .useful__wrap:focus.cBlueDark,
 .useful__wrap:hover.cBlueDark{
   -webkit-box-shadow:0 28px 48px -25px var(--blue);
   box-shadow:0 28px 48px -25px var(--blue);
 }
-/* .useful__wrap:focus.cYellow,
-.useful__wrap:hover.cYellow{
-  -webkit-box-shadow:0 28px 48px -25px var(--yellow) !important;
-  box-shadow:0 28px 48px -25px var(--yellow) !important;
-} */
+
 .useful__wrap:focus.cRedLight,
 .useful__wrap:hover.cRedLight{
   -webkit-box-shadow:0 28px 48px -25px #f34235;
   box-shadow:0 28px 48px -25px #f34235;
 }
+
 .useful__wrap:focus.cGrayDark,
 .useful__wrap:hover.cGrayDark{
   -webkit-box-shadow:0 28px 48px -25px var(--gray3);
   box-shadow:0 28px 48px -25px var(--gray3);
 }
+
 .useful__wrap:focus.cBlueLight,
 .useful__wrap:hover.cBlueLight{
   -webkit-box-shadow:0 28px 48px -25px var(--lightBlue);
   box-shadow:0 28px 48px -25px var(--lightBlue);
 }
+
 .category__nav{
   padding:0;
   list-style-type:none;
@@ -115,9 +117,11 @@
   margin:0 30px 40px 20px;
   position:relative;
 }
+
 .category__nav:last-child{
   margin-right:0;
 }
+
 .category__nav:before{
   content:'';
   position:absolute;
@@ -127,10 +131,12 @@
   width:4px;
   background:var(--blue);
 }
+
 .category__nav li{
   float:left;
   margin-right:5px;
 }
+
 .category__nav li a{
   color:var(--blue);
   font-size:13px;
@@ -141,10 +147,12 @@
   padding:7px 20px 7px 12px;
   position:relative;
 }
+
 .category__nav li a:focus,
 .category__nav li a:hover{
   text-decoration:none;
 }
+
 .category__nav li a:after,
 .category__nav li a:before{
   content:'';
@@ -158,16 +166,19 @@
   -ms-transform:translateY(-50%);
   transform:translateY(-50%);
 }
+
 .category__nav li a:before{
   -webkit-transform:translateY(-50%) rotate(45deg);
   -ms-transform:translateY(-50%) rotate(45deg);
   transform:translateY(-50%) rotate(45deg);
 }
+
 .category__nav li a:after{
   -webkit-transform:translateY(-50%) rotate(-45deg);
   -ms-transform:translateY(-50%) rotate(-45deg);
   transform:translateY(-50%) rotate(-45deg);
 }
+
 .category__nav li a.checked{
   background:var(--blue);
   color:#fff;
@@ -175,9 +186,11 @@
   -moz-border-radius:50px;
   border-radius:50px;
 }
+
 .knowWrap {
   height: 100%;
 }
+
 .knowWrap .col-xs-6{
   display:-webkit-box;
   display:-ms-flexbox;
@@ -188,10 +201,12 @@
   -ms-flex-pack:justify;
   justify-content:space-between;
 }
+
 .knowWrap .col .know{
   width:100%;
   max-width: 1200px;
 }
+
 .know-s-wrap{
   position:relative;
   margin-left:-15px;
@@ -199,6 +214,7 @@
   display: flex;
   flex-wrap: wrap;
 }
+
 .know{
   background:#ebeef0;
   height:340px;
@@ -206,8 +222,6 @@
   display:-webkit-box;
   display:-ms-flexbox;
   display:flex;
-  /* -ms-flex-wrap:wrap;
-  flex-wrap:wrap; */
   -webkit-box-orient:vertical;
   -webkit-box-direction:normal;
   -ms-flex-direction:column;
@@ -224,31 +238,18 @@
   cursor: pointer;
   position: relative;
 }
+
 .know:focus,
 .know:hover{
   color:#fff !important;
 }
+
 .know:focus .know__info,
 .know:hover .know__info,
 .know:focus .know__label,
 .know:hover .know__label{
   color:#fff !important;
 }
-.know:focus .iconFlaged svg,
-.know:hover .iconFlaged svg{
-  /* fill:#fff !important; */
-}
-/* .know::after {
-  content: "";
-  position: absolute;
-  width: 45px;
-  height: 45px;
-  top: 0;
-  left: calc(100% - 45px);
-  background-color: #eee !important;
-  pointer-events: none;
-  z-index: 100;
-} */
 
 /* Text color when cGrayDark */
 .know.cGrayDark .know__label.cRedLight,
@@ -256,12 +257,14 @@
 .know.cGrayDark .know__label.cBlueDark {
   color: var(--gray1) !important;
 }
+
 .know__numWrap {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
 }
+
 .know__num{
   font-size:20px;
   font-weight: 600;
@@ -272,6 +275,7 @@
   transition:none;
   text-decoration: underline;
 }
+
 .know__label{
   font-size:14px;
   font-weight: 600;
@@ -282,6 +286,7 @@
   -o-transition:none;
   transition:none;
 }
+
 .know__label.cBlueLight{color:var(--lightBlue) !important;}
 .know__label.cBlueDark{color:var(--blue) !important;}
 .know__label.cRedLight{color:#f34235;}
@@ -292,11 +297,9 @@
   -webkit-transition:none;
   -o-transition:none;
   transition:none;
-  /* position: absolute;
-  top: .5em;
-  right: .5em; */
   display: block;
 }
+
 .know__title {
   font-size: 16px;
   font-weight: 700;
@@ -311,10 +314,9 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
+
 .know__info{
   font-size:13px;
-  /* margin-top: 8px; */
-  /* color:#5f7c8a; */
   position:relative;
   z-index:1;
   -webkit-transition:none;
@@ -327,6 +329,7 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
 .know .iconFlaged {
   position: absolute;
   top: 0.8em !important;
@@ -334,27 +337,33 @@
   z-index: 1;
   display: block;
 }
+
 .know .incidentList__star {
   position: absolute;
   top: 3px;
   right: 3px;
 }
+
 .know-s{
   width:calc(25% - 31px);
   height:155px
 }
+
 .know-long{
   width:calc(50% - 30px);
   height:155px;
 }
+
 .know-middleS{
   width:calc(50% - 32px);
   height:155px;
 }
+
 .know-middleB{
   width:calc(50% - 32px);
   height:340px;
 }
+
 .know-hf{
   width:calc(50% - 30px);
   height:155px;
@@ -377,11 +386,6 @@
   font-size: .9rem;
 }
 
-.know.cGrayDark {
-  /* display: none; */
-}
-
-
 .pageAdmin .salir-admin{
   height: 36px;
   display: flex;
@@ -392,8 +396,6 @@
   right: 12px;
   z-index: 1;
 }
-
-
 
 /* add notificationArea */
 .pageAdmin .wrapper {
@@ -437,8 +439,6 @@
   
   overflow-y: scroll;
   padding-right: 0.3em;
-  /* padding: 1.1vw;
-  box-shadow: inset 0px -31px 43px rgba(255, 255, 255, 0.64), inset 0px 0px 48px rgba(13, 39, 80, 0.1); */
 }
 
 .notificationArea__inner::-webkit-scrollbar {
@@ -458,7 +458,6 @@
 .notificationArea__inner::-webkit-scrollbar-thumb:hover {
   background: var(--gray2);
 }
-
 
 .notificationList {
   height: 100%;

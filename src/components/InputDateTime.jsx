@@ -6,7 +6,7 @@ import 'dayjs/locale/es';
 
 const InputDateTime = ({ date, handleChange, format = 'DD/MM/YYYY HH:mm', label, name, required, isValid, isSubmitted }) => {
   return (
-    <div className="col-sm-12 d-flex align-items-center mb-3">
+    <div className="col-sm-12 d-flex flex-column flex-md-row align-items-md-center mb-3">
       <label htmlFor={name} className="form-label me-2" style={{width: "200px", color: "var(--blue)"}}>
         {label} {required && <span className="-required">*</span>}
       </label>
