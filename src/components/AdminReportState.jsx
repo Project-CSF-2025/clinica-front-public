@@ -14,21 +14,21 @@ const AdminReportState = ({ statusHistory, reportCreatedAt }) => {
   const getLatestChangedAt = (status) => {
     if (status === "NO LEIDO") {
       return reportCreatedAt
-        ? new Date(reportCreatedAt).toLocaleString('es-ES', { timeZone: 'UTC' })
+        ? new Date(reportCreatedAt).toLocaleString("es-ES", { timeZone: "UTC" })
         : "--:--";
     }
-
-  const latestResueltoEntry = [...statusHistory]
-    .filter((s) => s.new_status === "Resuelto")
-    .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
-
+  
+    const latestResueltoEntry = [...statusHistory]
+      .filter((s) => s.new_status === "Resuelto")
+      .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
+  
     const latestEntry = [...statusHistory]
       .filter((s) => s.new_status === status)
       .sort((a, b) => new Date(b.changed_at) - new Date(a.changed_at))[0];
-
+  
     const statusIndex = statusOrder.indexOf(status);
     if (!latestEntry || statusIndex > currentIndex) return "--:--";
-
+  
     if (
       currentStatus === "RESUELTO" &&
       status === "EN PROCESO" &&
@@ -41,11 +41,11 @@ const AdminReportState = ({ statusHistory, reportCreatedAt }) => {
     ) {
       return "--:--";
     }
-
+  
     if (!latestEntry) return "--:--";
-
-    return new Date(latestEntry.changed_at).toLocaleString("es-ES");
-  };
+  
+    return new Date(latestEntry.changed_at).toLocaleString("es-ES", { timeZone: "UTC" });
+  };  
 
   return (
     <div className="reporte-container">
