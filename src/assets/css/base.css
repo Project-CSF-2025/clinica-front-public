@@ -17,10 +17,10 @@ body p {
   margin-bottom: 0;
 }
 #root {
-  min-height: inherit; /* 追加 */
+  min-height: inherit;
 }
 .wrapper {
-  margin-top: 64px; /* after */
+  margin-top: 64px;
   padding-right: 32px;
   padding-left: 32px;
 }

@@ -3,7 +3,7 @@ import React from "react";
 function InputField({ label, name, value, onChange, required, maxLength }) {
   return (
     <>
-      <div className="col-sm-12 d-flex align-items-center mb-3">
+      <div className="col-sm-12 d-flex flex-column flex-md-row align-items-md-center mb-3">
         <label
           htmlFor={name}
           className="form-label me-2"
