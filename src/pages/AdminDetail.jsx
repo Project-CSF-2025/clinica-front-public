@@ -457,7 +457,7 @@ function AdminDetail() {
                     return (
                       <React.Fragment key={index}>
                         <a
-                          href={`/api/attachments/download/${filename}`}  // ✅ FIXED
+                          href={`/api/attachments/download/${filename}`}  
                           className="btn btn-outline-primary"
                           target="_blank"
                           rel="noopener noreferrer"
