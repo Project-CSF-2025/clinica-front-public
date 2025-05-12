@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import AdminChat from "../components/AdminChat";
+import ChatBlock from "../components/ChatBlock";
+import MemoBlock from "../components/MemoBlock";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { createAdminNote } from "../services/adminNoteService";
 import { getAdminNoteByReportId } from "../services/adminNoteService";
@@ -29,7 +30,7 @@ function AdminDetail() {
 
   const [statusHistory, setStatusHistory] = useState([]);
   
-  // ✅ For messages
+  // For messages
   const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("");
 
@@ -40,10 +41,6 @@ function AdminDetail() {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   };
-
-  console.log("🔹 useParams() output:", useParams());
-  console.log("🔹 Extracted reportCode:", reportCode);
-  console.log("🔹 Location State:", location.state);
 
   // --- Page title
   useEffect(() => {
@@ -83,7 +80,6 @@ function AdminDetail() {
     fetchReportAndMessages();
   
     const handleFlagChange = () => {
-      console.log("🔄 Flag status changed, refreshing report...");
       fetchReportAndMessages();
     };
   
@@ -108,7 +104,6 @@ function AdminDetail() {
     if (report?.id_report) {
       markMessagesAsRead(report.id_report)
         .then(() => {
-          console.log("✅ Marked messages as read");
           window.dispatchEvent(new Event("flagUpdated")); 
         })
         .catch((error) => {
@@ -125,7 +120,6 @@ function AdminDetail() {
 
     try {
       const response = await getAdminNoteByReportId(id_report);
-      console.log("✅ Memo fetched:", response);
 
       if (response) {
         setMemoText(response.admin_message);
@@ -171,8 +165,6 @@ function AdminDetail() {
 
     try {
       await sendMessage(messagePayload);
-      console.log("✅ Message sent successfully!");
-
       // Refresh messages after sending; ensure result is an array
       const updatedMessages = await getMessagesByReportId(report.id_report);
       setMessages(Array.isArray(updatedMessages) ? updatedMessages : []);
@@ -224,7 +216,7 @@ function AdminDetail() {
       const formattedStatus = newStatusRaw.replace("_", " ");
       await updateReportStatus(report.report_code, formattedStatus);
   
-      // ✅ Update local state
+      // Update local state
       setSelectedStatus(newStatusRaw);
       setReport((prev) => ({
         ...prev,
@@ -233,7 +225,7 @@ function AdminDetail() {
   
       alert("✅ Report status updated successfully!");
   
-      // ✅ Refresh history to reflect the new change
+      // Refresh history to reflect the new change
       if (report.id_report) {
         const updatedHistory = await getStatusHistoryByReportId(report.id_report);
         setStatusHistory(Array.isArray(updatedHistory) ? updatedHistory : []);
@@ -278,9 +270,7 @@ function AdminDetail() {
       const newFlagStatus = !isFlagged;
       await toggleReportFlag(report.id_report, newFlagStatus);
       
-      console.log("✅ Report flag updated successfully!");
-      
-      // ✅ Dispatch event to refresh Admin & AdminDetail pages
+      // Dispatch event to refresh Admin & AdminDetail pages
       window.dispatchEvent(new Event("flagUpdated"));
       
     } catch (error) {
@@ -292,20 +282,20 @@ function AdminDetail() {
   const handleDownloadPDF = () => {
     const detailBox = document.querySelector(".detailBox"); // detailBox の取得
 
-    window.scrollTo(0, 0); // スクロール位置をリセット
+    window.scrollTo(0, 0); 
 
     html2canvas(detailBox, {
-      scale: 2, // 🔥 ズームアウト（小さいほど縮小される）
+      scale: 2, 
       scrollX: 0,
       scrollY: 0,
       windowWidth: document.documentElement.scrollWidth,
       windowHeight: document.documentElement.scrollHeight,
     })
       .then((canvas) => {
-        const imgData = canvas.toDataURL("image/png"); // Canvasを画像データに変換
-        const pdf = new jsPDF("p", "mm", "a4"); // PDF を作成（A4 縦向き）
+        const imgData = canvas.toDataURL("image/png"); 
+        const pdf = new jsPDF("p", "mm", "a4"); 
         
-        const pageWidth = 210; // A4 の横幅 (mm)
+        const pageWidth = 210; 
         const pageHeight = 297; // A4 の縦幅 (mm)
         const imgWidth = pageWidth - 70; // 🔥 ページ内に収めるため、余白を考慮
         const imgHeight = (canvas.height * imgWidth) / canvas.width; // 🔥 比率を維持
@@ -367,7 +357,7 @@ function AdminDetail() {
     const notePayload = {
         id_report: report.id_report,
         admin_message: memoText,
-        is_deleted: false, // ✅ Restore memo if deleted
+        is_deleted: false,
     };
 
     try {
@@ -387,11 +377,6 @@ function AdminDetail() {
         alert("Failed to save memo.");
     }
   };
-
-  console.log("🧩 is_consequent raw value:", report.is_consequent);
-  console.log("🧩 avoidable raw value:", report.avoidable);
-
-
 
   return (
     <>
@@ -567,55 +552,25 @@ function AdminDetail() {
             </div>
 
             {/* ========== MEMO ========== */}
-            <div className="memoBlock__wrap">
-              <h2 className="headdingB fs-3 -blue -medium">Recordatorio</h2>
-              <div className={`memoBlock ${isEditing ? "-active" : ""} ${report?.status === "ELIMINADO" ? "disabled-click" : ""}`}>
-                {!isEditing ? (
-                  <div className="memoBlock__static">
-                    {memoText ? memoText : "No memo available"}
-                  </div>
-                ) : (
-                  <div className="memoBlock__edit">
-                    <textarea
-                      id="textEdit"
-                      cols="30"
-                      rows="10"
-                      value={memoText}
-                      onChange={handleTextChange}
-                    />
-                  </div>
-                )}
-                <button 
-                  className="memoBlock__btn" 
-                  onClick={isEditing ? handleSaveNote : toggleEdit}
-                  disabled={report?.status === "ELIMINADO"}
-                >
-                  {isEditing ? (
-                    <span className="iconCheck">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clipboard-check">
-                        <path fillRule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
-                      </svg>
-                    </span>
-                  ) : (
-                    <span className="iconEdit">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil">
-                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                      </svg>
-                    </span>
-                  )}
-                </button>
-              </div>
-            </div>
+            <MemoBlock
+              memoText={memoText}
+              isEditing={isEditing}
+              isEditable={true}
+              isDisabled={report?.status === "ELIMINADO"}
+              onEditToggle={toggleEdit}
+              onTextChange={handleTextChange}
+              onSave={handleSaveNote}
+            />
 
             {/* ========== CHAT ========== */}
-            <AdminChat
+            <ChatBlock
               messages={messages}
               newMessage={newMessage}
               onSend={handleSendMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               isDisabled={report?.status === "ELIMINADO"}
               chatRef={chatContainerRef}
+              userRole="admin"
             />
           </div>
         </div>
