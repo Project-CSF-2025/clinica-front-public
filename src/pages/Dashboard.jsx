@@ -44,7 +44,6 @@ function Dashboard() {
     return (!from || createdAt >= from) && (!to || createdAt <= to);
   });  
 
-  // 🔢 Status counts
   const statusCounts = {
     "NO LEIDO": 0,
     "EN PROCESO": 0,
@@ -64,7 +63,6 @@ function Dashboard() {
     value: count,
   }));
 
-  // 📅 Monthly breakdown
   const monthMap = {};
 
   reports.forEach((report) => {
@@ -81,7 +79,6 @@ function Dashboard() {
     count,
   }));
 
-  // 📅 Yearly breakdown
   const yearMap = {};
 
   reports.forEach((report) => {
@@ -115,11 +112,16 @@ function Dashboard() {
 
   return (
     <div className="dashboardPage container mt-5">
-      <h2 className="headdingA fs-1 -blue -center -regular mb-5">📊 Panel de Control</h2>
+      <h2 className="headdingA fs-1 -blue -center -regular mb-5">
+        <span class="icon-graph -sizeL">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line-fill" viewBox="0 0 16 16">
+            <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1z"/>
+          </svg>
+        </span> 
+        Panel de Control
+      </h2>
 
-      {/* 🔢 Summary Cards */}
       <div className="dashboardCardsWrap">
-        {/* 📅 フィルター用カレンダー */}
         <div className="dashboardCards__head">
           <div className="mb-3 d-flex gap-3 align-items-center">
             <label className="dashboardCards__filterTitle fw-bold">Filtrar por fecha:</label>
@@ -129,7 +131,7 @@ function Dashboard() {
               onChange={(e) => setStartDate(e.target.value)}
               className="form-control"
             />
-            <span>〜</span>
+            <span>ー</span>
             <input
               type="date"
               value={endDate}
@@ -138,15 +140,16 @@ function Dashboard() {
             />
           </div>
           <button className="btn btn-outline-primary" onClick={handleDownloadCSV}>
-            📂 Descargar todo
+            <span class="icon-excel">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel-fill" viewBox="0 0 16 16">
+                <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M5.884 6.68 8 9.219l2.116-2.54a.5.5 0 1 1 .768.641L8.651 10l2.233 2.68a.5.5 0 0 1-.768.64L8 10.781l-2.116 2.54a.5.5 0 0 1-.768-.641L7.349 10 5.116 7.32a.5.5 0 1 1 .768-.64"/>
+              </svg>
+            </span>
+            Descargar todo
           </button>
         </div>
         
         <div className="dashboardCards d-flex flex-wrap justify-content-between">
-          {/* <div className="dashboardCards__item p-3 rounded text-center shadow-sm -total">
-            <h4 className="fw-bold">Total Reportes</h4>
-            <p className="fs-2 fw-bold">{filteredReports.length}</p>
-          </div> */}
           {Object.entries(statusCounts).map(([status, count], index) => {
             const safeStatus = status
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // アクセント除去
