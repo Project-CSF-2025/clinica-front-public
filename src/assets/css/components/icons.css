@@ -134,8 +134,26 @@
   margin-right: .5em;
 }
 
+.icon-graph.-sizeL {
+  width: 36px;
+  height: 36px;
+}
+
 .icon-graph svg {
   width: 100%;
   height: auto;
   fill: var(--orange) !important;
+}
+
+.icon-excel {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: .5em;
+}
+
+.icon-excel svg {
+  width: 100%;
+  height: auto;
+  fill: var(--labelGreen) !important;
 }
