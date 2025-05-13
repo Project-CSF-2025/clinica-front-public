@@ -6,7 +6,7 @@ Este frontend se conecta con la API del backend [clinica-back-public](https://gi
 
 ---
 
-## 🔧 Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ![HTML5](https://img.shields.io/badge/-html5-333333.svg?logo=html5&style=for-the-badge&logoColor=%23E34F26)
 ![CSS3](https://img.shields.io/badge/-css3-333333.svg?logo=css3&style=for-the-badge&logoColor=%231572B6)
