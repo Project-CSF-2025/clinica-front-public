@@ -6,7 +6,6 @@ function UploadFile({ setFormData, files }) {
   const [uploading, setUploading] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-
   useEffect(() => {
     if (files) {
       setFileList(files);
@@ -17,9 +16,29 @@ function UploadFile({ setFormData, files }) {
     const selectedFiles = Array.from(e.target.files);
     if (selectedFiles.length === 0) return;
 
+    const currentCount = fileList.length;
+    const totalSelected = currentCount + selectedFiles.length;
+
+    if (totalSelected > 2) {
+      alert("⚠️ Solo puedes subir un máximo de 2 archivos (imagen o PDF).");
+      return;
+    }
+
+    const existingFilenames = new Set(fileList.map((f) => f.name));
+
+    const filteredFiles = selectedFiles.filter((file) => {
+      if (existingFilenames.has(file.name)) {
+        alert(`⚠️ El archivo "${file.name}" ya fue subido.`);
+        return false;
+      }
+      return true;
+    });
+
+    if (filteredFiles.length === 0) return;
+
     setUploading(true);
 
-    const uploadPromises = selectedFiles.map((file) => {
+    const uploadPromises = filteredFiles.map((file) => {
       const formData = new FormData();
       formData.append("file", file);
 
@@ -41,13 +60,13 @@ function UploadFile({ setFormData, files }) {
                 file_path: response.data.file_path,
                 attachment_type: attachmentType,
                 server_filename: response.data.filename,
-                original_name: response.data.original_name  
-              });              
+                original_name: response.data.original_name,
+              });
             };
           });
         })
         .catch((error) => {
-          console.error(`❌ Upload failed for ${file.name}`, error.response?.data || error.message);
+          console.error(`❌ Falló la subida de ${file.name}`, error.response?.data || error.message);
           return null;
         });
     });
@@ -66,23 +85,21 @@ function UploadFile({ setFormData, files }) {
   };
 
   const handleRemoveFile = (index) => {
-    setFormData((prevData) => {
-      const updated = [...prevData.files];
-      updated.splice(index, 1);
-      return { ...prevData, files: updated };
-    });
+    const updatedList = [...fileList];
+    updatedList.splice(index, 1);
 
-    setFileList((prevList) => {
-      const updated = [...prevList];
-      updated.splice(index, 1);
-      return updated;
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      files: updatedList,
+    }));
+
+    setFileList(updatedList);
   };
 
   return (
     <>
       <p className="text" style={{ color: "var(--blue)", marginTop: "initial" }}>
-        Puedes subir un imágen, documento o captura que ayuden a aclarar el incidente.
+        Puedes subir hasta <strong>2 archivos</strong> (imágenes o PDF) que ayuden a aclarar el incidente.
       </p>
 
       <div className="input-group mb-3">
@@ -92,7 +109,8 @@ function UploadFile({ setFormData, files }) {
           id="inputGroupFile02"
           onChange={handleFileChange}
           multiple
-          disabled={uploading}
+          accept=".pdf, image/*"
+          disabled={uploading || fileList.length >= 2}
         />
       </div>
 
@@ -113,7 +131,7 @@ function UploadFile({ setFormData, files }) {
                 style={{ marginLeft: "12px" }}
                 onClick={() => handleRemoveFile(index)}
               >
-                Remove
+                Eliminar
               </button>
             </p>
           ))}
