@@ -1,5 +1,7 @@
 # Clinic Incident Reporting – Frontend
 
+[Ver README en Español](./README.es.md)
+
 This is the frontend of the **Clinic Incident Reporting** system, a web-based platform that allows hospital or clinic staff to anonymously report incidents. The system helps improve safety, transparency, and communication within the organization.
 
 This frontend connects with the [clinica-back-public](https://github.com/Project-CSF-2025/clinica-back-public) backend API for full functionality.
