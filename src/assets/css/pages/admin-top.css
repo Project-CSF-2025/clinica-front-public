@@ -413,7 +413,7 @@
   position: fixed;
   top: 0;
   right: -1px;
-  padding: 92px 1.8vw 74px;
+  padding: 66px 1.6vw 24px;
   box-shadow: inset 0px -31px 43px rgba(255, 255, 255, 0.64), inset 0px 0px 48px rgba(13, 39, 80, 0.1);
 }
 
@@ -460,7 +460,6 @@
 }
 
 .notificationList {
-  height: 100%;
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -568,7 +567,6 @@
   color: var(--gray1);
   flex: 1;
   position: relative;
-  max-width: 13.5vw;
 }
 
 .notificationList__itemLink::after {
