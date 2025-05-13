@@ -126,3 +126,16 @@
   width: 14px;
   height: 14px;
 }
+
+.icon-graph {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: .5em;
+}
+
+.icon-graph svg {
+  width: 100%;
+  height: auto;
+  fill: var(--orange) !important;
+}
