@@ -50,7 +50,7 @@
 .flowList li:nth-of-type(n+2)::before {
   content: "";
   position: absolute;
-  background: url(../img/icon_arrow.png)no-repeat center center/contain;
+  background: url(../../img/icon_arrow.png)no-repeat center center/contain;
   width: 40px;
   height: 40px;
   top: 0;
@@ -172,4 +172,31 @@ textarea#Sugerencias::-webkit-scrollbar-thumb:hover {
 textarea#Sugerencias::-webkit-scrollbar-track {
   background-color: #e4e4e4;
   border-radius: 100px;
+}
+
+/* SP
+============================================================ */
+
+@media screen and (max-width: 768px) {
+  .flowList {
+    margin: 0 -10px;
+    padding: 8px;
+    gap: 0 24px;
+  }
+  
+  .flowList li {
+    width: calc((100% - 48px) / 3);
+    font-size: 14px;
+    padding: 16px 8px;
+  }
+
+  .flowList li:nth-of-type(n+2)::before {
+    width: 32px;
+    height: 32px;
+    left: -30px;
+  }
+
+  .spFull {
+    max-width: 100% !important;
+  }
 }

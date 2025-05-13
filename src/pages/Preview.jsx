@@ -153,13 +153,13 @@ function Preview() {
         </div>
 
         <div className="row justify-content-center">
-          <div className="col-12" style={{maxWidth: "90%"}}>
+          <div className="col-12 spFull" style={{maxWidth: "90%"}}>
             <div className="card">
               <div className="card-body py-4">
                 <div className="row justify-content-center">
-                  <div className="col-10">
+                  <div className="col-10 p-0">
                     {/* ===== Departamento ===== */}
-                    <p className="card-text d-flex" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Departamento:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
                         {formatField(formData.department)}
@@ -167,7 +167,7 @@ function Preview() {
                     </p>
 
                     {/* ===== Professión ===== */}
-                    <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Professión:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
                       {formatField(formData.profession)}
@@ -175,7 +175,7 @@ function Preview() {
                     </p>
 
                     {/* ===== Fecha ===== */}
-                    <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Fecha del incidencia:</strong> 
                       <span id="ticket-department" style={{color: "var(--darkBlue)", flex: "1"}}>
                         {formatField(formData.dateTime)}
@@ -183,7 +183,7 @@ function Preview() {
                     </p>
 
                     {/* ===== Lugar ===== */}
-                    <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Lugar:</strong> 
                       <span id="ticket-lugar" style={{color: "var(--darkBlue)", flex: "1"}}>
                         {formatField(formData.place)}
@@ -191,7 +191,7 @@ function Preview() {
                     </p>
 
                     {/* ===== Asunto ===== */}
-                    <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Asunto: </strong>
                       <span id="ticket-asunto" style={{color: "var(--darkBlue)", flex: "1"}}>
                         {formatField(formData.subject)}
@@ -199,7 +199,7 @@ function Preview() {
                     </p>    
 
                     {/* ===== Descripción ===== */}
-                    <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>Descripción:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
                         {formatField(formData.description)}
@@ -217,7 +217,7 @@ function Preview() {
                     </p>
 
                     {/* ===== Que consecuencia ===== */}
-                    <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue", width: "200px"}}>¿Que consecuencia?:</strong> 
                       <span id="ticket-descripcion" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
                         {formatField(formData.consequenceType)}
@@ -233,7 +233,7 @@ function Preview() {
                     </p>
 
                     {/* Sugerencias */}
-                    <p className="card-text d-flex -mt16" style={{textAlign: "justify"}}>
+                    <p className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{textAlign: "justify"}}>
                       <strong style={{color: "var(--blue)", width: "200px"}}>Sugerencias:</strong> 
                       <span id="ticket-sugerencias" className="styleForOverFlow" style={{color: "var(--darkBlue)", flex: "1"}}>
                         {formatField(formData.suggestions)}
@@ -241,7 +241,7 @@ function Preview() {
                     </p>
 
                     {/* ===== File upload ===== */}
-                    <div className="card-text d-flex -mt16" style={{ textAlign: "justify" }}>
+                    <div className="card-text d-flex flex-column flex-md-row align-items-md-center -mt16" style={{ textAlign: "justify" }}>
                       <strong style={{ color: "var(--blue)", width: "200px" }}>Archivos:</strong>
                       <div id="ticket-files" className="styleForOverFlow" style={{ color: "var(--darkBlue)", flex: "1" }}>
                         {formData.files && formData.files.length > 0 ? (
@@ -277,7 +277,7 @@ function Preview() {
                       <label
                         id="emailLabel"
                         htmlFor="emailNotification"
-                        className="text"
+                        className="text text-start text-md-center"
                         style={{ color: "var(--blue)", textDecoration: "none", cursor: "pointer" }}
                       >
                         Deseo recibir notificaciones por email
@@ -312,7 +312,7 @@ function Preview() {
                       </div>
                     </div>
 
-                    <div className="d-flex gap-4 justify-content-center py-4">
+                    <div className="d-flex flex-column flex-md-row gap-4 justify-content-center align-items-center py-4">
                       <button className="buttonForm -thin" type="button" onClick={handleEdit}>Editar</button>
                       <button className="buttonForm -thin" type="button" onClick={handleSend} disabled={loading}>
                             {loading ? "Submitting..." : "Enviar"}
