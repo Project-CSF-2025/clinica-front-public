@@ -281,38 +281,60 @@ function AdminDetail() {
   };  
 
   const handleDownloadPDF = () => {
-    const detailBox = document.querySelector(".detailBox"); // detailBox の取得
+    const detailBox = document.querySelector(".detailBox");
+    const detailBoxTextBoxes = document.querySelectorAll(".detailBox__textBox");
+    const buttonA = document.querySelector(".buttonA");
+  
+    const originalPaddingBottom = detailBox.style.paddingBottom;
 
-    window.scrollTo(0, 0); 
+    detailBoxTextBoxes.forEach((textBox) => {
+      textBox.style.height = '100%';
+      textBox.style.overflow = 'visible';
+    });
 
+    detailBox.style.paddingBottom = '64px'; 
+  
+    if (buttonA) {
+      buttonA.style.display = 'none';
+    }
+  
     html2canvas(detailBox, {
-      scale: 2, 
+      scale: 2,
       scrollX: 0,
       scrollY: 0,
       windowWidth: document.documentElement.scrollWidth,
       windowHeight: document.documentElement.scrollHeight,
     })
-      .then((canvas) => {
-        const imgData = canvas.toDataURL("image/png"); 
-        const pdf = new jsPDF("p", "mm", "a4"); 
-        
-        const pageWidth = 210; 
-        const pageHeight = 297; // A4 の縦幅 (mm)
-        const imgWidth = pageWidth - 70; // 🔥 ページ内に収めるため、余白を考慮
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // 🔥 比率を維持
+    .then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+  
+      const pageWidth = 210;
+      const pageHeight = 297;
+      const imgWidth = pageWidth - 20;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+      const scaleFactor = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+      const scaledImgWidth = imgWidth * scaleFactor;
+      const scaledImgHeight = imgHeight * scaleFactor;
 
-        // 🔥 X 軸で中央寄せ
-        const xPos = (pageWidth - imgWidth) / 2;
-
-        // 🔥 Y 軸で中央寄せ（ページの中央に配置）
-        const yPos = (pageHeight - imgHeight) / 2;
-        
-        pdf.addImage(imgData, "PNG", xPos, yPos, imgWidth, imgHeight); // 画像を PDF に追加
-        pdf.save(`reporte_${report?.report_code || "descarga"}.pdf`); // PDF を保存
-      })
-      .catch((error) => console.error("❌ PDF creation:", error));
+      const yOffset = (pageHeight - scaledImgHeight) / 2;
+  
+      pdf.addImage(imgData, "PNG", (pageWidth - scaledImgWidth) / 2, yOffset, scaledImgWidth, scaledImgHeight);
+  
+      pdf.save(`reporte_${report?.report_code || "descarga"}.pdf`);
+  
+      detailBoxTextBoxes.forEach((textBox) => {
+        textBox.style.height = '';
+        textBox.style.overflow = '';
+      });
+  
+      if (buttonA) {
+        buttonA.style.display = '';
+      }
+    })
+    .catch((error) => console.error("PDF creation failed:", error));
   };
-
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
