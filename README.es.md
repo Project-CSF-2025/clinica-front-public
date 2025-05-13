@@ -18,7 +18,7 @@ Este frontend se conecta con la API del backend [clinica-back-public](https://gi
 
 ---
 
-## 🧩 Instalación
+## Instalación
 
 1. **Clonar el Repositorio:**
 
