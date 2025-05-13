@@ -19,7 +19,7 @@
   height: 100%;
   border-radius: 32px;
   border: 1px solid var(--blue);
-  padding: 64px 40px 160px;
+  padding: 64px 40px 130px;
   display: flex;
   flex-direction: column;
   gap: 40px 0;
@@ -246,7 +246,7 @@
 /* chatBlock
 ============================== */
 .chatBlock {
-  height: 695px;
+  height: 645px;
   border-radius: 32px;
   overflow: hidden;
   box-shadow:  
