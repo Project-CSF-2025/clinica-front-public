@@ -1,4 +1,4 @@
-# Sistema de Reportes de Incidentes Clínicos – Frontend
+# 🩺 Sistema de Reportes de Incidentes Clínicos – Frontend
 
 Este es el frontend del sistema **Clinic Incident Reporting**, una plataforma web que permite al personal hospitalario o clínico reportar incidentes de forma anónima. El sistema contribuye a mejorar la seguridad, la transparencia y la comunicación dentro de la organización.
 
