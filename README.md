@@ -1,4 +1,4 @@
-# Clinic Incident Reporting – Frontend
+# 🩺 Clinic Incident Reporting – Frontend
 
 [Ver README en Español](./README.es.md)
 
